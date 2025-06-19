@@ -1,0 +1,156 @@
+@import "../../../styles/variables.css";
+
+.table-container {
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0 0.5rem;
+
+        font-size: 14px;
+        background-color: var(--white);
+        table-layout: auto;
+
+        thead {
+            background-color: var(--table-header-bg);
+
+            th {
+                padding: 0.8rem 1rem;
+                border-top: 1px solid var(--border-color);
+                border-bottom: 1px solid var(--border-color);
+
+                text-align: left;
+            }
+
+            th:first-child {
+                border-left: 1px solid var(--border-color);
+                border-top-left-radius: 1rem;
+                border-bottom-left-radius: 1rem;
+            }
+
+            th:last-child {
+                border-right: 1px solid var(--border-color);
+                border-top-right-radius: 1rem;
+                border-bottom-right-radius: 1rem;
+            }
+
+            .sorted {
+                display: flex;
+                align-items: center;
+            }
+        }
+
+        tbody {
+            color: #666;
+
+            tr {
+                border: 1px solid var(--border-color);
+            }
+
+            td:first-child {
+                border-left: 1px solid var(--border-color);
+                border-top-left-radius: 1rem;
+                border-bottom-left-radius: 1rem;
+            }
+
+            td:last-child {
+                border-right: 1px solid var(--border-color);
+                border-top-right-radius: 1rem;
+                border-bottom-right-radius: 1rem;
+            }
+
+            td.table-cell {
+                border-top: 1px solid var(--border-color);
+                border-bottom: 1px solid var(--border-color);
+
+                padding: 0.8rem 1rem;
+
+                width: 1%;
+
+                a {
+                    text-decoration: none;
+                    color: inherit;
+
+                    &:hover {
+                        color: var(--color-primary);
+                    }
+                }
+
+                .delete-icon {
+                    cursor: pointer;
+                    display: block;
+                    width: 16px;
+                    height: 16px;
+                    color: var(--color-danger);
+                    svg {
+                        height: 100%;
+                        width: 100%;
+                        object-fit: cover;
+                    }
+                }
+            }
+        }
+    }
+
+    .pagination-container {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 0.5rem;
+
+        .pagination {
+            background-color: var(--white, #fff);
+            display: flex;
+            align-items: center;
+            padding: 0.2rem;
+            border-radius: 2rem;
+
+            .pagination-pages {
+                display: flex;
+                gap: 0.25rem;
+            }
+
+            .pagination-button:last-child {
+                transform: rotate(180deg);
+            }
+        }
+
+        button {
+            line-height: 24px;
+            text-align: center;
+            font-size: 14px;
+            border-radius: 50%;
+            transition: background-color 0.2s ease-in-out;
+            padding: 0;
+            margin: 0;
+            height: 24px;
+            width: 24px;
+            border: none;
+            outline: none;
+            background: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+
+            &.active {
+                background-color: var(--color-primary);
+                color: var(--white);
+            }
+
+            svg {
+                height: 20px;
+                width: 16px;
+                margin-top: 4px;
+                object-fit: contain;
+                fill: currentColor;
+            }
+
+            &:hover:not([disabled]) {
+                background-color: var(--color-primary);
+                color: var(--white);
+            }
+        }
+    }
+}

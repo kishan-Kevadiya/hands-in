@@ -1,0 +1,181 @@
+@import "../../../styles/variables.css";
+
+.job-card {
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    transition: box-shadow 0.15s;
+
+    &:hover {
+        box-shadow: var(--shadow-md);
+    }
+
+    .job-card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 1rem;
+    }
+
+    .job-card-title-location {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+
+    .job-card-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        margin: 0;
+        color: var(--color-info);
+    }
+
+    .job-card-location {
+        font-size: 0.95rem;
+        color: var(--color-text-secondary);
+    }
+
+    .job-card-work-model {
+        font-size: 0.95rem;
+        color: var(--color-text-secondary);
+    }
+
+    .job-card-date {
+        font-size: 0.85rem;
+        color: var(--color-text-tertiary);
+        white-space: nowrap;
+        margin-left: 1.5rem;
+    }
+
+    .job-card-salary {
+        margin-bottom: 0.75rem;
+        font-weight: 500;
+        color: var(--color-text-primary);
+    }
+
+    .job-card-info {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 0.5rem;
+        font-size: 0.9rem;
+    }
+
+    .job-card-label {
+        font-weight: 700;
+    }
+
+    .job-card-value {
+        color: var(--text-secondary-color);
+    }
+
+    .job-card-expired {
+        color: var(--color-error, #d32f2f);
+        margin-left: 0.5rem;
+    }
+
+    .job-card-section {
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .job-card-section-title {
+        font-size: 1rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: var(--color-text-primary);
+    }
+
+    .job-card-list {
+        padding-left: 1.5rem;
+        margin: 0.5rem 0;
+    }
+
+    .job-card-list-item {
+        margin-bottom: 0.25rem;
+        color: var(--color-text-secondary);
+    }
+
+    .job-card-skills {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .job-card-footer {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid var(--border-color);
+        font-size: 0.85rem;
+    }
+
+    .job-card-description {
+        font-size: 1rem;
+        line-height: 1.6;
+        margin-top: 1.5rem;
+        word-break: break-word;
+    }
+
+    .job-show-hide-toggle {
+        outline: none;
+        border: none;
+        background: none;
+        cursor: pointer;
+        text-align: end;
+        justify-content: flex-end;
+    }
+}
+
+/* Divider */
+
+.divider {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin: 0.8rem 0;
+
+    &.primary {
+        --divider-color: var(--color-primary);
+        --divider-text-color: var(--white, #888);
+    }
+
+    &.secondary {
+        --divider-color: var(--color-secondary, #ccc);
+        --divider-text-color: var(--white, #aaa);
+    }
+
+    &.info {
+        --divider-color: var(--color-info);
+        --divider-text-color: var(--white);
+    }
+
+    &.danger {
+        --divider-color: var(--color-danger);
+        --divider-text-color: var(--white);
+    }
+
+    &.light {
+        --divider-color: rgba(0, 0, 0, 0.05);
+    }
+
+    .divider-left-line,
+    .divider-right-line {
+        flex: 1 1 0;
+        height: 1px;
+        background-color: var(--divider-color);
+    }
+
+    .divider-text {
+        background-color: var(--divider-color);
+        padding: 0.2rem 0.75em;
+        color: var(--divider-text-color);
+        font-size: 0.9rem;
+        font-weight: 500;
+        letter-spacing: 0.02em;
+        border-radius: 1rem;
+    }
+}

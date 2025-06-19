@@ -1,0 +1,45 @@
+@import "../../../styles/variables.css";
+.badge {
+    display: inline-block;
+    padding: var(--size-4) calc(var(--size-8) + var(--size-4));
+    border-radius: var(--size-8);
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    line-height: 1.4;
+    vertical-align: middle;
+    margin-inline: 0.2rem;
+    transition:
+        background 0.2s,
+        color 0.2s,
+        border-color 0.2s;
+}
+
+.badge--success {
+    background: var(--color-success);
+    color: var(--white);
+    border-color: var(--color-success);
+}
+
+.badge--warning {
+    background: var(--color-warning);
+    color: var(--white);
+    border-color: var(--color-warning);
+}
+
+.badge--secondary {
+    background: var(--color-secondary);
+    color: var(--white);
+    border-color: var(--color-secondary);
+}
+
+.badge--danger {
+    background: var(--color-danger);
+    color: var(--white);
+    border-color: var(--color-danger);
+}
+
+.badge--info {
+    background: rgba(0, 0, 0, 0.05);
+    color: var(--text-color);
+    border-color: var(--color-danger);
+}

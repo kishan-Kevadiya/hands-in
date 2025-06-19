@@ -1,0 +1,18 @@
+{
+  "name": "headsin-apps",
+  "version": "1.0.0",
+  "description": "Headsin monorepo apps for frontend apps",
+  "scripts": {
+    "build": "turbo build",
+    "dev": "turbo dev",
+    "lint": "turbo lint",
+    "clean": "turbo clean"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.5.2",
+  "devDependencies": {
+    "turbo": "^2.5.4"
+  }
+}

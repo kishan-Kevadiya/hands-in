@@ -1,0 +1,49 @@
+:root {
+    --font-main: "Manrope", sans-serif;
+
+    --white: #ffffff;
+    --black: #000000;
+
+    --main-bg: #fafafa;
+
+    --text-color: #312d3f;
+    --text-secondary-color: #757575;
+    --sidebar-bg: #f4f7f8;
+
+    --color-primary: #3d1660;
+    --color-primary-light: #7a65d6;
+    --color-primary-dark: #4a34a3;
+
+    --color-secondary: #de6988;
+    --color-info: #0969da;
+
+    --color-success: #1f8268;
+    --color-danger: #e2564a;
+    --color-warning: #f4a640;
+
+    --border-color: #ecedec;
+    --border-color-dark: #b0b3bb;
+
+    --font-size-xs: 0.75rem;
+    --font-size-sm: 0.875rem;
+    --font-size-md: 1rem;
+    --font-size-lg: 1.25rem;
+    --font-size-xl: 1.5rem;
+    --font-size-xxl: 2rem;
+
+    --size-4: 0.25rem; /* 4px */
+    --size-8: 0.5rem; /* 8px */
+    --size-10: 0.625rem; /* 10px */
+    --size-12: 0.75rem; /* 12px */
+    --size-16: 1rem; /* 16px */
+    --size-20: 1.25rem; /* 20px */
+    --size-24: 1.5rem; /* 24px */
+    --size-32: 2rem; /* 32px */
+    --size-40: 2.5rem; /* 40px */
+    --size-48: 3rem; /* 48px */
+    --size-56: 3.5rem; /* 56px */
+    --size-64: 4rem; /* 64px */
+
+    /* Table */
+    --table-header-bg: #f4f7f8;
+}

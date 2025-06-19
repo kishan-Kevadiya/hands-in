@@ -1,0 +1,45 @@
+@import "../../../styles/variables.css";
+
+.dashboard-page {
+    .dashboard-counts {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        margin-bottom: 1rem;
+
+        .count-card {
+            padding: 1rem;
+            box-sizing: border-box;
+            border: 1px solid var(--border-color);
+            border-radius: 1rem;
+
+            h3 {
+                color: var(--text-secondary-color);
+                font-weight: 400;
+            }
+
+            .count {
+                font-weight: 600;
+                font-weight: 800;
+            }
+        }
+    }
+
+    .charts {
+        display: flex;
+        gap: 1rem;
+    }
+
+    .company-onboarding-chart,
+    .user-onboarding-chart {
+        height: 400px;
+        padding: 1rem 1rem 3rem 1rem;
+        width: 50%;
+        box-sizing: border-box;
+        flex-wrap: wrap;
+        overflow: hidden;
+        border-radius: 1rem;
+
+        border: 1px solid var(--border-color);
+    }
+}
