@@ -2,6 +2,17 @@ import type { RouteType } from "@src/types/layout";
 import { ACTIONS } from "@utils/constants";
 import { lazy } from "solid-js";
 
+// Icons
+import {
+  CandidateIcon,
+  CompanyIcon,
+  DashboardIcon,
+  SettingCouponIcon,
+  SettingPlansIcon,
+  UserRolesIcon,
+  UserSettingIcon
+} from "@icons/index";
+
 const Login = lazy(() => import("../views/components/auth/Login"));
 
 const Dashboard = lazy(() => import("../views/pages/dashboard"));
@@ -36,15 +47,6 @@ const Setting_View_Coupon = lazy(
   () => import("../views/pages/settings/coupon/ViewCoupon"),
 );
 
-// ** ICONS
-const DashboardIcon = lazy(() => import("@icons/Dashboard"));
-const CompanyIcon = lazy(() => import("@icons/Company"))
-const UserSetting = lazy(() => import("@icons/UserSetting"));
-const CandidateIcon = lazy(() => import("@icons/UserCricle"));
-const UserRoles = lazy(() => import("@icons/UserRoles"));
-const Setting_Plans_Icon = lazy(() => import("@icons/Ruppe"));
-const Setting_Coupon_Icon = lazy(() => import("@icons/Coupon"));
-
 // Public routes (shown before login)
 export const publicRoutes: RouteType[] = [
   {
@@ -60,7 +62,7 @@ export const SidebarRoutes: RouteType[] = [
     layout: "sidebar",
     component: Dashboard,
     label: "Dashboard",
-    icon: DashboardIcon
+    icon: DashboardIcon,
   },
   {
     path: "/recruiters",
@@ -82,7 +84,7 @@ export const SidebarRoutes: RouteType[] = [
     path: "/plans",
     layout: "sidebar",
     label: "Plans",
-    icon: Setting_Plans_Icon,
+    icon: SettingPlansIcon,
     component: Setting_Plans,
     permission: ACTIONS.packages.read,
   },
@@ -90,7 +92,7 @@ export const SidebarRoutes: RouteType[] = [
     path: "/coupons",
     layout: "sidebar",
     label: "Coupons",
-    icon: Setting_Coupon_Icon,
+    icon: SettingCouponIcon,
     component: Setting_Coupon,
     permission: ACTIONS.coupon.read,
   },
@@ -103,7 +105,7 @@ export const SidebarRoutes: RouteType[] = [
     path: "/admin-roles",
     layout: "sidebar",
     label: "Roles",
-    icon: UserRoles,
+    icon: UserRolesIcon,
     component: AdminRoles,
     permission: ACTIONS.adminUser.read,
   },
@@ -111,7 +113,7 @@ export const SidebarRoutes: RouteType[] = [
     path: "/admin-users",
     layout: "sidebar",
     label: "Users",
-    icon: UserSetting,
+    icon: UserSettingIcon,
     component: AdminUsers,
     permission: ACTIONS.adminUser.read,
   },

@@ -1,0 +1,36 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@import "primereact/resources/primereact.min.css";
+@import "primeicons/primeicons.css";
+
+@import "swiper/css";
+@import "swiper/css/effect-coverflow";
+
+/* dark mode */
+@variant dark (&:where(.light,.light *));
+
+/* tailwind configs */
+@theme {
+    /* colors */
+    --color-primary: #df6789;
+    --color-field: rgba(223, 103, 137, 0.08);
+
+    /* fonts */
+    --font-manrope: "Manrope", sans-serif;
+}
+
+@font-face {
+    font-family: "Manrope";
+    src: url("https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap");
+}
+
+button {
+    @apply cursor-pointer;
+}
+
+[data-pc-section="root"] {
+    font-family: var(--font-manrope);
+}
+
+

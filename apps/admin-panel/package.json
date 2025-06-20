@@ -3,6 +3,11 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+   "author": {
+        "name": "Headsin Inc.",
+        "email": "info@headsin.co",
+        "url": "https://headsin.co"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
@@ -20,12 +25,5 @@
     "rxjs": "^7.8.2",
     "solid-chartjs": "^1.3.11",
     "solid-js": "^1.9.7"
-  },
-  "devDependencies": {
-    "@types/node": "^22.15.29",
-    "tsconfig-paths": "^4.2.0",
-    "typescript": "~5.8.3",
-    "vite": "^6.3.5",
-    "vite-plugin-solid": "^2.11.6"
   }
 }

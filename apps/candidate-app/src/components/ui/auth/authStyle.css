@@ -1,0 +1,26 @@
+[data-pc-name="iconfield"] {
+    width: 100% !important;
+}
+
+/* Button Gradient Animation */
+.gradient-btn {
+    background: linear-gradient(
+        -45deg,
+        #DF6789,
+        #3F1562
+    );
+    background-size: 300% auto;
+    animation: moving-gradient 4s linear infinite;
+}
+
+@keyframes moving-gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}

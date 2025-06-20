@@ -1,44 +1,59 @@
+
+import AddCircleIcon from "./AddCircle";
 import BellIcon from "./Bell";
 import CalendarIcon from "./Calender";
-import SortIcon from "./Sort";
-import AddCircle from "./AddCircle";
-import SearchIcon from "./SearchIcon";
-import RedirectIcon from "./Redirect";
-import EditIcon from "./Edit";
-import DownloadIcon from "./Download";
-import PlusIcon from "./Plus";
-import LogoutIcon from "./Logout";
-import UserCircleIcon from "./UserCricle";
-import UserRoundedFillIcon from "./UserRoundedFill";
-import DeleteIcon from "./Delete";
-import ShuffleIcon from "./Shuffle";
+import CandidateIcon from "./UserCricle"; 
+import ClientListIcon from "./ClientList"; 
 import CloseEyeIcon from "./CloseEye";
-import OpenEyeIcon from "./OpenEye";
-import SidebarArrowIcon from "./SidebarArrow";
 import CompanyIcon from "./Company";
+import CouponIcon from "./Coupon";       
+import DashboardIcon from "./Dashboard";  
+import DeleteIcon from "./Delete";
+import DownloadIcon from "./Download";
+import EditIcon from "./Edit";
+import LogoutIcon from "./Logout";
+import OpenEyeIcon from "./OpenEye";
+import PlusIcon from "./Plus";
+import RedirectIcon from "./Redirect";
+import RupeeIcon from "./Ruppe";        
+import SearchIcon from "./SearchIcon";
+import SettingCouponIcon from "./Coupon"; 
+import SettingPlansIcon from "./Ruppe";   
+import ShuffleIcon from "./Shuffle";
+import SidebarArrowIcon from "./SidebarArrow";
+import SortIcon from "./Sort";
+import UserCircleIcon from "./UserCricle";
+import UserRolesIcon from "./UserRoles";       
+import UserRoundedFillIcon from "./UserRoundedFill";
+import UserSettingIcon from "./UserSetting";   
 
-export * as DashboardIcon from "./Dashboard";
-export * as ClientListIcon from "./ClientList";
-export * as RupeeIcon from "./Ruppe";
-export * as CouponIcon from "./Coupon";
 
 export {
+  AddCircleIcon,
   BellIcon,
   CalendarIcon,
-  SortIcon,
-  AddCircle as AddCircleIcon,
-  SearchIcon,
-  RedirectIcon,
-  EditIcon,
-  DownloadIcon,
-  PlusIcon,
-  LogoutIcon,
-  UserCircleIcon,
-  UserRoundedFillIcon,
-  DeleteIcon,
-  ShuffleIcon,
+  CandidateIcon,
+  ClientListIcon,
   CloseEyeIcon,
+  CompanyIcon,
+  CouponIcon,
+  DashboardIcon,
+  DeleteIcon,
+  DownloadIcon,
+  EditIcon,
+  LogoutIcon,
   OpenEyeIcon,
+  PlusIcon,
+  RedirectIcon,
+  RupeeIcon,
+  SearchIcon,
+  SettingCouponIcon,
+  SettingPlansIcon,
+  ShuffleIcon,
   SidebarArrowIcon,
-  CompanyIcon
+  SortIcon,
+  UserCircleIcon,
+  UserRolesIcon,
+  UserRoundedFillIcon,
+  UserSettingIcon,
 };

@@ -1,0 +1,239 @@
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #fdf3f6;
+    border-radius: 5px;
+}
+
+@media screen and (max-width: 768px) {
+    ::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+/* PrimeReact custom classes */
+.filter-calender [data-pc-name="inputtext"] {
+    border-radius: 0.75rem;
+    @apply w-full rounded-r-none bg-[#F7F7F7] !border-[#EEEEEE];
+}
+
+.filter-calender [data-pc-name="button"] {
+    background-color: rgba(223, 103, 137, 0.08);
+    color: black;
+    padding: 10px;
+    border-radius: 0 0.75rem 0.75rem 0;
+    border: 1px solid #eeeeee;
+    border-left: none;
+    outline: none;
+    box-shadow: none;
+}
+
+.filter-calender [data-pc-name="button"] > svg {
+    width: 20px;
+    height: 20px;
+}
+
+.filter-calender-day [data-p-highlight="true"] {
+    background-color: var(--color-field);
+    color: var(--color-primary);
+}
+
+.date-picker [data-pc-name="inputtext"] {
+    background-color: rgba(223, 103, 137, 0.08);
+    color: black;
+    border-radius: 0.75rem 0 0 0.75rem;
+    border: none;
+    outline: none;
+    box-shadow: none;
+    font-size: 1rem;
+    @apply w-full rounded-r-none;
+}
+
+.date-picker [data-pc-name="button"] {
+    background-color: rgba(223, 103, 137, 0.08);
+    color: black;
+    border-radius: 0 0.75rem 0.75rem 0;
+    border: none;
+    outline: none;
+    box-shadow: none;
+}
+
+.date-picker [data-pc-name="button"] > svg {
+    width: 20px;
+    height: 20px;
+}
+
+.scrollbar-hidden::-webkit-scrollbar {
+    display: none;
+}
+
+.filter-svg {
+    clip-path: polygon(
+        90.789% 47.761%,
+        90.789% 47.761%,
+        90.787% 41.337%,
+        90.773% 35.547%,
+        90.734% 30.349%,
+        90.658% 25.699%,
+        90.533% 21.558%,
+        90.346% 17.882%,
+        90.085% 14.629%,
+        89.737% 11.759%,
+        89.291% 9.228%,
+        88.734% 6.994%,
+        88.734% 6.994%,
+        88.078% 5.099%,
+        87.334% 3.581%,
+        86.49% 2.399%,
+        85.535% 1.511%,
+        84.454% 0.874%,
+        83.237% 0.448%,
+        81.871% 0.189%,
+        80.344% 0.056%,
+        78.642% 0.007%,
+        76.754% 0%,
+        23.246% 0%,
+        23.246% 0%,
+        21.358% 0.007%,
+        19.656% 0.056%,
+        18.129% 0.189%,
+        16.763% 0.448%,
+        15.545% 0.874%,
+        14.465% 1.511%,
+        13.51% 2.399%,
+        12.666% 3.581%,
+        11.922% 5.099%,
+        11.266% 6.994%,
+        11.266% 6.994%,
+        10.709% 9.228%,
+        10.263% 11.759%,
+        9.916% 14.629%,
+        9.654% 17.882%,
+        9.467% 21.558%,
+        9.342% 25.699%,
+        9.266% 30.349%,
+        9.227% 35.547%,
+        9.213% 41.337%,
+        9.211% 47.761%,
+        9.211% 82.836%,
+        9.211% 82.836%,
+        9.15% 85.378%,
+        8.976% 87.789%,
+        8.696% 90.038%,
+        8.322% 92.091%,
+        7.862% 93.917%,
+        7.325% 95.484%,
+        6.722% 96.758%,
+        6.061% 97.709%,
+        5.352% 98.302%,
+        4.605% 98.507%,
+        0.219% 98.507%,
+        0.219% 98.507%,
+        0.184% 98.517%,
+        0.15% 98.546%,
+        0.119% 98.591%,
+        0.09% 98.651%,
+        0.064% 98.726%,
+        0.042% 98.813%,
+        0.024% 98.911%,
+        0.011% 99.018%,
+        0.003% 99.133%,
+        0% 99.254%,
+        0% 99.254%,
+        0.003% 99.375%,
+        0.011% 99.49%,
+        0.024% 99.597%,
+        0.042% 99.694%,
+        0.064% 99.781%,
+        0.09% 99.856%,
+        0.119% 99.917%,
+        0.15% 99.962%,
+        0.184% 99.99%,
+        0.219% 100%,
+        99.781% 100%,
+        99.781% 100%,
+        99.816% 99.99%,
+        99.85% 99.962%,
+        99.881% 99.917%,
+        99.91% 99.856%,
+        99.936% 99.781%,
+        99.958% 99.694%,
+        99.976% 99.597%,
+        99.989% 99.49%,
+        99.997% 99.375%,
+        100% 99.254%,
+        100% 99.254%,
+        99.997% 99.133%,
+        99.989% 99.018%,
+        99.976% 98.911%,
+        99.958% 98.813%,
+        99.936% 98.726%,
+        99.91% 98.651%,
+        99.881% 98.591%,
+        99.85% 98.546%,
+        99.816% 98.517%,
+        99.781% 98.507%,
+        95.395% 98.507%,
+        95.395% 98.507%,
+        94.648% 98.302%,
+        93.939% 97.709%,
+        93.278% 96.758%,
+        92.675% 95.484%,
+        92.138% 93.917%,
+        91.678% 92.091%,
+        91.304% 90.038%,
+        91.024% 87.789%,
+        90.85% 85.378%,
+        90.789% 82.836%,
+        90.789% 47.761%
+    );
+}
+
+/* View Job Editor */
+
+.view-job-editor b {
+    font-weight: bold !important;
+}
+
+.view-job-editor strong {
+    font-weight: bold !important;
+}
+
+.view-job-editor u {
+    text-decoration: underline !important;
+}
+
+.view-job-editor i {
+    font-style: italic !important;
+}
+
+.view-job-editor ul {
+    list-style-type: disc !important;
+    list-style: inside;
+}
+
+.view-job-editor li[data-list="bullet"] {
+    list-style-type: disc !important;
+    list-style: inside;
+}
+
+.view-job-editor li[data-list="ordered"] {
+    list-style-type: decimal !important;
+    list-style: inside;
+}
+
+@keyframes infinite-scroll-x {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-100%);
+    }
+}
+
+.animate-scroll {
+    display: flex;
+    animation: infinite-scroll-x 25s linear infinite;
+}

@@ -1,0 +1,59 @@
+{
+  "name": "candidate-app",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "author": {
+        "name": "Headsin Inc.",
+        "email": "info@headsin.co",
+        "url": "https://headsin.co"
+  },
+  "scripts": {
+    "dev": "vite --host",
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^4.1.2",
+    "@react-pdf-viewer/core": "^3.12.0",
+    "@react-pdf-viewer/default-layout": "^3.12.0",
+    "@react-pdf-viewer/toolbar": "^3.12.0",
+    "@tailwindcss/vite": "^4.0.4",
+    "@tanstack/react-query": "^5.67.2",
+    "@types/node": "^22.13.5",
+    "axios": "^1.8.2",
+    "framer-motion": "^12.4.10",
+    "lenis": "^1.2.3",
+    "lottie-react": "^2.4.1",
+    "moment": "^2.30.1",
+    "pdfjs-dist": "^3.4.120",
+    "primeicons": "^7.0.0",
+    "primereact": "^10.9.2",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-hook-form": "^7.54.2",
+    "react-intersection-observer": "^9.16.0",
+    "react-router": "^7.2.0",
+    "react-toastify": "^11.0.5",
+    "swiper": "^11.2.4",
+    "tailwind-merge": "^3.0.2",
+    "tailwindcss": "^4.0.4",
+    "uuid": "^11.1.0",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.19.0",
+    "@tailwindcss/typography": "^0.5.16",
+    "@types/react": "^19.0.8",
+    "@types/react-dom": "^19.0.4",
+    "@vitejs/plugin-react-swc": "^3.5.0",
+    "eslint": "^9.19.0",
+    "eslint-plugin-react-hooks": "^5.0.0",
+    "eslint-plugin-react-refresh": "^0.4.18",
+    "globals": "^15.14.0",
+    "typescript": "~5.7.2",
+    "typescript-eslint": "^8.22.0",
+    "vite": "^6.1.0"
+  }
+}
