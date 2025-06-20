@@ -167,8 +167,9 @@ const AddPackage = () => {
         </Field>
         <Field name="isActive" type="boolean">
           {(field, props) => (
-            <FormFields.Switch
+            <FormFields.SwitchInput
               {...props}
+              id="package-is-active-input"
               checked={field.value}
               label="Is Active"
               error={field.error}

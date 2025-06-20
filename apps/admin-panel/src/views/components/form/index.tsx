@@ -10,6 +10,7 @@ import {
   createSignal,
   Match,
   batch,
+  Switch
 } from "solid-js";
 
 import { A, useNavigate } from "@solidjs/router";
@@ -188,7 +189,7 @@ function Checkbox(props: CheckboxProps) {
   );
 }
 
-function Switch(props: SwitchProps) {
+function SwitchInput(props: SwitchProps) {
   const [local, others] = splitProps(props, [
     "label",
     "error",
@@ -203,7 +204,7 @@ function Switch(props: SwitchProps) {
         <span class={`${labelBase} switch-text`}>{local.label}</span>
       )}
 
-      <label class="switch-label">
+      <label class="switch-label" for={others.id}>
         <input
           type="checkbox"
           class={`custom-switch-input ${local.class ?? ""}`}
@@ -447,7 +448,7 @@ export const FormFields = {
   Select,
   Checkbox,
   Radio,
-  Switch,
+  SwitchInput,
   Button,
   CircleButton,
   BackButton,

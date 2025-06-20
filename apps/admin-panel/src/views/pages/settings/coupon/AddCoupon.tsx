@@ -154,8 +154,9 @@ const AddCoupon = () => {
           </Field>
           <Field name="isActive" type="boolean">
             {(field, props) => (
-              <FormFields.Switch
+              <FormFields.SwitchInput
                 {...props}
+                id="coupon-is-active-input"
                 checked={field.value}
                 label="Is Active"
                 error={field.error}
@@ -213,8 +214,9 @@ const AddCoupon = () => {
           </Field>
           <Field name="isOneTimePerUser" type="boolean">
             {(field, props) => (
-              <FormFields.Switch
+              <FormFields.SwitchInput
                 {...props}
+                id="coupon-is-one-time-per-user-input"
                 checked={field.value}
                 label="Is One Time Per User"
                 error={field.error}
