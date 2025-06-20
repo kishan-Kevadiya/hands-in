@@ -81,13 +81,8 @@ function Input(props: InputProps) {
     "label",
     "error",
     "class",
-    "type",
     "placeholder",
   ]);
-
-  // ** hide password logic
-  const [hide, setHide] = createSignal(true);
-  const [type, setType] = createSignal(local.type || "text");
 
   return (
     <div class={containerBase}>
@@ -100,29 +95,55 @@ function Input(props: InputProps) {
         id={others.id}
         class={`${inputBase} ${local.class ?? ""}${local.error ? "error" : ""}`}
         placeholder={local.placeholder}
+        {...others}
+      />
+    
+      {local.error && <ErrorMessage error={local.error} />}
+    </div>
+  );
+}
+
+function PasswordInput(props: InputProps) {
+  const [local, others] = splitProps(props, [
+    "label",
+    "error",
+    "class",
+    "placeholder",
+  ]);
+
+  // ** hide password logic
+  const [hide, setHide] = createSignal(true);
+  const [type, setType] = createSignal("password");
+
+  return (
+    <div class={`${containerBase} password-input`}>
+      {local.label && (
+        <label for={others.id} class={labelBase}>
+          {local.label}
+        </label>
+      )}
+      <input
+        id={others.id}
+        class={`${inputBase} ${local.class ?? ""}${local.error ? "error" : ""}`}
+        placeholder={local.placeholder}
         type={type()}
         {...others}
       />
-      <Show when={local.type === "password"}>
-        <span class="eye-icon" onClick={() => {
+      <span class="eye-icon" onClick={() => {
           batch(() => {
             setHide(prev => !prev);
             setType(type() === "password" ? "text" : "password");
           })
-         
         }}>
-          <Switch>
-            <Match when={hide()}>
-              <OpenEyeIcon />
-            </Match>
-            <Match when={!hide()}>
-              <CloseEyeIcon />
-            </Match>
-          </Switch>
-         
-        </span>
-      </Show>
-    
+        <Switch>
+          <Match when={hide()}>
+            <OpenEyeIcon />
+          </Match>
+          <Match when={!hide()}>
+            <CloseEyeIcon />
+          </Match>
+        </Switch>
+      </span>
       {local.error && <ErrorMessage error={local.error} />}
     </div>
   );
@@ -432,4 +453,5 @@ export const FormFields = {
   BackButton,
   QuillEditor,
   Textarea,
+  PasswordInput
 };

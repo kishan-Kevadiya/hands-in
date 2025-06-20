@@ -94,11 +94,10 @@ const LoginPage = () => {
           >
             {(field, props) => (
               <div class="form-group">
-                <FormFields.Input
+                <FormFields.PasswordInput
                   {...props}
                   label="Password"
                   id="password-input"
-                  type="password"
                   value={field.value}
                   placeholder="••••••••••••••"
                   error={field.error}

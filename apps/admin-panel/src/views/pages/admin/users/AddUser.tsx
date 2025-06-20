@@ -127,13 +127,12 @@ const AddUser = () => {
             ]}
           >
             {(field, props) => (
-              <FormFields.Input
+              <FormFields.PasswordInput
                 {...props}
                 id="password-input"
                 label="Password"
-                type="password"
                 value={field.value}
-                placeholder="•••••••••"
+                placeholder="•••••••••••••"
                 error={field.error}
               />
             )}

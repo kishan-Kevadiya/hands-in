@@ -15,25 +15,7 @@
         font-size: 0.8rem;
     }
 
-    .eye-icon {
-        position: absolute;
-        right: 1rem;
-        top: 50%;
-        cursor: pointer;
-        color: var(--text-secondary-color);
-        transition: color 0.2s;
-
-        &:hover {
-            color: var(--text-color);
-        }
-
-        svg {
-            width: 1rem;
-            height: 1rem;
-            vertical-align: middle;
-        }
-    }
-
+ 
     .custom-input {
         padding: 0.5rem 0.75rem;
         border: 1px solid var(--border-color-dark, #ccc);
@@ -64,6 +46,28 @@
         font-size: 0.875rem;
         margin-top: 0.25rem;
     }
+}
+
+.custom-form-group.password-input {
+   .eye-icon {
+        position: absolute;
+        right: 1rem;
+        top: 50%;
+        cursor: pointer;
+        color: var(--text-secondary-color);
+        transition: color 0.2s;
+
+        &:hover {
+            color: var(--text-color);
+        }
+
+        svg {
+            width: 1rem;
+            height: 1rem;
+            vertical-align: middle;
+        }
+    }
+
 }
 
 .custom-checkbox-group {
