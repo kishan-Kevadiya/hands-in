@@ -4,7 +4,7 @@ import { twMerge } from "tailwind-merge";
 
 interface ChipFieldProps extends ChipProps {
     ChipFieldStyle?: string;
-    onRemove: () => void;
+    onRemove: () => any;
 }
 
 const ChipField: React.FC<ChipFieldProps> = ({

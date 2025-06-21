@@ -4,9 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "author": {
-        "name": "Headsin Inc.",
-        "email": "info@headsin.co",
-        "url": "https://headsin.co"
+    "name": "Headsin Inc.",
+    "email": "info@headsin.co",
+    "url": "https://headsin.co"
   },
   "scripts": {
     "dev": "vite --host",
@@ -19,9 +19,8 @@
     "@react-pdf-viewer/core": "^3.12.0",
     "@react-pdf-viewer/default-layout": "^3.12.0",
     "@react-pdf-viewer/toolbar": "^3.12.0",
-    "@tailwindcss/vite": "^4.0.4",
+    "@tailwindcss/vite": "^4.1.10",
     "@tanstack/react-query": "^5.67.2",
-    "@types/node": "^22.13.5",
     "axios": "^1.8.2",
     "framer-motion": "^12.4.10",
     "lenis": "^1.2.3",
@@ -38,7 +37,7 @@
     "react-toastify": "^11.0.5",
     "swiper": "^11.2.4",
     "tailwind-merge": "^3.0.2",
-    "tailwindcss": "^4.0.4",
+    "tailwindcss": "^4.1.10",
     "uuid": "^11.1.0",
     "zod": "^3.24.2"
   }

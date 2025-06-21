@@ -1,4 +1,6 @@
-const hideNavItemsVariant = {
+import type { Variants } from "framer-motion";
+
+const hideNavItemsVariant : Variants= {
     opened: {
         opacity: 0,
         y: "-100%",
@@ -18,7 +20,7 @@ const hideNavItemsVariant = {
     },
 };
 
-const mobileMenuVariant = {
+const mobileMenuVariant: Variants = {
     opened: {
         y: "0%",
         transition: {
@@ -62,7 +64,7 @@ const ulVariant = {
     },
 };
 
-const liVariant = {
+const liVariant: Variants = {
     opened: {
         opacity: 1,
         y: "0%",

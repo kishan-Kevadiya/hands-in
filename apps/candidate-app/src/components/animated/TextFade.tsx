@@ -1,6 +1,6 @@
 import { useInView } from "framer-motion";
 import React, { useRef } from "react";
-import { motion } from "framer-motion";
+import { type Variants, motion } from "framer-motion";
 
 export function TextFade({
     direction = "up",
@@ -15,7 +15,7 @@ export function TextFade({
     delay?: number;
     staggerChildren?: number;
 }) {
-    const FADE_DOWN = {
+    const FADE_DOWN: Variants = {
         show: { opacity: 1, y: 0, transition: { type: "spring" } },
         hidden: { opacity: 0, y: direction === "down" ? -18 : 18 },
     };
