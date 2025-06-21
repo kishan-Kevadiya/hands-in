@@ -2,6 +2,7 @@
     "name": "recuiter-app",
     "private": true,
     "version": "0.0.0",
+    "type": "module",
     "author": {
         "name": "Headsin Inc.",
         "email": "info@headsin.co",
