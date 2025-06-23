@@ -12,7 +12,7 @@ const CompanyOnboarding = () => {
   const endDate = new Date().toISOString();
 
   const companyCountQuery = useQuery(() => ({
-    queryKey: [QUERY_KEYS.COMPANY.COUNT, { startDate, endDate }],
+    queryKey: [QUERY_KEYS.RECRUITER.COUNT, { startDate, endDate }],
     queryFn: () => companyApis.getCountByDate({ startDate, endDate }),
   }));
 

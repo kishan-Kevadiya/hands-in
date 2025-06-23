@@ -40,7 +40,7 @@ export const columns = [
       } = info.row.original;
       return (
         <div class="text-nowrap">
-          <A class="font-bold" href={`/users/${info.row.original.id}`}>
+          <A class="font-bold" href={`/candidates/${info.row.original.id}`}>
             {firstName} {lastName}
           </A>
           <p>

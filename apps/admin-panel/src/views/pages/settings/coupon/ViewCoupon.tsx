@@ -1,6 +1,6 @@
 import { useParams } from "@solidjs/router";
 import { useQuery } from "@tanstack/solid-query";
-import { discountsApis } from "@apis/discounts";
+import { discountsApis } from "@apis/coupons";
 import { QUERY_KEYS } from "@utils/constants";
 import { Switch, Match } from "solid-js";
 import { getDateTime } from "@utils";
@@ -13,12 +13,22 @@ const ViewCoupon = () => {
     queryKey: [QUERY_KEYS.COUPONS.ONE, id],
     queryFn: () => discountsApis.getById(Number(id)),
     enabled: !isNaN(Number(id)),
+    retry: false
   }));
 
   return (
     <Switch>
-      <Match when={!couponQuery.data}>
+      <Match when={couponQuery.isFetching}>
         <p>Loading...</p>
+      </Match>
+      <Match when={!couponQuery.isFetching && !couponQuery.data}>
+        <div class="coupon-view-page">
+          <div class="d-flex align-center gap-2 p-3 card">
+            <FormFields.BackButton />
+            <p>Coupon Not Found</p>
+          </div>
+         
+        </div>
       </Match>
       <Match when={couponQuery.data}>
         <div class="coupon-view-page ">

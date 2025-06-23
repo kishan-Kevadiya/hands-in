@@ -17,14 +17,38 @@ const Login = lazy(() => import("../views/components/auth/Login"));
 
 const Dashboard = lazy(() => import("../views/pages/dashboard"));
 
-// ** Company
-const Company = lazy(() => import("../views/pages/recuiters/CompaniesList"));
-const Company_View = lazy(() => import("../views/pages/recuiters/view"));
+// ** Recruiter
+const Recruiter = lazy(() => import("../views/pages/recruiters/CompaniesList"));
 
-const User = lazy(() => import("../views/pages/candidates"));
-const UserView = lazy(() => import("../views/pages/candidates/view"));
+const ManualRecuiter = lazy(() =>
+  import("../views/pages/recruiters/manual"),
+);
+const ManualRecruiterView = lazy(() =>
+  import("../views/pages/recruiters/manual/view"),
+);
+const AddManualRecruiter = lazy(() =>
+  import("../views/pages/recruiters/manual/AddManualRecruiter"),
+);
 
-// ** User Routes
+const AddManualRecruiterRequirement = lazy(() =>
+  import("../views/pages/recruiters/manual/view/requirements/AddRequirement"),
+);
+
+const ViewManualRecruiterRequirement = lazy(() =>
+  import("../views/pages/recruiters/manual/view/requirements/view"),
+);
+
+const AddResumeToRequirement = lazy(() =>
+  import("../views/pages/recruiters/manual/view/requirements/view/AddResume"),
+);
+
+const Recruiter_View = lazy(() => import("../views/pages/recruiters/view"));
+
+// ** Candidate (was User)
+const Candidate = lazy(() => import("../views/pages/candidates"));
+const CandidateView = lazy(() => import("../views/pages/candidates/view"));
+
+// ** Admin Routes
 const AdminUsers = lazy(() => import("../views/pages/admin/users"));
 const AddUser = lazy(() => import("../views/pages/admin/users/AddUser"));
 
@@ -68,17 +92,17 @@ export const SidebarRoutes: RouteType[] = [
     path: "/recruiters",
     layout: "sidebar",
     label: "Recruiters",
-    component: Company,
+    component: Recruiter,
     icon: CompanyIcon,
-    permission: ACTIONS.company.read,
+    permission: [ACTIONS.recruiter.read],
   },
   {
     path: "/candidates",
     layout: "sidebar",
     label: "Candidates",
-    component: User,
+    component: Candidate,
     icon: CandidateIcon,
-    permission: ACTIONS.user.read,
+    permission: [ACTIONS.user.read],
   },
   {
     path: "/plans",
@@ -86,7 +110,7 @@ export const SidebarRoutes: RouteType[] = [
     label: "Plans",
     icon: SettingPlansIcon,
     component: Setting_Plans,
-    permission: ACTIONS.packages.read,
+    permission: [ACTIONS.packages.read],
   },
   {
     path: "/coupons",
@@ -94,12 +118,26 @@ export const SidebarRoutes: RouteType[] = [
     label: "Coupons",
     icon: SettingCouponIcon,
     component: Setting_Coupon,
-    permission: ACTIONS.coupon.read,
+    permission: [ACTIONS.coupon.read],
+  },
+    {
+    path: "divider-no-path",
+    layout: "sidebar",
+    group: "Manual",
+   },
+   {
+    path: "/manual-recruiter",
+    layout: "sidebar",
+    label: "Recuiters",
+    icon: CompanyIcon,
+    component: ManualRecuiter,
+    permission: [ACTIONS.manualRecruiter.read],
   },
    {
     path: "divider-no-path",
     layout: "sidebar",
     group: "Admin",
+    permission: [ACTIONS.adminUser.read, ACTIONS.adminRole.read],
    },
    {
     path: "/admin-roles",
@@ -107,7 +145,7 @@ export const SidebarRoutes: RouteType[] = [
     label: "Roles",
     icon: UserRolesIcon,
     component: AdminRoles,
-    permission: ACTIONS.adminUser.read,
+    permission: [ACTIONS.adminUser.read],
   },
   {
     path: "/admin-users",
@@ -115,7 +153,7 @@ export const SidebarRoutes: RouteType[] = [
     label: "Users",
     icon: UserSettingIcon,
     component: AdminUsers,
-    permission: ACTIONS.adminUser.read,
+    permission: [ACTIONS.adminUser.read],
   },
 ];
 
@@ -135,16 +173,16 @@ export const privateRoutes: RouteType[] = [
     component: AddRole,
   },
   {
-    path: "/users/:id",
+    path: "/candidates/:id",
     layout: "main",
-    label: "User View",
-    component: UserView,
+    label: "Candidate View",
+    component: CandidateView,
   },
   {
-    path: "/companies/:id/view",
+    path: "/recruiters/:id/view",
     layout: "main",
-    label: "Companies View",
-    component: Company_View,
+    label: "Recruiters View",
+    component: Recruiter_View,
   },
   {
     path: "/settings/pricing/add-package",
@@ -170,4 +208,34 @@ export const privateRoutes: RouteType[] = [
     label: "View Coupon",
     component: Setting_View_Coupon,
   },
+    {
+    path: "/manual-recruiter/:id",
+    layout: "main",
+    label: "Manual Recruiter View",
+    component: ManualRecruiterView,
+  },
+    {
+    path: "/manual-recruiter/add",
+    layout: "main",
+    label: "Manual Recruiter Add",
+    component: AddManualRecruiter,
+  },
+  {
+    path: "/manual-recruiter/requirement/:id/add",
+    layout: "main",
+    label: "Manual Recruiter Requirement Add",
+    component: AddManualRecruiterRequirement,
+  },
+  {
+    path: "/manual-recruiter/requirement/:id/view",
+    layout: "main",
+    label: "Requirement View",
+    component: ViewManualRecruiterRequirement,
+  },
+  {
+    path: "/manual-recruiter/requirement/resume/:id/add",
+     layout: "main",
+    label: "Add Resume",
+    component: AddResumeToRequirement,
+  }
 ];

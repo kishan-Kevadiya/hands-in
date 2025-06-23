@@ -98,7 +98,7 @@ function Input(props: InputProps) {
         placeholder={local.placeholder}
         {...others}
       />
-    
+
       {local.error && <ErrorMessage error={local.error} />}
     </div>
   );
@@ -131,11 +131,11 @@ function PasswordInput(props: InputProps) {
         {...others}
       />
       <span class="eye-icon" onClick={() => {
-          batch(() => {
-            setHide(prev => !prev);
-            setType(type() === "password" ? "text" : "password");
-          })
-        }}>
+        batch(() => {
+          setHide(prev => !prev);
+          setType(type() === "password" ? "text" : "password");
+        })
+      }}>
         <Switch>
           <Match when={hide()}>
             <OpenEyeIcon />
@@ -156,11 +156,20 @@ function Select(props: SelectProps) {
     "options",
     "error",
     "class",
+    "id",
+    "value",
+    "onChange"
   ]);
   return (
     <div class={containerBase}>
-      {local.label && <label class={labelBase}>{local.label}</label>}
-      <select class={`${inputBase} ${local.class ?? ""}`} {...others}>
+      {local.label && <label for={local.id} class={labelBase}>{local.label}</label>}
+      <select
+        id={local.id}
+        class={`${inputBase} ${local.class ?? ""}`}
+        value={local.value}
+        onChange={local.onChange}
+        {...others}
+      >
         <For each={local.options}>
           {(opt) => <option value={opt.value}>{opt.label}</option>}
         </For>
@@ -443,6 +452,16 @@ function Textarea(props: TextareaProps) {
   );
 }
 
+function SelectInputCombo(props: { children: JSX.Element; error?: string }) {
+  return (
+    <>
+      <div class="select-input-combo" classList={{ error: props.error ? true : false }}>
+        {props.children}
+      </div>
+    </>
+  );
+}
+
 export const FormFields = {
   Input,
   Select,
@@ -454,5 +473,6 @@ export const FormFields = {
   BackButton,
   QuillEditor,
   Textarea,
-  PasswordInput
+  PasswordInput,
+  SelectInputCombo
 };

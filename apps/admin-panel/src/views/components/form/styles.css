@@ -15,7 +15,7 @@
         font-size: 0.8rem;
     }
 
- 
+
     .custom-input {
         padding: 0.5rem 0.75rem;
         border: 1px solid var(--border-color-dark, #ccc);
@@ -49,7 +49,7 @@
 }
 
 .custom-form-group.password-input {
-   .eye-icon {
+    .eye-icon {
         position: absolute;
         right: 1rem;
         top: 50%;
@@ -131,24 +131,29 @@
         }
     }
 }
+
 .custom-button {
     &.primary {
         --bg-color: var(--color-primary);
         --t-color: var(--white);
     }
+
     &.secondary {
         --bg-color: transparent;
         --t-color: var(--black);
         --border: 1px solid rgba(0, 0, 0, 0.5);
     }
+
     &.warning {
         --bg-color: var(--color-warning);
         --t-color: var(--white);
     }
+
     &.danger {
         --bg-color: var(--color-danger);
         --t-color: var(--white);
     }
+
     &.success {
         --bg-color: var(--color-success);
         --t-color: var(--white);
@@ -165,10 +170,9 @@
     background-color: var(--bg-color);
     color: var(--t-color);
     cursor: pointer;
-    transition:
-        background 0.2s,
-        box-shadow 0.2s,
-        color 0.2s;
+    transition: background 0.2s,
+    box-shadow 0.2s,
+    color 0.2s;
 
     &:hover,
     &:focus {
@@ -183,6 +187,7 @@
         box-shadow: none;
     }
 }
+
 .custom-circle-button {
     display: flex;
     align-items: center;
@@ -213,8 +218,10 @@
 
     .icon-text {
         display: flex;
-        align-items: center; /* vertical centering */
-        justify-content: center; /* horizontal centering */
+        align-items: center;
+        /* vertical centering */
+        justify-content: center;
+        /* horizontal centering */
 
         cursor: pointer;
         font-size: 0.9rem;
@@ -283,11 +290,11 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
-        input:checked + .switch-slider {
+        input:checked+.switch-slider {
             background-color: var(--color-primary);
         }
 
-        input:checked + .switch-slider:before {
+        input:checked+.switch-slider:before {
             transform: translateX(19px);
         }
     }
@@ -304,6 +311,7 @@
         color: var(--text-color);
         margin-bottom: 0.5rem;
     }
+
     .ql-toolbar.ql-snow {
         border: none;
         border-bottom: 1px solid var(--border-color-dark);
@@ -333,5 +341,44 @@
             --outline-color: rgba(223, 70, 57, 0.1);
             border-color: var(--color-danger);
         }
+    }
+}
+
+.select-input-combo {
+    display: flex;
+    align-items: center;
+    flex: 1;
+
+    border: 1px solid var(--border-color-dark);
+    border-radius: 0.375rem;
+
+    --outline-color: rgba(144, 68, 212, 0.1);
+
+    input {
+        flex: 1;
+        margin-bottom: 0;
+        border: none;
+        outline: none;
+        border-radius: inherit;
+        padding: 0.5rem 0.75rem;
+        font-size: 0.9rem;
+    }
+
+    select {
+        border: none;
+        outline: none;
+        border-radius: inherit;
+        padding: 0.5rem 0.75rem;
+        font-size: 0.9rem;
+    }
+
+    &:focus-within {
+        border-color: var(--color-primary);
+        outline: 4px solid var(--outline-color);
+    }
+
+    &.error {
+        border-color: var(--color-danger);
+        --outline-color: rgba(223, 70, 57, 0.1);
     }
 }

@@ -12,6 +12,9 @@ import "./index.css";
 import { QueryClientProvider } from "@tanstack/react-query";
 import queryClient from "./helpers/query.config.ts";
 
+import "quill/dist/quill.core.css";
+import "quill/dist/quill.snow.css";
+
 createRoot(document.getElementById("root")!).render(
     <StrictMode>
         <PrimeReactProvider

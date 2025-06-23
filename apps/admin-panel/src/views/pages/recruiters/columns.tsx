@@ -30,7 +30,7 @@ export const companyColumns = [
     cell: (info) => {
       const row = info.getValue();
       return (
-        <A href={`/companies/${row.id}/view?tab=details`}>
+        <A href={`/recruiters/${row.id}/view?tab=details`}>
           <p class="font-bold">{row.companyName}</p>
           <p>
             {row.email}
@@ -87,4 +87,54 @@ export const companyColumns = [
     header: "Updated At",
     cell: (info) => <span>{timeAgo(info.getValue())}</span>,
   }),
+];
+
+
+export type Recruiter = {
+  id: number;
+  name: string;
+  email: string;
+  description: string;
+  address: string;
+  requirementCount: number;
+  createdAt: string;
+  updatedAt: string;
+};
+
+const recruiterColumnHelper = createColumnHelper<Recruiter>();
+
+export const recruiterColumns = [
+  recruiterColumnHelper.accessor((row) => row, {
+    id: "emailAndCompanyName",
+    header: "Company Name",
+    cell: (info) => {
+      const row = info.getValue();
+      return (
+        <A href={`/manual-recruiter/${row.id}`}>
+          <p class="font-bold">{row.name}</p>
+          <p>
+            {row.email}
+          </p>
+        </A>
+      );
+    },
+  }),
+
+  recruiterColumnHelper.accessor("description", {
+    header: "Description",
+    cell: (info) => <span>{info.getValue()}</span>,
+  }),
+  recruiterColumnHelper.accessor("address", {
+    header: "Address",
+    cell: (info) => <span>{info.getValue()}</span>,
+  }),
+  
+   recruiterColumnHelper.accessor("requirementCount", {
+    header: "No. Requirements",
+    cell: (info) => <span>{info.getValue()}</span>,
+  }),
+  recruiterColumnHelper.accessor("createdAt", {
+    header: "Created At",
+    cell: (info) => <span>{timeAgo(info.getValue())}</span>,
+  })
 ];

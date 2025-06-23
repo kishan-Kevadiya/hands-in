@@ -14,7 +14,7 @@ const Jobs = () => {
   const id = params.id;
 
   const jobsQuery = useQuery(() => ({
-    queryKey: [QUERY_KEYS.COMPANY.JOBS, id],
+    queryKey: [QUERY_KEYS.RECRUITER.JOBS, id],
     queryFn: () => companyApis.getCompanyJobs(id),
     enabled: !!id,
   }));
@@ -26,7 +26,7 @@ const Jobs = () => {
   return (
     <div class="jobs-page">
       <div class="d-flex gap-2 p-3 card">
-        <FormFields.BackButton href="/companies" />
+        <FormFields.BackButton href="/recruiters" />
         <h3>Jobs List</h3>
       </div>
       <Show when={jobsQuery.isLoading}>

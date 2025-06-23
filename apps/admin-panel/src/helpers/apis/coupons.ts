@@ -5,7 +5,7 @@ const getAll = async (filters?: {
   limit?: number;
   search?: string;
 }) => {
-  const response = await api.get("/discounts/all", {
+  const response = await api.get("/coupons/all", {
     params: {
       ...filters,
     },
@@ -14,12 +14,12 @@ const getAll = async (filters?: {
 };
 
 const create = async (data: any) => {
-  const response = await api.post("/discounts/create", data);
+  const response = await api.post("/coupons/create", data);
   return response.data;
 };
 
 const getById = async (id: number) => {
-  const response = await api.get("/discounts/" + id);
+  const response = await api.get("/coupons/" + id);
   return response.data;
 };
 

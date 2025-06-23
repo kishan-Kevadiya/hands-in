@@ -18,7 +18,7 @@ const DetailsPage = () => {
   return (
     <div class="">
       <div class="d-flex align-center gap-2 card p-3">
-        <FormFields.BackButton href="/companies" />
+        <FormFields.BackButton href="/recruiters" />
 
         <h3>Company Details</h3>
       </div>

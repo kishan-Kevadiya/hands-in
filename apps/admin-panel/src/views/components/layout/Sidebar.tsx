@@ -10,6 +10,7 @@ import { useAuth } from "@helpers/contexts/Auth";
 
 // ** Images
 import logo from "@assets/logo.webp";
+import type { RouteType } from "@src/types";
 
 // Types for route objects
 type SidebarChildRoute = {
@@ -135,14 +136,19 @@ function Sidebar() {
 
       <ul class="sidebar-list">
         <For each={SidebarRoutes}>
-          {(route: any) => (
-            <Show when={route.permission ? permissions[route.permission] : true}>
+          {(route: RouteType) => (
+            <Show when={route.permission ? permissions[route.permission[0]] : true}>
               <Switch>
                 <Match when={route.group}>
                   <span class="sidebar-divider">{route.group}</span>
                 </Match>
                 <Match when={!route.group}>
-                  <SidebarMenuItem route={route} />
+                  <SidebarMenuItem route={{
+                    label: route.label || "",
+                    path: route.path,
+                    icon: route.icon,
+                    permission: route.permission ? route.permission[0] : undefined
+                  }} />
                 </Match>
               </Switch>
             </Show>

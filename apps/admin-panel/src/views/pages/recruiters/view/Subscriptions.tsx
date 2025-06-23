@@ -4,7 +4,7 @@ export default function SubscriptionPage() {
   return (
     <div class="subscription-page">
       <div class="d-flex gap-2 p-3 card">
-        <FormFields.BackButton href="/companies" />
+        <FormFields.BackButton href="/recruiters" />
         <h3>Subscriptions</h3>
       </div>
     </div>

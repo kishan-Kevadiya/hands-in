@@ -26,7 +26,8 @@ import UserCircleIcon from "./UserCricle";
 import UserRolesIcon from "./UserRoles";       
 import UserRoundedFillIcon from "./UserRoundedFill";
 import UserSettingIcon from "./UserSetting";   
-
+import CommentIcon from "./Comment";
+import SendIcon from "./Send";
 
 export {
   AddCircleIcon,
@@ -56,4 +57,6 @@ export {
   UserRolesIcon,
   UserRoundedFillIcon,
   UserSettingIcon,
+  CommentIcon,
+  SendIcon
 };

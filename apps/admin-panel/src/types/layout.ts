@@ -6,10 +6,18 @@ export interface RouteType {
   icon?: Component<any>;
   component?: Component<any>;
   layout?: "auth" | "main" | "sidebar";
-  permission?: string;
+  permission?: string[];
   group?: string;
   children?: RouteType[];
   redirectTo?: string;
   exact?: boolean;
   sidebar?: boolean;
+}
+
+
+
+export type FiltersOptions = {
+  page?: number;
+  limit?: number;
+  search?: string;
 }

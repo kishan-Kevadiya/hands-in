@@ -9,7 +9,7 @@ import { useMutation } from "@tanstack/solid-query";
 import { queryClient } from "@helpers/axios";
 import { QUERY_KEYS } from "@utils/constants";
 import { FormFields } from "@components/form";
-import { discountsApis } from "@apis/discounts";
+import { discountsApis } from "@src/helpers/apis/coupons";
 
 type AddCouponForm = {
   code: string;

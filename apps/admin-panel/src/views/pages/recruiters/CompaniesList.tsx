@@ -42,7 +42,7 @@ export default function CompanyList() {
   }
 
   const query = useQuery(() => ({
-    queryKey: [QUERY_KEYS.COMPANY.ALL, pagination().page, pagination().limit, search()],
+    queryKey: [QUERY_KEYS.RECRUITER.ALL, pagination().page, pagination().limit, search()],
     queryFn: () =>
       companyApis.getAll({
         page: pagination().page,
@@ -68,7 +68,7 @@ export default function CompanyList() {
         <h2 class="section-title">Recuiters</h2>
         <FormFields.Input
           type="search"
-          placeholder="Search recuiters..."
+          placeholder="Search recruiters..."
           value={search()}
           onInput={handleSearchInput}
           // Disable the input while a search is in progress
@@ -80,7 +80,7 @@ export default function CompanyList() {
           <Loader />
         </Match>
         <Match when={query.isError}>
-          <div>Error loading recuiters.</div>
+          <div>Error loading recruiters.</div>
         </Match>
         <Match when={!query.isLoading && !query.isError}>
           <Table<Company>

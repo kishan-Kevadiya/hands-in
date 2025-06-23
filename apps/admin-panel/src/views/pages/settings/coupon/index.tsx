@@ -15,7 +15,7 @@ import { FormFields } from "@components/form";
 import Table from "@components/table";
 import Loader from "@components/Loader";
 import { couponColumns, type Coupon } from "../columns";
-import { discountsApis } from "@apis/discounts";
+import { discountsApis } from "@apis/coupons";
 import { QUERY_KEYS } from "@utils/constants";
 
 const CouponPage = () => {
