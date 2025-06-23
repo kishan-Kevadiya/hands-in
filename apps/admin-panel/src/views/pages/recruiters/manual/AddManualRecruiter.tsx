@@ -6,7 +6,6 @@ import { FormFields } from "@components/form";
 import {
     createForm,
     required,
-    minLength,
     type SubmitHandler,
     FieldArray,
     insert,
