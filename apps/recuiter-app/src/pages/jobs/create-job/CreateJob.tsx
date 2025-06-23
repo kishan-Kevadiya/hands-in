@@ -1388,7 +1388,7 @@ const CreateJob: React.FC = () => {
                         {isJDLoading ? (
                             <ButtonLoader isVisible={true} />
                         ) : (
-                            "Generete by AI"
+                            "Generate by AI"
                         )}
                     </AuthButton>
                 )}

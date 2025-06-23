@@ -8,6 +8,8 @@ import { Match, Switch } from "solid-js";
 import { FormFields } from "@components/form";
 import ResumeTable from "./ResumeTable";
 
+import "../../../styles.css";
+
 type Requirement = {
     id: number;
     title: string;
@@ -25,7 +27,7 @@ const getDateTime = (dateStr: string) => {
 const RequirementDetails: Component<{ requirement: Requirement }> = (props) => {
     const { requirement } = props;
     return (
-        <div class="">
+        <div class="requirement-detail-card">
             <div class="d-flex gap-2 align-center mb-3 card">
                 <FormFields.BackButton />
                 <h3>Requirement Details</h3>
@@ -73,7 +75,7 @@ const RequirementView = () => {
     }));
 
     return (
-        <div>
+        <div class="requirements-view-page">
             <Switch>
                 <Match when={requirementQuery.isLoading}>
                     <div>Loading...</div>

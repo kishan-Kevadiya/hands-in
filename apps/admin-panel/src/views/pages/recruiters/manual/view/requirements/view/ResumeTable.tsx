@@ -42,60 +42,24 @@ const ResumeCard = (props: ResumeCardProps) => {
     const [showComments, setShowComments] = createSignal<boolean>(false);
 
     return (
-        <div class="resume-list card">
-            <section class="left-section">
-                <div class="preview">
-                    <section>
-                        <div>PDF Preview</div>
-                        <small>{resume.resume}</small>
-                    </section>
-                </div>
-                <a
-                    href={`${import.meta.env.VITE_API_BASE_URL}/resumes/${resume.resume}`}
+        <div class="resume-card-page card">
+            <div class="d-flex align-center justify-between mb-2">
+                <a href={`${import.meta.env.VITE_API_BASE_URL}/resumes/${resume.resume}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="text-center w-100 mt-2 view-full-resume"
+                    class="view-full-resume"><strong>{resume.resume} ➚</strong></a>
+                <FormFields.Button
+                    variant="secondary"
+                    onClick={() => {
+                        setShowComments(true)
+                    }}
+                    class="text-center w-100 mt-2"
                 >
-                    📄 View Full Resume
-                </a>
-            </section>
-            <section class="right-section w-100">
-                <div class="d-flex align-center justify-between mb-2">
-                    <h3><strong>{resume.resume}</strong></h3>
-                    <FormFields.Button
-                        variant="secondary"
-                        onClick={() => {
-                            setShowComments(true)
-                        }}
-                        class="text-center w-100 mt-2"
-                    >
-                        <CommentIcon width={18} class="mr-2" /> {resume.commentCount} Comment{resume.commentCount > 1 ? "s" : ""}
-                    </FormFields.Button>
-                </div>
+                    <CommentIcon width={18} class="mr-2" /> {resume.commentCount} Comment{resume.commentCount > 1 ? "s" : ""}
+                </FormFields.Button>
+            </div>
 
-                <div class="mb-2">
-                    <Switch>
-                        <Match when={!showComments()}>
-                            <div class="text-light text-center h-100" style={{ "background-color": "rgba(0, 0,0, 0.05)", "border-radius": "1rem", padding: "1rem"}}>
-                                To load comments, please click on the Comments button.
-                            </div>
-                        </Match>
-                        <Match when={showComments()}>
-                            <Suspense fallback={<div>Loading comments...</div>}>
-                                <Show
-                                    when={resume.commentCount > 0}
-                                    fallback={
-                                        <div class="text-info">
-                                            No comments yet.
-                                        </div>
-                                    }
-                                >
-                                    <CommentsView resumeId={resume.id} />
-                                </Show>
-                            </Suspense>
-                        </Match>
-                    </Switch>
-                </div>
+            <div class="comments-section">
                 <Form onSubmit={(values: AddCommentForm, event: SubmitEvent) => {
                     handleSubmit({
                         ...values,
@@ -134,7 +98,32 @@ const ResumeCard = (props: ResumeCardProps) => {
                         </FormFields.Button>
                     </div>
                 </Form>
-            </section>
+
+                <div class="comments">
+                    <Switch>
+                        <Match when={!showComments()}>
+                            <div class="text-light">
+                                To load comments, please click on the Comments button.
+                            </div>
+                        </Match>
+                        <Match when={showComments()}>
+                            <Suspense fallback={<div>Loading comments...</div>}>
+                                <Show
+                                    when={resume.commentCount > 0}
+                                    fallback={
+                                        <div class="text-info">
+                                            No comments yet.
+                                        </div>
+                                    }
+                                >
+                                    <CommentsView resumeId={resume.id} />
+                                </Show>
+                            </Suspense>
+                        </Match>
+                    </Switch>
+                </div>
+            </div> 
+           
         </div>
     );
 };
@@ -203,22 +192,22 @@ const ResumeTable = (props: ResumeTableProps) => {
     const totalResumes = createMemo(() => query.data?.totalCount ?? 0);
 
     const handleSubmit: SubmitHandler<AddCommentForm> = async (values) => {
-            addCommentMutation.mutateAsync({
-                ...values,
-                commentDate: new Date(values.commentDate).toJSON(),
-                resumeId: values.resumeId
-            })
+        addCommentMutation.mutateAsync({
+            ...values,
+            commentDate: new Date(values.commentDate).toJSON(),
+            resumeId: values.resumeId
+        })
 
-            reset(form);
+        reset(form);
     };
 
 
 
     return (
         <div class="resume-list-page">
-            <div class="d-flex justify-between items-center mb-4">
+            <div class="d-flex justify-between items-center card">
                 <div class="d-flex align-center gap-2">
-                    <h2>Resumes ({totalResumes()})</h2>
+                    <h3>Resumes ({totalResumes()})</h3>
                     <FormFields.CircleButton href={`/manual-recruiter/requirement/resume/${props.requirementId}/add`} />
                 </div>
                 <FormFields.Input

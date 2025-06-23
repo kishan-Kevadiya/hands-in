@@ -84,9 +84,6 @@ const AddManualRecruiter = () => {
                     </Field>
                     <Field
                         name="email"
-                        validate={[
-                            required("Email is required")
-                        ]}
                     >
                         {(field, props) => (
                             <FormFields.Input
@@ -102,7 +99,6 @@ const AddManualRecruiter = () => {
                     </Field>
                     <Field
                         name="description"
-                        validate={[minLength(10, "Description must have at least 10 characters")]}
                     >
                         {(field, props) => (
                             <FormFields.Textarea
@@ -117,7 +113,6 @@ const AddManualRecruiter = () => {
                     </Field>
                     <Field
                         name="address"
-                        validate={[required("Address is required")]}
                     >
                         {(field, props) => (
                             <FormFields.Input
@@ -145,7 +140,7 @@ const AddManualRecruiter = () => {
                                 <For each={fieldArray.items}>
                                     {(_, index) => (
                                         <div class="d-flex align-center gap-2 mb-3">
-                                            <Field name={`phones.${index()}.phoneType`} validate={[required("Phone type is required")]}>
+                                            <Field name={`phones.${index()}.phoneType`}>
                                                 {(phoneTypeField, phoneTypeProps) => (
                                                     <Field name={`phones.${index()}.phone`} validate={[
                                                         required("Phone number is required"),
@@ -190,7 +185,7 @@ const AddManualRecruiter = () => {
                                                     </Field>
                                                 )}
                                             </Field>
-                                            <p class="remove-btn" onClick={() => remove(form, "phones", { at: index()})}> Remove </p>
+                                            <p class="remove-btn" onClick={() => remove(form, "phones", { at: index() })}> Remove </p>
                                         </div>
                                     )}
                                 </For>
