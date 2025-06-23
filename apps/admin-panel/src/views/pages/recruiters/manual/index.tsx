@@ -1,11 +1,10 @@
-import { useQuery, useMutation } from "@tanstack/solid-query";
+import { useQuery } from "@tanstack/solid-query";
 import { QUERY_KEYS } from "@utils/constants";
 import { manualRecruitersApis } from "@apis/manual_recruiters"; 
 import { recruiterColumns, type Recruiter } from "../columns"; 
 import { FormFields } from "@components/form";
 import Table from "@components/table";
 import Loader from "@components/Loader";
-import { queryClient } from "@helpers/axios";
 import { Modal } from "@components/modal";
 import { useModal } from "@helpers/contexts/Modal";
 import { Subject } from "rxjs";
@@ -24,7 +23,6 @@ Switch,
 
 const ManualRecruiters = () => {
 const modalContext = useModal();
-const [selectedRecruiterId, setSelectedRecruiterId] = createSignal<string | null>(null);
 
 // Pagination and search state
 const [pagination, setPagination] = createSignal({
