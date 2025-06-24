@@ -16,12 +16,13 @@ const MultiSelectField: React.FC<MultiSelectFieldProps> = ({ label, errorMsg, in
             <div className="flex flex-col gap-1 w-full">
                 <AuthLabel label={label} />
                 <MultiSelect
+                    className={twMerge("justify-between", inputStyle)}
                     {...rest}
                     pt={{
                         root: { className: "!text-black border-none focus:!shadow-none !w-full bg-field !font-manrope !rounded-xl" },
                         panel: { className: "!w-52 " },
                         wrapper: { style: { scrollbarWidth: "thin", minHeight: "auto" } },
-                        item: { className: "!text-black overflow-hidden text-ellipsis text-nowrap bg-field hover:bg-primary/20 hover:!text-white border-none" },
+                        item: { className: "group !text-black overflow-hidden text-ellipsis text-nowrap bg-field hover:bg-primary hover:!text-white border-none" },
                         emptyMessage: { className: "px-4" },
                         header: {
                             className: "bg-field"
@@ -32,10 +33,10 @@ const MultiSelectField: React.FC<MultiSelectFieldProps> = ({ label, errorMsg, in
                         checkbox: {
                             box: {
                                 className:
-                                    "!w-5 !h-5 rounded-md border-primary bg-transparent",
+                                      "!w-5 !h-5 rounded-md border-primary bg-transparent group-hover:!bg-field overflow-hidden p-1/2",
                             },
                             icon: {
-                                className: "w-full h-full bg-primary text-white",
+                                className: "w-full h-full bg-primary text-field",
                             },
                         }
                     }} />

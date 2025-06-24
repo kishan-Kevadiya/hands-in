@@ -29,7 +29,7 @@ const SelectField: React.FC<SelectFieldProps> = ({
             >
                 <AuthLabel label={label} />
                 <Dropdown
-                    className={twMerge("w-full", dropdownStyle)}
+                    className={twMerge("w-full justify-between", dropdownStyle)}
                     {...rest}
                     pt={{
                         root: {
@@ -53,7 +53,7 @@ const SelectField: React.FC<SelectFieldProps> = ({
                             className:
                                 "!text-black overflow-hidden text-ellipsis text-nowrap !bg-field hover:bg-primary hover:!text-primary border-none outline-none",
                         },
-                        filterIcon: { className: "w-8" },
+                        filterIcon: { className: "w-8 right-2" },
                         emptyMessage: { className: "px-4 py-4" },
                         header: {
                             className: "!bg-field",

@@ -1,5 +1,4 @@
 import { QueryClientProvider } from "@tanstack/react-query";
-import "primeicons/primeicons.css";
 import { PrimeReactProvider } from "primereact/api";
 import Tailwind from "primereact/passthrough/tailwind";
 import { StrictMode } from "react";
@@ -11,6 +10,7 @@ import MetaGenerator from "./components/MetaGenerator.tsx";
 import queryClient from "./helpers/query.config.ts";
 import "./index.css";
 
+import "primeicons/primeicons.css";
 createRoot(document.getElementById("root")!).render(
     <StrictMode>
         <PrimeReactProvider

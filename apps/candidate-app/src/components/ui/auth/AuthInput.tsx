@@ -18,7 +18,7 @@ const AuthInput: React.FC<InputFieldProps> = ({
     label, inputStyle, labelStyle, errorMsg, register, ...rest }) => {
     return (
         <div className="flex flex-col w-full">
-            <div className={`flex flex-col ${label ? "gap-2" : "gap-0"} w-full`}>
+            <div className={`flex flex-col dinesh ${label ? "gap-2" : "gap-0"} w-full`}>
                 <AuthLabel label={label} labelStyle={labelStyle} />
                 <InputText
                     {...register}

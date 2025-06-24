@@ -21,11 +21,12 @@ const SliderField: React.FC<SliderFieldProps> = ({ label, value, ...rest }) => {
                         root: {
                             className: "w-full"
                         },
+                     
                         range: {
-                            className: "bg-primary"
+                            className: "bg-primary h-1 rounded-full",
                         },
                         handle: {
-                            className: "border-primary hover:bg-primary hover:border-primary w-5 h-5"
+                            className: "border-primary hover:bg-primary hover:border-primary w-5 h-5 -mt-2 -ml-1",
                         }
                     }}
                     value={value}

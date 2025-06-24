@@ -801,7 +801,7 @@ const CreateJob: React.FC = () => {
                                         label: city,
                                         value: city,
                                     }))}
-                                    virtualScrollerOptions={{ itemSize: 38 }}
+                                    virtualScrollerOptions={{ itemSize: 48 }}
                                 />
                             )}
                         />
