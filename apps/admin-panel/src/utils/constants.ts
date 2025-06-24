@@ -106,3 +106,10 @@ export const ACTIONS = Object.freeze({
 
 // PHone types
 export const PhoneTypes = [ "personal","office", "whatsapp","other"];
+
+// ** Assets ** //
+export const ASSETS = Object.freeze({
+  RESUMES: "assets/resumes",
+});
+
+

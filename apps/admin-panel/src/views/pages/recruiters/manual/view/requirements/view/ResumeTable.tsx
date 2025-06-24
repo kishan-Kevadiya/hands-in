@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/solid-query";
 import { Subject } from "rxjs";
 import { debounceTime } from "rxjs/operators";
 import { PAGE_SIZE } from "@utils/index";
-import { QUERY_KEYS } from "@utils/constants";
+import { ASSETS, QUERY_KEYS } from "@utils/constants";
 import { manualRecruitersApis } from "@apis/manual_recruiters";
 import { FormFields } from "@components/form";
 import Loader from "@components/Loader";
@@ -44,7 +44,7 @@ const ResumeCard = (props: ResumeCardProps) => {
     return (
         <div class="resume-card-page card">
             <div class="d-flex align-center justify-between mb-2">
-                <a href={`${import.meta.env.VITE_API_BASE_URL}/resumes/${resume.resume}`}
+                <a href={`${import.meta.env.VITE_API_BASE_URL}/${ASSETS.RESUMES}/${resume.resume}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     class="view-full-resume"><strong>{resume.resume} ➚</strong></a>
