@@ -26,8 +26,8 @@ const AuthPassword: React.FC<PasswordFieldProps> = ({
                             className:
                             "!w-full !text-black !bg-field border-none focus:!shadow-none !rounded-xl",
                         },
-                        hideIcon: { className: "!cursor-pointer absolute right-2 top-1/2 -translate-y-1/2" },
-                        showIcon: { className: "!cursor-pointer absolute right-2 top-1/2 -translate-y-1/2" },
+                        hideIcon: { className: "!cursor-pointer" },
+                        showIcon: { className: "!cursor-pointer" },
                     }}
                     placeholder={placeholder}
                     toggleMask

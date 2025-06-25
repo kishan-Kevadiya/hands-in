@@ -39,7 +39,7 @@ const JobsDashboard: React.FC = () => {
                                 },
                             }}
                         >
-                            <InputIcon className="m-0 inline-flex">
+                            <InputIcon className="absolute right-2 top-1/2 -translate-y-1/2">
                                 <i className="pi pi-search"></i>{" "}
                             </InputIcon>
                             <InputText

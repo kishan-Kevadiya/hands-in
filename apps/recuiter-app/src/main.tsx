@@ -4,16 +4,18 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
 
-import "primeicons/primeicons.css";
 import { ToastContainer } from "react-toastify";
 import { twMerge } from "tailwind-merge";
-import "./index.css";
 
 import { QueryClientProvider } from "@tanstack/react-query";
 import queryClient from "./helpers/query.config.ts";
 
 import "quill/dist/quill.core.css";
 import "quill/dist/quill.snow.css";
+import "primeicons/primeicons.css";
+
+import "./index.css";
+
 
 createRoot(document.getElementById("root")!).render(
     <StrictMode>

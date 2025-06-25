@@ -154,7 +154,7 @@ const Messages: React.FC = () => {
                             placeholder="Search..."
                             className="w-full !h-[40px] !text-black !border-[#EEEEEE] focus:border-primary focus:!shadow-none !bg-[#F7F7F7] !rounded-xl font-manrope"
                         />
-                        <InputIcon className="!top-3 !flex">
+                        <InputIcon className="!right-3 !-translate-y-1/2">
                             <i className="pi pi-search"></i>{" "}
                         </InputIcon>
                     </IconField>

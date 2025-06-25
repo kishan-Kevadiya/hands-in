@@ -18,7 +18,7 @@ const JobCard: React.FC<{ data: JobTable }> = ({ data }) => {
             pt={{
                 root: {
                     className:
-                        "h-full rounded-2xl font-manrope bg-[#F6F6F6] hover:bg-field shadow-none cursor-pointer transition-all duration-300 ease-in-out",
+                        "h-full rounded-2xl font-manrope bg-[#F6F6F6] hover:bg-field shadow-none cursor-pointer transition-all duration-300 ease-in-out p-4",
                 },
                 body: {
                     className: "h-full",
