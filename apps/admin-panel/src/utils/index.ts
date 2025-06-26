@@ -75,3 +75,14 @@ export function timeAgo(dateString: string): string | null {
   }
   return "now";
 }
+
+
+export function getDateRange(
+  startDate?: string | Date,
+  days: number = 7 // Default to 7 days if not specified
+): [Date, Date] {
+  const end = startDate ? new Date(startDate) : new Date();
+  const start = new Date(end);
+  start.setDate(end.getDate() - days);
+  return [start, end];
+}

@@ -1,19 +1,38 @@
-import { createMemo, Show } from "solid-js";
+import { createMemo, createSignal, Show } from "solid-js";
 import { DefaultChart } from "solid-chartjs";
 import { useQuery } from "@tanstack/solid-query";
 import { companyApis } from "@apis/company";
 import { QUERY_KEYS } from "@utils/constants";
 import ChartRegister from "./ChartRegister";
+import { CustomDateRangePicker } from "../date-picker";
+import { getDateRange } from "@utils";
+import type { PickerValue } from "@rnwonder/solid-date-picker";
 
 type CompanyData = { count: number; date: string };
 
 const CompanyOnboarding = () => {
-  const startDate = "2025-05-01";
-  const endDate = new Date().toISOString();
+  const dateRange = getDateRange();
+
+  const [value, setValue] = createSignal<PickerValue>({
+    label: '',
+    value: {
+      start: dateRange[0].toISOString(),
+      end: dateRange[1].toISOString(),
+    },
+  });
+
+  // 2. Handle date change
+  const handleDateChange = (value: PickerValue) => {
+    if (value && value.value.end && value.value.start) {
+      console.log("Selected date range:", value);
+      setValue(value);
+    }
+  };
+
 
   const companyCountQuery = useQuery(() => ({
-    queryKey: [QUERY_KEYS.RECRUITER.COUNT, { startDate, endDate }],
-    queryFn: () => companyApis.getCountByDate({ startDate, endDate }),
+    queryKey: [QUERY_KEYS.RECRUITER.COUNT, value().value.start, value().value.end],
+    queryFn: () => companyApis.getCountByDate({ startDate: value().value.start || "", endDate: value().value.end || "" }),
   }));
 
   // Prepare Chart.js data and options
@@ -43,7 +62,7 @@ const CompanyOnboarding = () => {
           },
         ],
       };
-    } 
+    }
   });
 
   const chartOptions = createMemo(() => ({
@@ -81,7 +100,10 @@ const CompanyOnboarding = () => {
   return (
     <ChartRegister>
       <div class="company-onboarding-chart">
-        <h2 class="mb-1 text-primary">Recuiters Onboarding</h2>
+        <div class="d-flex align-center gap-2 justify-between mb-4">
+          <h2 class="mb-1 text-primary">Recuiters Onboarding</h2>
+          <CustomDateRangePicker.RangePicker onChange={handleDateChange} value={value} placeholder="Please select a range" id="date-range-filter" />
+        </div>
         <Show
           when={!companyCountQuery.isLoading && !companyCountQuery.error}
           fallback={

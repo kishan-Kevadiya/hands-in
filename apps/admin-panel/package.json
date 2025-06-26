@@ -3,10 +3,10 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-   "author": {
-        "name": "Headsin Inc.",
-        "email": "info@headsin.co",
-        "url": "https://headsin.co"
+  "author": {
+    "name": "Headsin Inc.",
+    "email": "info@headsin.co",
+    "url": "https://headsin.co"
   },
   "scripts": {
     "dev": "vite",
@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@modular-forms/solid": "^0.25.1",
+    "@rnwonder/solid-date-picker": "^1.4.7",
     "@solidjs/router": "^0.15.3",
     "@tanstack/solid-query": "^5.80.6",
     "@tanstack/solid-table": "^8.21.3",

@@ -1,19 +1,37 @@
-import { createMemo, Show } from "solid-js";
+import { createMemo, createSignal, Show } from "solid-js";
 import { DefaultChart } from "solid-chartjs";
 import { useQuery } from "@tanstack/solid-query";
 import { QUERY_KEYS } from "@utils/constants";
 import { usersApis } from "@apis/users";
 import ChartRegister from "./ChartRegister";
+import { CustomDateRangePicker } from "../date-picker";
+import type { PickerValue } from "@rnwonder/solid-date-picker";
+import { getDateRange } from "@utils";
 
 type UserData = { count: number; date: string };
 
 const UserOnboarding = () => {
-  const startDate = "2025-05-01";
-  const endDate = new Date().toISOString();
+  const dateRange = getDateRange();
+  
+    const [value, setValue] = createSignal<PickerValue>({
+      label: '',
+      value: {
+        start: dateRange[0].toISOString(),
+        end: dateRange[1].toISOString(),
+      },
+    });
+  
+    // 2. Handle date change
+    const handleDateChange = (value: PickerValue) => {
+      if (value && value.value.end && value.value.start) {
+        console.log("Selected date range:", value);
+        setValue(value);
+      }
+    };
 
   const userCountQuery = useQuery(() => ({
-    queryKey: [QUERY_KEYS.USER.COUNT, { startDate, endDate }],
-    queryFn: () => usersApis.getCountByDate({ startDate, endDate }),
+    queryKey: [QUERY_KEYS.USER.COUNT,value().value.start, value().value.end],
+    queryFn: () => usersApis.getCountByDate({ startDate: value().value.start || "", endDate: value().value.end || "" }),
   }));
 
   // Prepare Chart.js data and options
@@ -124,7 +142,10 @@ const UserOnboarding = () => {
   return (
     <ChartRegister>
       <div class="user-onboarding-chart">
-        <h2 class="mb-1 text-secondary">Candidate Onboarding</h2>
+        <div class="d-flex align-center gap-2 justify-between mb-4">
+                  <h2 class="mb-1 text-primary">Candidate Onboarding</h2>
+                  <CustomDateRangePicker.RangePicker onChange={handleDateChange} value={value} placeholder="Please select a range" id="date-range-filter" />
+                </div>
         <Show
           when={!userCountQuery.isLoading && !userCountQuery.error}
           fallback={

@@ -33,7 +33,7 @@ const AddRequirement = () => {
         initialValues: {
             title: "",
             address: "",
-            paymentStatus: "unpaid",
+            paymentStatus: "paid",
         },
     });
 

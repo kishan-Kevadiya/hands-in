@@ -1,0 +1,64 @@
+@import '@rnwonder/solid-date-picker/dist/style.css';
+@import "../../../styles/variables.css";
+
+.custom-date-range-picker-container {
+    .date-picker-container {
+        cursor: pointer;
+
+        .date-picker-input-area {
+            position: relative;
+
+            .date-picker-icon-container {
+                pointer-events: none;
+                position: absolute;
+                top: 50%;
+                right: 0.375rem;
+                transform: translateY(-50%);
+                background-color: var(--white);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                border-radius: 6px;
+
+                width: 1.5rem;
+                height: 1.5rem;
+
+
+                .date-picker-icon {
+                    width: 70%;
+                    height: 100%;
+                    color: rgba(0, 0, 0, 0.7);
+                }
+            }
+
+        }
+    }
+
+
+
+    /* .date-picker-day-number-area-selected {
+
+    } */
+
+
+
+
+}
+
+.date-picker-wrapper {
+    --date-picker-before-bg: rgba(144, 68, 212, 0.1);
+    --date-picker-hover-color: rgba(144, 68, 212, 0.2);
+
+    .rn-bg-primary {
+        background-color: var(--color-primary);
+    }
+
+    .rn-bg-primary-focus {
+        background-color: rgba(144, 68, 212, 0.1);
+    }
+
+    .rn-text-sm {
+        line-height: 2rem;
+    }
+}
