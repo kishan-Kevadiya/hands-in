@@ -368,8 +368,6 @@ const EditProfile: React.FC = () => {
         }
     }, [ProfileDetails.data && ProfileDetails.data.user]);
 
-    console.log("DINESOI")
-
     return (
         <div className="flex flex-col gap-4 min-w-full">
             <h1 className="text-2xl font-semibold tracking-[-1px] text-black">
