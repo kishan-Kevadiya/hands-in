@@ -40,10 +40,20 @@ const getCompanyById = async (companyId: string) => {
   return response.data;
 };
 
+const removeCompany = async (id: string) => {
+    const response = await api.delete("/company", {
+    params: {
+      id
+    },
+  });
+  return response.data;
+}
+
 export const companyApis = {
   getAll,
   getCountByDate,
   getCompanyJobs,
   getDaashboardDataCount,
   getCompanyById,
+  removeCompany
 };

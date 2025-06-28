@@ -29,12 +29,12 @@ const SelectField: React.FC<SelectFieldProps> = ({
             >
                 <AuthLabel label={label} />
                 <Dropdown
-                    className={twMerge("w-full justify-between", dropdownStyle)}
+                    className={twMerge("w-full justify-between ", dropdownStyle)}
                     {...rest}
                     pt={{
                         root: {
                             className: twMerge(
-                                "!text-black border-none focus:!shadow-none !w-full !bg-field !font-manrope !rounded-xl bg-white",
+                                "!text-black border-none justify-between focus:!shadow-none !w-full !bg-field !font-manrope !rounded-xl bg-white",
                                 rest.className
                             ),
                         },

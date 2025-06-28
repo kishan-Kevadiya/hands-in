@@ -45,8 +45,8 @@ export const getResumePdfLink = async () => {
         );
 
         const blob = await response.blob();
-        const file = new File([blob], "resume.txt", {
-            type: "text/plain",
+        const file = new File([blob], "resume.pdf", {
+            type: "application/pdf",
         });
 
         return URL.createObjectURL(file);

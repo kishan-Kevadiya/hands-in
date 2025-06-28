@@ -75,7 +75,7 @@ const PreassessmentModal: React.FC<PreassessmentModalProps> = ({
                             <br className="hidden md:block" />
                             <span className="inline-flex">
                                 <Star />
-                            &nbsp;Preassessment!
+                            {"\u00A0"} Preassessment!
                             </span>
                         </div>
                         <p className="text-[#424242] text-base text-center font-medium">

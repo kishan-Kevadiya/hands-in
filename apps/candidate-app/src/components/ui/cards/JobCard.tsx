@@ -231,10 +231,10 @@ const JobCard: React.FC<ApplicationCardProps> = ({
                                     ...jobData.job.softSkills,
                                 ]
                                     .slice(0, 4)
-                                    .map((skill: string) => (
+                                    .map((skill: string, index: number) => (
                                         <div
                                             className="bg-white rounded-lg px-3 py-1"
-                                            key={skill}
+                                            key={index}
                                         >
                                             {skill}
                                         </div>

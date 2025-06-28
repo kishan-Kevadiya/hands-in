@@ -474,11 +474,11 @@ const Jobs: React.FC = () => {
                                                                 },
                                                                 range: {
                                                                     className:
-                                                                        "bg-primary",
+                                                                        "bg-primary h-1",
                                                                 },
                                                                 handle: {
                                                                     className:
-                                                                        "border-primary hover:bg-primary hover:border-primary w-5 h-5",
+                                                                        "border-primary hover:bg-primary hover:border-primary w-5 -mt-2 h-5",
                                                                 },
                                                             }}
                                                             min={0}
@@ -520,11 +520,11 @@ const Jobs: React.FC = () => {
                                                                 },
                                                                 range: {
                                                                     className:
-                                                                        "bg-primary",
+                                                                        "bg-primary h-1",
                                                                 },
                                                                 handle: {
                                                                     className:
-                                                                        "border-primary hover:bg-primary hover:border-primary w-5 h-5",
+                                                                        "border-primary hover:bg-primary hover:border-primary w-5 -mt-2 h-5",
                                                                 },
                                                             }}
                                                             value={[

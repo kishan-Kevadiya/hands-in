@@ -439,6 +439,8 @@ const Resume: React.FC = () => {
         }
     }, [ProfileDetails.data, ResumeDetails.data]);
 
+    console.log("---------", resumeLink.data)
+
     return (
         <div className="flex flex-col w-full gap-6">
             <div className="flex md:flex-row flex-col md:justify-between justify-end md:items-center items-end md:gap-0 gap-4">
@@ -494,7 +496,7 @@ const Resume: React.FC = () => {
             {ResumeDetails.isLoading ? (
                 <Loader isVisible={ResumeDetails.isLoading} />
             ) : !ResumeDetails.data || customizeResume ? (
-                <form className="flex flex-col bg-[#FFF1F5] h-full p-2 rounded-2xl rounded-tr-2xl w-full gap-8 lg:p-4">
+                <form onSubmit={resumeCreateForm.handleSubmit(onSubmit)} className="flex flex-col bg-[#FFF1F5] h-full p-2 rounded-2xl rounded-tr-2xl w-full gap-8 lg:p-4">
                     <div className="flex flex-col gap-4">
                         <p className="text-2xl text-primary font-semibold">
                             Personalize Your Resume Layout
@@ -557,32 +559,34 @@ const Resume: React.FC = () => {
                                     htmlFor="image-upload"
                                     className="h-25 rounded-full w-25 cursor-pointer group relative"
                                 >
-                                    {imageWatcher ? (
-                                        <>
-                                            <img
-                                                src={
-                                                    imageWatcher instanceof File
-                                                        ? URL.createObjectURL(
-                                                              imageWatcher
-                                                          )
-                                                        : imageWatcher.url
-                                                }
-                                                alt="No Image"
-                                                className="bg-[#F7FAFF] h-full rounded-full w-full object-cover"
-                                            />
-                                            <div className="flex bg-black/50 justify-center rounded-full absolute duration-200 group-hover:opacity-80 inset-0 items-center opacity-0 transition-opacity">
-                                                <i className="h-5 text-white w-5 pi pi-pen-to-square" />
+                                    {(() => {
+                                        let imageSrc: string | undefined;
+                                        if (imageWatcher instanceof File) {
+                                            imageSrc = imageWatcher.size > 0 ? URL.createObjectURL(imageWatcher) : undefined;
+                                        } else if (imageWatcher && imageWatcher.url) {
+                                            imageSrc = imageWatcher.url || undefined;
+                                        }
+                                        return imageSrc ? (
+                                            <>
+                                                <img
+                                                    src={imageSrc}
+                                                    alt="No Image"
+                                                    className="bg-[#F7FAFF] h-full rounded-full w-full object-cover"
+                                                />
+                                                <div className="flex bg-black/50 justify-center rounded-full absolute duration-200 group-hover:opacity-80 inset-0 items-center opacity-0 transition-opacity">
+                                                    <i className="h-5 text-white w-5 pi pi-pen-to-square" />
+                                                </div>
+                                            </>
+                                        ) : (
+                                            <div className="flex bg-white border-2 border-dashed border-gray-300 h-full justify-center rounded-full w-full items-center">
+                                                <img
+                                                    alt="No Image"
+                                                    src={FileUpload}
+                                                    className="h-8 text-gray-400 w-8"
+                                                />
                                             </div>
-                                        </>
-                                    ) : (
-                                        <div className="flex bg-white border-2 border-dashed border-gray-300 h-full justify-center rounded-full w-full items-center">
-                                            <img
-                                                alt="No Image"
-                                                src={FileUpload}
-                                                className="h-8 text-gray-400 w-8"
-                                            />
-                                        </div>
-                                    )}
+                                        );
+                                    })()}
                                     <input
                                         id="image-upload"
                                         type="file"
@@ -1876,9 +1880,8 @@ const Resume: React.FC = () => {
                     <div className="flex justify-center items-center gap-3 lg:justify-start">
                         <AuthButton
                             customStyle="md:w-1/4 w-1/2"
-                            type="button"
+                            type="submit"
                             disabled={isLoading}
-                            onClick={resumeCreateForm.handleSubmit(onSubmit)}
                         >
                             {isLoading ? <ButtonLoader isVisible /> : "Save"}
                         </AuthButton>

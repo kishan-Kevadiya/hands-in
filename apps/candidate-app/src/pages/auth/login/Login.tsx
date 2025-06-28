@@ -199,10 +199,10 @@ const Login: React.FC = () => {
                     />
                 </div>
                 <p className="text-[#313957] text-center pt-2">
-                    New on our platform?&nbsp;
+                    New on our platform?
                     <Link
                         to={REGISTER}
-                        className="font-semibold text-primary outline-none"
+                        className="font-semibold text-primary outline-none ml-1"
                     >
                         Create an account
                     </Link>

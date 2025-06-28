@@ -39,7 +39,7 @@ const InstructionModal: React.FC<InstructionModalProps> = ({
             modal
             onHide={() => { }}
             onClick={(e) => { e.stopPropagation(); }}
-            className="!w-[90vw] lg:max-w-[50vw] lg:overflow-auto scrollbar-hidden md:!w-4/5 overflow-auto"
+            className="!w-[90vw] md:!w-4/5 !h-[90vh] max-h-[90vh] overflow-auto lg:max-w-[50vw] lg:!h-[90vh] lg:max-h-[90vh]"
             content={() => (
                 <div className="flex bg-white justify-center rounded-2xl w-full items-center overflow-hidden px-6 py-10 relative">
                     <div className="-right-18 top-1/5 absolute">
@@ -61,8 +61,7 @@ const InstructionModal: React.FC<InstructionModalProps> = ({
                             Welcome to Your HeadsIn
                             <br className="lg:hidden" />
                             <span className="inline-flex">
-                                <Star />
-                                &nbsp; Pre-Assessment!
+                                <Star /> {"\u00A0"} Pre-Assessment!
                             </span>
                         </div>
                         <p className="text-black text-base text-center font-medium">

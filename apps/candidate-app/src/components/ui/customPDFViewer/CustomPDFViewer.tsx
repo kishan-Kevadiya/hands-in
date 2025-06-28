@@ -97,6 +97,8 @@ const CustomPDFViewer: React.FC<CustomPDFViewerProps> = ({
         </>
     );
 
+    console.log("URL", url)
+
     return (
         <div className="w-full h-full">
             {url ? (

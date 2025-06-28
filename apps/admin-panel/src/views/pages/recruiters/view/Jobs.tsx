@@ -1,7 +1,7 @@
 import { companyApis } from "@apis/company";
 import { QUERY_KEYS } from "@utils/constants";
 import { useQuery } from "@tanstack/solid-query";
-import { createEffect, Match, Show, Switch } from "solid-js";
+import { Match, Show, Switch } from "solid-js";
 import { useParams } from "@solidjs/router";
 import { JobCard } from "@components/common";
 import { Index } from "solid-js";
@@ -18,10 +18,6 @@ const Jobs = () => {
     queryFn: () => companyApis.getCompanyJobs(id),
     enabled: !!id,
   }));
-
-  createEffect(() => {
-    console.log(id);
-  });
 
   return (
     <div class="jobs-page">

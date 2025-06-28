@@ -368,6 +368,8 @@ const EditProfile: React.FC = () => {
         }
     }, [ProfileDetails.data && ProfileDetails.data.user]);
 
+    console.log("DINESOI")
+
     return (
         <div className="flex flex-col gap-4 min-w-full">
             <h1 className="text-2xl font-semibold tracking-[-1px] text-black">
@@ -387,7 +389,7 @@ const EditProfile: React.FC = () => {
                     </h1>
                 </div>
 
-                <form className="flex flex-col gap-10 min-w-full">
+                <form onSubmit={profileSetupForm.handleSubmit(onSubmit)} className="flex flex-col gap-10 min-w-full">
                     <div className="flex lg:flex-row flex-col items-center justify-between lg:gap-0 gap-4 pb-4 w-full border border-[#F2F2F2] rounded-2xl p-4">
                         <div className=" flex items-center md:justify-start justify-between md:gap-10 gap-4 lg:w-3/5 w-full">
                             <div className="lg:w-40 lg:h-40 md:w-32 md:h-32 w-22 h-22 rounded-full bg-[#F7FAFF]">
@@ -400,10 +402,10 @@ const EditProfile: React.FC = () => {
                                             <img
                                                 src={
                                                     profileImageWatcher instanceof
-                                                    File
+                                                        File
                                                         ? URL.createObjectURL(
-                                                              profileImageWatcher
-                                                          )
+                                                            profileImageWatcher
+                                                        )
                                                         : profileImageWatcher.url
                                                 }
                                                 alt="No Image"
@@ -500,7 +502,7 @@ const EditProfile: React.FC = () => {
                                                     }
                                                     value={
                                                         test.obtainedMarks ===
-                                                        null
+                                                            null
                                                             ? null
                                                             : test.obtainedMarks
                                                     }
@@ -983,22 +985,22 @@ const EditProfile: React.FC = () => {
                                             </h3>
                                             {workExperienceFields?.length >
                                                 1 && (
-                                                <div
-                                                    onClick={() => {
-                                                        setDeleteModalVisible(
-                                                            true
-                                                        );
-                                                        setDeleteModalType(
-                                                            "experience"
-                                                        );
-                                                        setDeleteId(index);
-                                                    }}
-                                                    className="text-xs font-semibold flex items-center gap-2 py-2 px-2.5 border border-[#C1C1C1] rounded-lg cursor-pointer"
-                                                >
-                                                    <p>Delete</p>
-                                                    <DeleteIcon />
-                                                </div>
-                                            )}
+                                                    <div
+                                                        onClick={() => {
+                                                            setDeleteModalVisible(
+                                                                true
+                                                            );
+                                                            setDeleteModalType(
+                                                                "experience"
+                                                            );
+                                                            setDeleteId(index);
+                                                        }}
+                                                        className="text-xs font-semibold flex items-center gap-2 py-2 px-2.5 border border-[#C1C1C1] rounded-lg cursor-pointer"
+                                                    >
+                                                        <p>Delete</p>
+                                                        <DeleteIcon />
+                                                    </div>
+                                                )}
                                         </div>
 
                                         <div className="flex flex-col gap-8">
@@ -1234,18 +1236,21 @@ const EditProfile: React.FC = () => {
                                                     {...profileSetupForm.register(
                                                         "resume",
                                                         {
-                                                            onChange: (e) =>
+                                                            onChange: (e) => {
                                                                 profileSetupForm.setValue(
                                                                     "resume",
                                                                     e.target
                                                                         .files?.[0]
-                                                                ),
+                                                                )
+                                                            }
+                                                            ,
                                                         }
                                                     )}
                                                 />
 
                                                 <SecondaryButton
-                                                    onClick={() => {
+                                                    onClick={(event) => {
+                                                        event.preventDefault();
                                                         document
                                                             .getElementById(
                                                                 "pdf-upload"
@@ -1513,7 +1518,7 @@ const EditProfile: React.FC = () => {
                                                                 role?.id &&
                                                                 role?.title &&
                                                                 experienceYear >=
-                                                                    0
+                                                                0
                                                             ) {
                                                                 appendRole({
                                                                     roleId:
@@ -1560,7 +1565,7 @@ const EditProfile: React.FC = () => {
                                                                 </span>
                                                                 {Math.ceil(
                                                                     role.experience /
-                                                                        11
+                                                                    11
                                                                 )}{" "}
                                                                 year
                                                             </p>
@@ -1582,11 +1587,8 @@ const EditProfile: React.FC = () => {
                             <div className="flex items-center lg:justify-start justify-center">
                                 <AuthButton
                                     customStyle="md:w-1/4 w-1/2"
-                                    type="button"
+                                    type="submit"
                                     disabled={saveButtonLoader}
-                                    onClick={profileSetupForm.handleSubmit(
-                                        onSubmit
-                                    )}
                                 >
                                     {saveButtonLoader ? (
                                         <ButtonLoader
@@ -1645,12 +1647,10 @@ const EditProfile: React.FC = () => {
                 buttonLabel="Yes, Delete"
                 visible={deleteModalVisible}
                 setVisible={setDeleteModalVisible}
-                header={`Delete ${
-                    deleteModalType === "education" ? "Education" : "Experience"
-                }`}
-                message={`Are you certain you wish to proceed with delete this ${
-                    deleteModalType === "education" ? "education" : "experience"
-                }?`}
+                header={`Delete ${deleteModalType === "education" ? "Education" : "Experience"
+                    }`}
+                message={`Are you certain you wish to proceed with delete this ${deleteModalType === "education" ? "education" : "experience"
+                    }?`}
                 onClick={() => {
                     setDeleteModalVisible(false);
                     if (deleteId !== null) {

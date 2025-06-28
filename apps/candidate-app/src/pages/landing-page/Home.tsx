@@ -132,11 +132,11 @@ const Home = () => {
                                 <span className="text-[#3F1562]">
                                     Curated Talent
                                 </span>
-                                &nbsp; &
+                                {" "} &
                                 <span className="text-[#DF6789]">
-                                    &nbsp; Ideal Jobs
+                                    {" "} Ideal Jobs
                                 </span>
-                                &nbsp; Just For You
+                                {" "} Just For You
                             </h1>
                         </TextFade>
                     </div>
@@ -236,11 +236,11 @@ const Home = () => {
                 <div className="flex flex-col gap-4 px-3 lg:px-5">
                     <TextFade delay={0.5}>
                         <h2 className="font-extrabold text-[#343434] text-4xl text-center leading-tight lg:text-5xl lg:leading-[1.2] pt-10 rounded-lg ">
-                            Why HeadsIn Is&nbsp;
+                            Why HeadsIn Is {" "}
                             <span className="bg-gradient-to-b from-[#3F1562] to-(--color-primary) bg-clip-text text-transparent">
                                 Right
                             </span>
-                            &nbsp; For You?
+                            {" "} For You?
                         </h2>
                     </TextFade>
                     <TextFade delay={0.8}>
@@ -265,9 +265,9 @@ const Home = () => {
                                 viewport={{ once: true }}
                                 className="text-2xl md:text-4xl lg:text-5xl font-extrabold w-full md:w-4/5 text-[#343434]"
                             >
-                                Why Job&nbsp;
-                                <span className="text-[#DF6789]">Seekers</span>
-                                &nbsp; Love Us
+                                Why Job {" "}
+                                <span className=" text-[#DF6789]">Seekers</span>
+                                {" "} Love Us
                             </motion.h4>
 
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 overflow-hidden">

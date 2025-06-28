@@ -12,25 +12,25 @@ type UserData = { count: number; date: string };
 
 const UserOnboarding = () => {
   const dateRange = getDateRange();
-  
-    const [value, setValue] = createSignal<PickerValue>({
-      label: '',
-      value: {
-        start: dateRange[0].toISOString(),
-        end: dateRange[1].toISOString(),
-      },
-    });
-  
-    // 2. Handle date change
-    const handleDateChange = (value: PickerValue) => {
-      if (value && value.value.end && value.value.start) {
-        console.log("Selected date range:", value);
-        setValue(value);
-      }
-    };
+
+  const [value, setValue] = createSignal<PickerValue>({
+    label: '',
+    value: {
+      start: dateRange[0].toISOString(),
+      end: dateRange[1].toISOString(),
+    },
+  });
+
+  // 2. Handle date change
+  const handleDateChange = (value: PickerValue) => {
+    if (value && value.value.end && value.value.start) {
+      console.log("Selected date range:", value);
+      setValue(value);
+    }
+  };
 
   const userCountQuery = useQuery(() => ({
-    queryKey: [QUERY_KEYS.USER.COUNT,value().value.start, value().value.end],
+    queryKey: [QUERY_KEYS.USER.COUNT, value().value.start, value().value.end],
     queryFn: () => usersApis.getCountByDate({ startDate: value().value.start || "", endDate: value().value.end || "" }),
   }));
 
@@ -143,9 +143,9 @@ const UserOnboarding = () => {
     <ChartRegister>
       <div class="user-onboarding-chart">
         <div class="d-flex align-center gap-2 justify-between mb-4">
-                  <h2 class="mb-1 text-primary">Candidate Onboarding</h2>
-                  <CustomDateRangePicker.RangePicker onChange={handleDateChange} value={value} placeholder="Please select a range" id="date-range-filter" />
-                </div>
+          <h2 class="mb-1 text-secondary">Candidate Onboarding</h2>
+          <CustomDateRangePicker.RangePicker onChange={handleDateChange} value={value} placeholder="Please select a range" id="date-range-filter" />
+        </div>
         <Show
           when={!userCountQuery.isLoading && !userCountQuery.error}
           fallback={
