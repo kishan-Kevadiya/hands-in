@@ -60,7 +60,7 @@ const AddUser = () => {
           queryClient.invalidateQueries({
             queryKey: [QUERY_KEYS.ADMIN.USERS],
           });
-          return navigate("/admin/users", { replace: true });
+          return navigate(-1);
         }
       },
     }),

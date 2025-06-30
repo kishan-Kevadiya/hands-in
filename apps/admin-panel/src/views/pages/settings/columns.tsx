@@ -3,6 +3,9 @@ import { formatRupee, getDateTime } from "@utils";
 import { createColumnHelper } from "@tanstack/solid-table";
 import { DeleteIcon } from "@icons/index";
 import type { useModal } from "@src/helpers/contexts/Modal";
+import { useAuth } from "@helpers/contexts/Auth";
+import { ACTIONS } from "@utils/constants";
+import { Show } from "solid-js";
 
 export interface PricingPlan {
   id: number;
@@ -22,7 +25,9 @@ const columnHelper = createColumnHelper<PricingPlan>();
 export const packageColumns = (
   setSelectedRoleId: (id: number) => void,
   modalContext: ReturnType<typeof useModal>,
-) => [
+) => {
+  const { hasPermission } = useAuth();
+  return [
   columnHelper.accessor("name", {
     header: "Name",
     cell: (info) => {
@@ -30,7 +35,7 @@ export const packageColumns = (
 
       return (
         <div>
-          <A href={`/settings/pricing/${id}/view`} class="fw-700">
+          <A href={`/plans/${id}/view`} class="fw-700">
             {name}
           </A>
           <br />
@@ -69,7 +74,7 @@ export const packageColumns = (
     cell: (info) => {
       const row = info.row.original;
       return (
-        <>
+        <Show when={hasPermission(ACTIONS.packages.delete)}>
           <span
             class="delete-icon"
             onClick={() => {
@@ -79,11 +84,11 @@ export const packageColumns = (
           >
             <DeleteIcon />
           </span>
-        </>
+        </Show>
       );
     },
   }),
-];
+]};
 
 export interface Coupon {
   id: number;

@@ -5,10 +5,13 @@ import {
   Match,
   onCleanup,
   onMount,
+  Show,
   startTransition,
   Suspense,
   Switch,
 } from "solid-js";
+import { useAuth } from "@helpers/contexts/Auth";
+import { ACTIONS } from "@utils/constants";
 import { Subject } from "rxjs";
 import { debounceTime } from "rxjs/operators";
 import { FormFields } from "@components/form";
@@ -19,6 +22,7 @@ import { discountsApis } from "@apis/coupons";
 import { QUERY_KEYS } from "@utils/constants";
 
 const CouponPage = () => {
+  const { hasPermission } = useAuth();
   const [pagination, setPagination] = createSignal({ pageIndex: 1, limit: 10 });
   const [search, setSearch] = createSignal("");
 
@@ -78,10 +82,12 @@ const CouponPage = () => {
       <div class="d-flex justify-between items-center">
         <div class="d-flex align-center gap-1">
           <h3>Coupons</h3>
-          <FormFields.CircleButton
-            variant="primary"
-            href="/settings/coupons/add"
-          />
+          <Show when={hasPermission(ACTIONS.coupon.create)}>
+            <FormFields.CircleButton
+              variant="primary"
+              href="/settings/coupons/add"
+            />
+          </Show>
         </div>
         <FormFields.Input
           type="search"

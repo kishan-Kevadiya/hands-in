@@ -43,7 +43,7 @@ const AddRole = () => {
           queryClient.invalidateQueries({
             queryKey: [QUERY_KEYS.ADMIN.ROLES],
           });
-          return navigate("/admin/roles", { replace: true });
+          return navigate(-1);
         }
       },
     }),

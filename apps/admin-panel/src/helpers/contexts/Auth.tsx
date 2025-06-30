@@ -2,12 +2,14 @@ import { createContext, useContext } from "solid-js";
 import { useQuery } from "@tanstack/solid-query";
 import { adminUsersApis } from "@helpers/apis/admin_users";
 import { QUERY_KEYS } from "@utils/constants";
+import type { User } from "@src/types/user";
 
 // Define the context type for authentication
 type AuthContextType = {
   isPending: () => boolean; // isPending from useQuery is also a signal
   isError: () => boolean;
-  success: () => boolean | any;
+  user: () => User | null;
+  hasPermission: (permission: string) => boolean;
 };
 
 // Make sure the context type can be undefined if used outside the provider
@@ -20,10 +22,19 @@ export function AuthProvider(props: any) {
     retry: false,
   }));
 
+  const hasPermission = (permission: string) => {
+    const user = query.data;
+    if (!user || !user.permissions) {
+      return false;
+    }
+    return user.permissions[permission];
+  };
+
   const value = {
     isPending: () => query.isPending,
     isError: () => query.isError,
-    success: () => query.data,
+    user: () => query.data,
+    hasPermission,
   };
 
   return (

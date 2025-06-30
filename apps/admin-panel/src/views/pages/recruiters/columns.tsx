@@ -4,6 +4,9 @@ import { Badge } from "@components/badge";
 import { A } from "@solidjs/router";
 import { DeleteIcon } from "@icons/index";
 import { Subject } from "rxjs"; // Import Subject
+import { Show } from "solid-js";
+import { useAuth } from "@helpers/contexts/Auth";
+import { ACTIONS } from "@utils/constants";
 
 export type Company = {
   id: string;
@@ -28,7 +31,9 @@ const columnHelper = createColumnHelper<Company>();
 
 export const companyColumns = (
   deleteActionSubject: Subject<string>, // Accept deleteActionSubject
-) => [
+) => {
+  const { hasPermission } = useAuth();
+  return [
     columnHelper.accessor((row) => row, {
       id: "emailAndCompanyName",
       header: "Company Name",
@@ -97,20 +102,23 @@ export const companyColumns = (
       cell: (info) => {
         const { id } = info.row.original;
         return <>
-          <span
-            class="delete-icon"
-            onClick={() => {
-              deleteActionSubject.next(id);
-            }}
-            style={{ cursor: "pointer" }}
-          >
-            <DeleteIcon />
-          </span>
+          <Show when={hasPermission(ACTIONS.recruiter.delete)} >
+            <span
+              class="delete-icon"
+              onClick={() => {
+                deleteActionSubject.next(id);
+              }}
+              style={{ cursor: "pointer" }}
+            >
+              <DeleteIcon />
+            </span>
+          </Show>
         </>
       }
     }
     ),
-  ];
+  ]
+}
 
 
 export type Recruiter = {

@@ -1,17 +1,20 @@
 import { useMutation, useQuery } from "@tanstack/solid-query";
 import { packagesApis } from "@apis/packages";
 import {
+  createEffect,
   createMemo,
   createSignal,
   Match,
-  onCleanup,
-  onMount,
+  Show,
   startTransition,
   Suspense,
   Switch,
 } from "solid-js";
+import { useAuth } from "@helpers/contexts/Auth";
+import { ACTIONS } from "@utils/constants";
 import { Subject } from "rxjs";
 import { debounceTime } from "rxjs/operators";
+import { useObservable } from "../../../../hooks/useObservable";
 import { FormFields } from "@components/form";
 import Table from "@components/table";
 import Loader from "@components/Loader";
@@ -22,6 +25,7 @@ import { QUERY_KEYS } from "@utils/constants";
 import { queryClient } from "@helpers/axios";
 
 const PricingPage = () => {
+  const { hasPermission } = useAuth();
   const modalContext = useModal();
   const [selectedRoleId, setSelectedRoleId] = createSignal<number | null>(null);
 
@@ -30,23 +34,13 @@ const PricingPage = () => {
 
   // RxJS Subject for search input
   const searchSubject = new Subject<string>();
+  const debouncedSearch = useObservable(searchSubject.pipe(debounceTime(300)), "");
 
-  // RxJS subscription for debounced search
-  let searchSubscription: any;
-
-  onMount(() => {
-    searchSubscription = searchSubject
-      .pipe(debounceTime(300))
-      .subscribe((value) => {
-        startTransition(() => {
-          setSearch(value);
-          setPagination((p) => ({ ...p, pageIndex: 1 }));
-        });
-      });
-  });
-
-  onCleanup(() => {
-    searchSubscription?.unsubscribe();
+  createEffect(() => {
+    startTransition(() => {
+      setSearch(debouncedSearch());
+      setPagination((p) => ({ ...p, pageIndex: 1 }));
+    });
   });
 
   const pricingQuery = useQuery(() => ({
@@ -104,10 +98,12 @@ const PricingPage = () => {
         <div class="d-flex justify-between items-center ">
           <div class="d-flex align-center gap-1">
             <h3>Plans</h3>
-            <FormFields.CircleButton
-              variant="primary"
-              href="/settings/pricing/add-package"
-            />
+            <Show when={hasPermission(ACTIONS.packages.create)}>
+              <FormFields.CircleButton
+                variant="primary"
+                href="/plans/add-package"
+              />
+            </Show>
           </div>
           <FormFields.Input
             type="search"

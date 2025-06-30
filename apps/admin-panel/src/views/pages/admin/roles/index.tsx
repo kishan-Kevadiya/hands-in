@@ -3,8 +3,9 @@ import { createColumnHelper } from "@tanstack/solid-table";
 import Table from "@components/table";
 import { useQuery, useMutation } from "@tanstack/solid-query";
 import { adminRolesApi } from "@apis/admin_roles";
-import { QUERY_KEYS } from "@utils/constants";
-import { Match, Switch, createMemo, createSignal } from "solid-js";
+import { ACTIONS, QUERY_KEYS } from "@utils/constants";
+import { Match, Switch, createMemo, createSignal, Show } from "solid-js";
+import { useAuth } from "@helpers/contexts/Auth";
 import { getDateTime } from "@utils/index";
 import Loader from "@components/Loader";
 import DeleteIcon from "@icons/Delete";
@@ -24,6 +25,7 @@ type Role = {
 const columnHelper = createColumnHelper<Role>();
 
 export default function RolesTable() {
+  const { hasPermission } = useAuth();
   const modalContext = useModal();
   const [selectedRoleId, setSelectedRoleId] = createSignal<string | null>(null);
 
@@ -76,7 +78,7 @@ export default function RolesTable() {
       cell: (info) => {
         const row = info.row.original;
         return (
-          <>
+          <Show when={hasPermission(ACTIONS.adminRole.delete)}>
             <span
               class="delete-icon"
               onClick={() => {
@@ -87,7 +89,7 @@ export default function RolesTable() {
             >
               <DeleteIcon />
             </span>
-          </>
+          </Show>
         );
       },
     }),
@@ -120,7 +122,12 @@ export default function RolesTable() {
       <div class="card">
         <div class="d-flex align-center">
           <h3>Roles List</h3>
-          <FormFields.CircleButton variant="primary" href="/admin/roles/add" />
+          <Show when={hasPermission(ACTIONS.adminRole.create)}>
+            <FormFields.CircleButton
+              variant="primary"
+              href="/admin-roles/add"
+            />
+          </Show>
         </div>
 
         <Switch>

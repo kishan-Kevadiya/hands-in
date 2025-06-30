@@ -12,6 +12,12 @@ export interface RouteType {
   redirectTo?: string;
   exact?: boolean;
   sidebar?: boolean;
+  meta?: {
+    public?: boolean;
+    inSidebar?: boolean;
+    permissions?: string[];
+    roles?: string[];
+  };
 }
 
 

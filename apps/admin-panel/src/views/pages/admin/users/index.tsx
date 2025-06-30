@@ -1,15 +1,17 @@
 import { useQuery, useMutation } from "@tanstack/solid-query";
-import { QUERY_KEYS } from "@utils/constants";
+import { ACTIONS, QUERY_KEYS } from "@utils/constants";
 import {
   createMemo,
   createSignal,
   Match,
   onCleanup,
   onMount,
+  Show,
   startTransition,
   Suspense,
   Switch,
 } from "solid-js";
+import { useAuth } from "@helpers/contexts/Auth";
 import { adminUsersApis } from "@helpers/apis/admin_users";
 import { userColumns, type User } from "../columns";
 import { FormFields } from "@components/form";
@@ -23,6 +25,7 @@ import { debounceTime } from "rxjs/operators";
 import { PAGE_SIZE } from "@utils/index";
 
 const UserList = () => {
+  const { hasPermission } = useAuth();
   const modalContext = useModal();
   const [selectedRoleId, setSelectedRoleId] = createSignal<string | null>(null);
 
@@ -114,10 +117,12 @@ const UserList = () => {
         <div class="d-flex align-center justify-between">
           <div class="d-flex align-center gap-1">
             <h3>Admin Users</h3>
-            <FormFields.CircleButton
-              variant="primary"
-              href="/admin/users/add"
-            />
+            <Show when={hasPermission(ACTIONS.adminUser.create)}>
+              <FormFields.CircleButton
+                variant="primary"
+                href="/admin-users/add"
+              />
+            </Show>
           </div>
           <div class="d-flex align-center" style={{ gap: "12px" }}>
             <FormFields.Input
