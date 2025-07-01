@@ -11,124 +11,10 @@ import {
   SettingPlansIcon,
   UserRolesIcon,
   UserSettingIcon,
+  RevenueIcon
 } from "@icons/index";
 
-export const routes: RouteType[] = [
-  // Public routes
-  {
-    path: "/login",
-    component: lazy(() => import("../views/components/auth/Login")),
-    layout: "auth",
-    meta: {
-      public: true,
-    },
-  },
-  // Private routes
-  {
-    path: "/dashboard",
-    component: lazy(() => import("../views/pages/dashboard")),
-    layout: "sidebar",
-    label: "Dashboard",
-    icon: DashboardIcon,
-    meta: {
-      inSidebar: true,
-    },
-  },
-  {
-    path: "/recruiters",
-    component: lazy(() => import("../views/pages/recruiters/CompaniesList")),
-    layout: "sidebar",
-    label: "Recruiters",
-    icon: CompanyIcon,
-    meta: {
-      inSidebar: true,
-      permissions: [ACTIONS.recruiter.read],
-    },
-  },
-  {
-    path: "/candidates",
-    component: lazy(() => import("../views/pages/candidates")),
-    layout: "sidebar",
-    label: "Candidates",
-    icon: CandidateIcon,
-    meta: {
-      inSidebar: true,
-      permissions: [ACTIONS.user.read],
-    },
-  },
-  {
-    path: "/plans",
-    component: lazy(() => import("../views/pages/settings/plans")),
-    layout: "sidebar",
-    label: "Plans",
-    icon: SettingPlansIcon,
-    meta: {
-      inSidebar: true,
-      permissions: [ACTIONS.packages.read],
-    },
-  },
-  {
-    path: "/coupons",
-    component: lazy(() => import("../views/pages/settings/coupon")),
-    layout: "sidebar",
-    label: "Coupons",
-    icon: SettingCouponIcon,
-    meta: {
-      inSidebar: true,
-      permissions: [ACTIONS.coupon.read],
-    },
-  },
-  {
-    path: "divider-no-path",
-    layout: "sidebar",
-    group: "Manual",
-    meta: {
-      inSidebar: true,
-      permissions: [ACTIONS.manualRecruiter.read],
-    },
-  },
-  {
-    path: "/manual-recruiter",
-    component: lazy(() => import("../views/pages/recruiters/manual")),
-    layout: "sidebar",
-    label: "Recuiters",
-    icon: CompanyIcon,
-    meta: {
-      inSidebar: true,
-      permissions: [ACTIONS.manualRecruiter.read],
-    },
-  },
-  {
-    path: "divider-no-path",
-    layout: "sidebar",
-    group: "Admin",
-    meta: {
-      inSidebar: true,
-      permissions: [ACTIONS.adminUser.read, ACTIONS.adminRole.read],
-    },
-  },
-  {
-    path: "/admin-roles",
-    component: lazy(() => import("../views/pages/admin/roles")),
-    layout: "sidebar",
-    label: "Roles",
-    icon: UserRolesIcon,
-    meta: {
-      inSidebar: true,
-      permissions: [ACTIONS.adminRole.read],
-    },
-  },
-  {
-    path: "/admin-users",
-    component: lazy(() => import("../views/pages/admin/users")),
-    layout: "sidebar",
-    label: "Users",
-    icon: UserSettingIcon,
-    meta: {
-      inSidebar: true,
-      permissions: [ACTIONS.adminUser.read],
-    },
-  },
+const OtherRoutes: RouteType[] = [
   {
     path: "/admin-users/add",
     component: lazy(() => import("../views/pages/admin/users/AddUser")),
@@ -207,4 +93,133 @@ export const routes: RouteType[] = [
     layout: "main",
     label: "Add Resume",
   },
+  {
+    path: "/finances/add",
+    component: lazy(() => import("../views/pages/finances/AddFinance")),
+    layout: "main",
+    label: "Add Finances"
+  }
+]
+
+
+export const routes: RouteType[] = [
+  // Public routes
+  {
+    path: "/login",
+    component: lazy(() => import("../views/components/auth/Login")),
+    layout: "auth",
+    meta: {
+      public: true,
+    },
+  },
+  // Private routes
+  {
+    path: "/dashboard",
+    component: lazy(() => import("../views/pages/dashboard")),
+    label: "Dashboard",
+    icon: DashboardIcon,
+    meta: {
+      inSidebar: true,
+    },
+  },
+  {
+    path: "/finances",
+    component: lazy(() => import("../views/pages/finances")),
+    label: "Finance",
+    icon: RevenueIcon,
+    meta: {
+      inSidebar: true,
+      permissions: [ACTIONS.financialTransaction.read],
+    },
+  },
+  {
+    path: "/recruiters",
+    component: lazy(() => import("../views/pages/recruiters/CompaniesList")),
+    label: "Recruiters",
+    icon: CompanyIcon,
+    meta: {
+      inSidebar: true,
+      permissions: [ACTIONS.recruiter.read],
+    },
+  },
+  {
+    path: "/candidates",
+    component: lazy(() => import("../views/pages/candidates")),
+    label: "Candidates",
+    icon: CandidateIcon,
+    meta: {
+      inSidebar: true,
+      permissions: [ACTIONS.user.read],
+    },
+  },
+  {
+    path: "/plans",
+    component: lazy(() => import("../views/pages/settings/plans")),
+    label: "Plans",
+    icon: SettingPlansIcon,
+    meta: {
+      inSidebar: true,
+      permissions: [ACTIONS.packages.read],
+    },
+  },
+  {
+    path: "/coupons",
+    component: lazy(() => import("../views/pages/settings/coupon")),
+    label: "Coupons",
+    icon: SettingCouponIcon,
+    meta: {
+      inSidebar: true,
+      permissions: [ACTIONS.coupon.read],
+    },
+  },
+
+  {
+    path: "divider-no-path",
+    group: "Manual",
+    meta: {
+      inSidebar: true,
+      permissions: [ACTIONS.manualRecruiter.read],
+    },
+  },
+  {
+    path: "/manual-recruiter",
+    component: lazy(() => import("../views/pages/recruiters/manual")),
+    label: "Recuiters",
+    icon: CompanyIcon,
+    meta: {
+      inSidebar: true,
+      permissions: [ACTIONS.manualRecruiter.read],
+    },
+  },
+  {
+    path: "divider-no-path",
+    group: "Admin",
+    meta: {
+      inSidebar: true,
+      permissions: [ACTIONS.adminUser.read, ACTIONS.adminRole.read],
+    },
+  },
+  {
+    path: "/admin-roles",
+    component: lazy(() => import("../views/pages/admin/roles")),
+    label: "Roles",
+    icon: UserRolesIcon,
+    meta: {
+      inSidebar: true,
+      permissions: [ACTIONS.adminRole.read],
+    },
+  },
+  {
+    path: "/admin-users",
+    component: lazy(() => import("../views/pages/admin/users")),
+    label: "Users",
+    icon: UserSettingIcon,
+    meta: {
+      inSidebar: true,
+      permissions: [ACTIONS.adminUser.read],
+    },
+  },
+  ...OtherRoutes
 ];
+
+

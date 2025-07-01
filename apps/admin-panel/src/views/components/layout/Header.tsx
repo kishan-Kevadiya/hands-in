@@ -2,10 +2,15 @@ import AvatarDropdown from "./UserAvatar";
 
 import "./layout.css";
 
-const Header = () => {
+type HeaderProps = {
+  label: string
+}
+
+const Header = (props: HeaderProps) => {
+
   return (
     <header class="header">
-      <h3>Dashboard</h3>
+      <h4 class="fw-300">{props.label}</h4>
 
       <AvatarDropdown />
     </header>

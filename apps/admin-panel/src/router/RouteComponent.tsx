@@ -23,8 +23,8 @@ const RouteComponent = (props: RouterProvidedProps) => {
     );
 
   return (
-    <AuthGuard layout={route.layout || "main"}>
-      <LayoutComponent>
+    <AuthGuard>
+      <LayoutComponent route={{ label: route.label }}>
         <ErrorBoundary
           fallback={(error, reset) => (
             <div class="error-boundary-container">

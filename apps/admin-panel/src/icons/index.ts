@@ -28,6 +28,8 @@ import UserRoundedFillIcon from "./UserRoundedFill";
 import UserSettingIcon from "./UserSetting";   
 import CommentIcon from "./Comment";
 import SendIcon from "./Send";
+import RevenueIcon from "./Revenue";
+import UptrendArrowIcon from "./UptrendArrow";
 
 export {
   AddCircleIcon,
@@ -58,5 +60,7 @@ export {
   UserRoundedFillIcon,
   UserSettingIcon,
   CommentIcon,
-  SendIcon
+  SendIcon,
+  RevenueIcon,
+  UptrendArrowIcon
 };

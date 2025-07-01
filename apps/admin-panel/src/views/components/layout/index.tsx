@@ -1,10 +1,12 @@
 import type { JSXElement } from "solid-js";
 import Sidebar from "./Sidebar";
-
-import "./layout.css";
 import Header from "./Header";
 
-function Layout({ children }: { children: JSXElement }) {
+import "./layout.css";
+
+
+function Layout(props: { children: JSXElement; [key: string]: any }) {
+  const { children, ...rest } = props;
   return (
     <div class="main-layout-container">
       <aside>
@@ -12,7 +14,7 @@ function Layout({ children }: { children: JSXElement }) {
       </aside>
 
       <div class="main-layout">
-        <Header />
+        <Header {...rest.route} />
         <main class="main-content">
           <div class="container">{children}</div>
         </main>

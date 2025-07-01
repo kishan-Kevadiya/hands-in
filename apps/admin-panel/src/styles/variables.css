@@ -15,11 +15,13 @@
     --color-primary-dark: #4a34a3;
 
     --color-secondary: #de6988;
-    --color-info: #0969da;
+    --color-info: #FB5607;
 
-    --color-success: #1f8268;
-    --color-danger: #e2564a;
-    --color-warning: #f4a640;
+    --color-success: #008000;
+    --color-danger: #DD2D4A;
+    --color-warning: #FFC300;
+
+    --color-purple: #8338EC;
 
     --border-color: #ecedec;
     --border-color-dark: #b0b3bb;

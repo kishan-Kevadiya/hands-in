@@ -1,30 +1,58 @@
 @import "../../../styles/variables.css";
 
-.dashboard-page {
-    .dashboard-counts {
-        display: flex;
-        gap: 1rem;
-        align-items: center;
-        margin-bottom: 1rem;
 
-        .count-card {
-            padding: 1rem;
-            box-sizing: border-box;
-            border: 1px solid var(--border-color);
-            border-radius: 1rem;
+.dashboard-counts {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    align-items: center;
+    margin-bottom: 1rem;
 
-            h3 {
-                color: var(--text-secondary-color);
-                font-weight: 400;
+    .count-card {
+        padding: 1rem;
+        box-sizing: border-box;
+        border-radius: 1rem;
+        position: relative;
+
+        h3 {
+            color: var(--text-secondary-color);
+            font-weight: 500;
+        }
+
+        .count {
+            font-weight: 800;
+        }
+
+        .icon { 
+            width: 32px;
+            height: 32px;
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+
+            svg {
+                width: 100%;
+                height: 100%;
             }
+        }
 
-            .count {
-                font-weight: 600;
-                font-weight: 800;
+        border: 1px solid var(--border-color);
+
+        &[data-card="1"] {
+            .icon {
+                color: var(--color-primary);
+            }
+        }
+        &[data-card="2"] {
+
+            .icon {
+                color: var(--color-secondary);
             }
         }
     }
+}
 
+.dashboard-page {
     .charts {
         display: flex;
         gap: 1rem;
@@ -41,5 +69,71 @@
         border-radius: 1rem;
 
         border: 1px solid var(--border-color);
+    }
+}
+
+
+.revenue-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1rem;
+
+    margin-bottom: 1rem;
+
+    .revenue-card-item {
+        padding: 1.5rem 1rem;
+        border-radius: 1rem;
+        border: 1px solid var(--border-color);
+        box-sizing: border-box;
+
+        position: relative;
+
+        .revenue-card-value {
+            font-weight: 800;
+        }
+
+        color: var(--white);
+
+        &[data-type="revenue"],
+        &[data-type="expense"] {
+            .icon {
+                position: absolute;
+                top: 1.5rem;
+                right: 1rem;
+
+                height: 24px;
+                width: 24px;
+
+                svg {
+                    height: 100%;
+                    width: 100%;
+                }
+            }
+        }
+
+        &[data-type="revenue"] {
+            background: linear-gradient(to right, #006400, #008000);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        &[data-type="expense"] {
+            background: linear-gradient(to right, #b1223a, #DD2D4A);
+            transition: transform 0.2s, box-shadow 0.2s;
+            .icon {
+                transform: rotate(70deg)
+            }
+        }
+
+        &[data-type="profit"] {
+            background: linear-gradient(to right, #5f0fd1, #8338EC);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        &[data-type="ratio"] {
+            background: linear-gradient(to right, #1e1b2a, rgba(0, 0, 0, 0.7));
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+
     }
 }

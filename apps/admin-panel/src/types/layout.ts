@@ -5,8 +5,7 @@ export interface RouteType {
   label?: string;
   icon?: Component<any>;
   component?: Component<any>;
-  layout?: "auth" | "main" | "sidebar";
-  permission?: string[];
+  layout?: "auth" | "main";
   group?: string;
   children?: RouteType[];
   redirectTo?: string;

@@ -46,9 +46,13 @@ export const QUERY_KEYS = Object.freeze({
     REQ_CREATE: "manual-requirement-create",
     REQ_RESUME_READ: "manual-requirement-resume-read",
     REQ_RESUME_CREATE: "manual-requirement-resume-create",
-
     REQ_RESUME_COMMENT_READ: "manual-requirement-resume-comment-read",
     REQ_RESUME_COMMENT_CREATE: "manual-requirement-resume-comment-create",
+  },
+  FINANCES: {
+    READ: "finances-read",
+    CREATE: "finances-create",
+    ANALYTICS: "finances-analytics"
   }
 });
 
@@ -65,6 +69,12 @@ export const ACTIONS = Object.freeze({
     create: "manualRecruiter.create",
     update: "manualRecruiter.update",
     delete: "manualRecruiter.delete",
+  },
+  financialTransaction: {
+    read: "financialTransaction.read",
+    create: "financialTransaction.create",
+    update: "financialTransaction.update",
+    delete: "financialTransaction.delete",
   },
   userJob: {
     read: "user:job.read",
@@ -104,8 +114,11 @@ export const ACTIONS = Object.freeze({
   },
 });
 
+
 // PHone types
-export const PhoneTypes = [ "personal","office", "whatsapp","other"];
+export const PhoneTypes = ["personal", "office", "whatsapp", "other"];
+
+export const TransactionType = ["expense", "revenue"];
 
 // ** Assets ** //
 export const ASSETS = Object.freeze({
