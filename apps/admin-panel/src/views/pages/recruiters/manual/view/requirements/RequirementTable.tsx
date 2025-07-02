@@ -24,61 +24,52 @@ type Requirement = {
 
 const recruiterColumnHelper = createColumnHelper<Requirement>();
 
-const columns = [
-    recruiterColumnHelper.accessor("title", {
-        header: "Title",
-        cell: info => {
-            return <A href={`/manual-recruiter/requirement/${info.row.original.id}/view`} class="fw-800">{info.getValue()}</A>
-        }
-    }),
-    recruiterColumnHelper.accessor("adresss", {
-        header: "Address",
-    }),
-    recruiterColumnHelper.accessor("paymentStatus", {
-        header: "Payment Status",
-        cell: info => {
-            const value = info.getValue();
-            const [status, setStatus] = createSignal(value);
-
-            const updateRecruiterMutatin = useMutation(
-                () => ({
-                    mutationFn: (status: string) => manualRecruitersApis.updateRequirement(info.row.original.id, status),
-                }),
-            );
-
-            const handleChange = async (e: Event) => {
-                const newValue = (e.target as HTMLSelectElement).value;
-                setStatus(newValue);
-                await updateRecruiterMutatin.mutateAsync(newValue)
-            };
-
-            return (
-                <div class="d-flex align-center gap-1">
-                    <FormFields.Select id="update-status" value={status()} options={[
-                        { value: "paid", label: "Paid" },
-                        { value: "unpaid", label: "Unpaid" },
-                    ]} onChange={handleChange} />
-                    {status() === "paid" ? (
-                        <Badge.Success>Paid</Badge.Success>
-                    ) : (
-                        <Badge.Secondary>UnPaid</Badge.Secondary>
-                    )}
-                </div>
-            );
-        }
-    }),
-    recruiterColumnHelper.accessor("createdAt", {
-        header: "Created At",
-        cell: info => getDateTime(info.getValue()),
-    }),
-];
-
-
 type RequirementTableProps = {
     id: number
 }
 
 const RequirementTable = (props: RequirementTableProps) => {
+    const columns = [
+        recruiterColumnHelper.accessor("title", {
+            header: "Title",
+            cell: info => {
+                return <A href={`/manual-recruiter/requirement/${info.row.original.id}/view`} class="fw-800">{info.getValue()}</A>
+            }
+        }),
+        recruiterColumnHelper.accessor("adresss", {
+            header: "Address",
+        }),
+        recruiterColumnHelper.accessor("paymentStatus", {
+            header: "Payment Status",
+            cell: info => {
+                const value = info.getValue();
+
+                const updateRecruiterMutatin = useMutation(() => ({
+                        mutationFn: (status: string) => manualRecruitersApis.updateRequirement(info.row.original.id, status),
+                    }));
+
+                const handleChange = async (e: Event) => {
+                    const newValue = (e.target as HTMLSelectElement).value;
+                    await updateRecruiterMutatin.mutateAsync(newValue)
+                };
+
+                return (
+                    <div class="d-flex align-center gap-1">
+                        <FormFields.Select id="update-status" name="" value={value} options={[
+                            { value: "paid", label: "Paid" },
+                            { value: "unpaid", label: "Unpaid" },
+                        ]} onChange={handleChange} />
+                       
+                    </div>
+                );
+            }
+        }),
+        recruiterColumnHelper.accessor("createdAt", {
+            header: "Created At",
+            cell: info => getDateTime(info.getValue()),
+        }),
+    ];
+
     const { id } = useParams();
     const modalContext = useModal();
     const [pagination, setPagination] = createSignal({ pageIndex: 1, limit: PAGE_SIZE });

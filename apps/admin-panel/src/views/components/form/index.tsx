@@ -10,7 +10,8 @@ import {
   createSignal,
   Match,
   batch,
-  Switch
+  Switch,
+  Index
 } from "solid-js";
 
 import { A, useNavigate } from "@solidjs/router";
@@ -160,6 +161,9 @@ function Select(props: SelectProps) {
     "value",
     "onChange"
   ]);
+
+
+  console.log(local.value)
   return (
     <div class={containerBase}>
       {local.label && <label for={local.id} class={labelBase}>{local.label}</label>}
@@ -170,9 +174,9 @@ function Select(props: SelectProps) {
         onChange={local.onChange}
         {...others}
       >
-        <For each={local.options}>
-          {(opt) => <option value={opt.value}>{opt.label}</option>}
-        </For>
+        <Index each={local.options}>
+          {(opt) => <option value={opt().value} selected={local.value === opt().value}>{opt().label}</option>}
+        </Index>
       </select>
       {local.error && <ErrorMessage error={local.error} />}
     </div>

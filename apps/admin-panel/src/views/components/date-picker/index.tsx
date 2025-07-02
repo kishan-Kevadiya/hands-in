@@ -72,7 +72,7 @@ function SingleDatePicker(props: PickerProps) {
                     {props.label}
                 </label>
             )}
-            <div class="date-picker-container d-flex align-center">
+            <div class="date-picker-container">
                 <DatePicker
                     value={props.value}
                     setValue={(value) => {
@@ -87,6 +87,7 @@ function SingleDatePicker(props: PickerProps) {
                             <FormFields.Input
                                 class={`${inputBase} ${props.class ?? ""}${props.error ? " error" : ""}`}
                                 type="text"
+                                id={props.id}
                                 value={value().label}
                                 readOnly
                                 onClick={showDate}
@@ -97,7 +98,6 @@ function SingleDatePicker(props: PickerProps) {
                             </span>
                         </>
                     )}
-                    type="single"
                 />
             </div>
             {props.error && <ErrorMessage error={props.error} />}

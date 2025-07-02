@@ -6,6 +6,8 @@ import { manualRecruitersApis } from "@apis/manual_recruiters";
 import { createMemo } from "solid-js";
 import { Match, Switch } from "solid-js";
 import { FormFields } from "@components/form";
+import { Badge } from "@components/badge";
+
 import ResumeTable from "./ResumeTable";
 
 import "../../../styles.css";
@@ -23,16 +25,15 @@ const getDateTime = (dateStr: string) => {
     const date = new Date(dateStr);
     return date.toLocaleString();
 };
-
 const RequirementDetails: Component<{ requirement: Requirement }> = (props) => {
     const { requirement } = props;
     return (
-        <div class="requirement-detail-card">
-            <div class="d-flex gap-2 align-center mb-3 card">
+        <section class="requirement-detail-card" aria-labelledby="requirement-details-heading">
+            <header class="d-flex gap-2 align-center mb-3 card">
                 <FormFields.BackButton />
-                <h3>Requirement Details</h3>
-            </div>
-            <div
+                <h3 id="requirement-details-heading">Requirement Details</h3>
+            </header>
+            <dl
                 style={{
                     display: "grid",
                     "grid-template-columns": "1fr 2fr",
@@ -41,25 +42,24 @@ const RequirementDetails: Component<{ requirement: Requirement }> = (props) => {
                 }}
                 class="card"
             >
-                <div class="fw-600">ID</div>
-                <div>{requirement.id}</div>
+                <dt class="fw-600">Title</dt>
+                <dd>{requirement.title}</dd>
 
-                <div class="fw-600">Title</div>
-                <div>{requirement.title}</div>
+                <dt class="fw-600">Address</dt>
+                <dd>{requirement.address}</dd>
 
-                <div class="fw-600">Address</div>
-                <div>{requirement.address}</div>
+                <dt class="fw-600">Payment Status</dt>
+                <dd>
+                    {requirement.paymentStatus === "paid" ? <Badge.Success>Paid</Badge.Success> : <Badge.Danger> Unpaid</Badge.Danger>}
+                </dd>
 
-                <div class="fw-600">Payment Status</div>
-                <div>{requirement.paymentStatus}</div>
+                <dt class="fw-600">Created At</dt>
+                <dd>{getDateTime(requirement.createdAt)}</dd>
 
-                <div class="fw-600">Created At</div>
-                <div>{getDateTime(requirement.createdAt)}</div>
-
-                <div class="fw-600">Updated At</div>
-                <div>{getDateTime(requirement.updatedAt)}</div>
-            </div>
-        </div>
+                <dt class="fw-600">Updated At</dt>
+                <dd>{getDateTime(requirement.updatedAt)}</dd>
+            </dl>
+        </section>
     );
 };
 

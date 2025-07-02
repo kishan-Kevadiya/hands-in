@@ -2,6 +2,12 @@
 @import "../../../styles/variables.css";
 
 .custom-date-range-picker-container {
+    label {
+        font-size: 0.75rem;
+        font-weight: 800;
+        display: inline-block;
+        margin-bottom: 0.5rem;
+    }
     .date-picker-container {
         cursor: pointer;
 

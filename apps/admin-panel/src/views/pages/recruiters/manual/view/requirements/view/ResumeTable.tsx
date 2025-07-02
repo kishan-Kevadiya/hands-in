@@ -10,9 +10,12 @@ import { manualRecruitersApis } from "@apis/manual_recruiters";
 import { FormFields } from "@components/form";
 import Loader from "@components/Loader";
 import { CommentIcon, SendIcon } from "@icons/index";
-import { createForm, required, reset, type SubmitHandler } from "@modular-forms/solid";
+import { createForm, required, reset, setValue, type SubmitHandler } from "@modular-forms/solid";
 import { useMutation } from "@tanstack/solid-query";
 import { queryClient } from "@helpers/axios";
+import { CustomDateRangePicker } from "@components/date-picker";
+import type { PickerValue } from "@rnwonder/solid-date-picker";
+
 
 import "../../../styles.css";
 
@@ -34,10 +37,16 @@ type ResumeCardProps = {
     handleSubmit: (values: AddCommentForm, event: SubmitEvent) => void;
     Form: any;
     Field: any;
+    form: any
 };
 
 const ResumeCard = (props: ResumeCardProps) => {
-    const { resume, handleSubmit, Form, Field } = props;
+    const { resume, handleSubmit, Form, Field, form } = props;
+
+    const [value, setDate] = createSignal<PickerValue>({
+        label: '',
+        value: {},
+    });
 
     const [showComments, setShowComments] = createSignal<boolean>(false);
 
@@ -64,7 +73,15 @@ const ResumeCard = (props: ResumeCardProps) => {
                     handleSubmit({
                         ...values,
                         resumeId: resume.id
-                    }, event)
+                    }, event);
+                    setDate({
+                        label: '',
+                        value: {},
+                    });
+
+                    queryClient.invalidateQueries({
+                        queryKey: [QUERY_KEYS.MANUAL_RECRUITER.REQ_RESUME_COMMENT_READ, resume.id],
+                    });
                 }} class="comment-form">
                     <Field name="comment" validate={[required("Comment is required")]}>
                         {(field: { value: string; error?: string }, props: any) => (
@@ -78,18 +95,24 @@ const ResumeCard = (props: ResumeCardProps) => {
                         )}
                     </Field>
                     <div class="d-flex align-center gap-2 date-container">
-                        <Field name="commentDate" validate={[required("Comment date is required")]}>
-                            {(field: { value: string; error?: string }, props: any) => (
-                                <FormFields.Input
-                                    {...props}
-                                    id="comment-date"
-                                    type="date"
-                                    class="mb-0"
-                                    value={field.value}
-                                    error={field.error}
-                                />
-                            )}
-                        </Field>
+                        <div style={{ flex: 1 }}>
+                            <Field name="commentDate" validate={[required("Comment date is required")]}>
+                                {(field: { value: string; error?: string }, props: any) => (
+                                    <CustomDateRangePicker.SingleDatePicker
+                                        {...props}
+                                        id="comment-date"
+
+                                        placeholder="Comment Date"
+                                        value={value}
+                                        onChange={e => {
+                                            setValue(form, "commentDate", e.value.selected || "");
+                                            setDate(e)
+                                        }}
+                                        error={field.error}
+                                    />
+                                )}
+                            </Field>
+                        </div>
                         <FormFields.Button
                             variant="secondary"
                             type="submit"
@@ -122,8 +145,8 @@ const ResumeCard = (props: ResumeCardProps) => {
                         </Match>
                     </Switch>
                 </div>
-            </div> 
-           
+            </div>
+
         </div>
     );
 };
@@ -201,8 +224,6 @@ const ResumeTable = (props: ResumeTableProps) => {
         reset(form);
     };
 
-
-
     return (
         <div class="resume-list-page">
             <div class="d-flex justify-between items-center card">
@@ -231,6 +252,7 @@ const ResumeTable = (props: ResumeTableProps) => {
                                     Field={Field}
                                     Form={Form}
                                     handleSubmit={handleSubmit}
+                                    form={form}
                                 />
                             )}
                         </For>

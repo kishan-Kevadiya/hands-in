@@ -15,11 +15,6 @@ type CommentsViewProps = {
     resumeId: number;
 };
 
-const formatDate = (dateStr: string) => {
-    const date = new Date(dateStr);
-    return date.toLocaleString();
-};
-
 const CommentsView: Component<CommentsViewProps> = (props) => {
     const { resumeId } = props;
 
@@ -27,7 +22,6 @@ const CommentsView: Component<CommentsViewProps> = (props) => {
         queryKey: [QUERY_KEYS.MANUAL_RECRUITER.REQ_RESUME_COMMENT_READ, resumeId],
         queryFn: () => manualRecruitersApis.getCommentsByResumeId(resumeId),
         enabled: !!resumeId,
-        refetchOnWindowFocus: false,
     }));
 
     return (
@@ -47,7 +41,7 @@ const CommentsView: Component<CommentsViewProps> = (props) => {
                         {(item: Comment) => (
                             <div class='comment-container'>
                                 <p class='comment'>{item.comment}</p>
-                                <small class='comment-date'>{formatDate(item.commentDate)}</small>
+                                <small class='comment-date'>{new Date(item.commentDate).toDateString()}</small>
                             </div>
                         )}
                     </For>

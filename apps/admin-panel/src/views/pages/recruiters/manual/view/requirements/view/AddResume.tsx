@@ -10,6 +10,9 @@ import {
     type SubmitHandler,
 } from "@modular-forms/solid";
 import { QUERY_KEYS } from "@utils/constants";
+import { CustomDateRangePicker } from "@components/date-picker";
+import type { PickerValue } from "@rnwonder/solid-date-picker";
+import { createSignal } from "solid-js";
 
 // Types
 export type AddResumeForm = {
@@ -21,6 +24,11 @@ export type AddResumeForm = {
 const AddResume = () => {
     const { id } = useParams(); // requirementId
     const navigate = useNavigate();
+    
+      const [value, setDate] = createSignal<PickerValue>({
+        label: '',
+        value: {},
+      });
 
     const [form, { Form, Field }] = createForm<AddResumeForm>({
         initialValues: {
@@ -48,8 +56,6 @@ const AddResume = () => {
         formData.append("comment", values.comment);
         formData.append("commentDate", values.commentDate);
         formData.append("requirementId", id); // Backend should expect this
-
-        console.log(JSON.stringify(formData), values)
 
         await addResumeMutation.mutateAsync(formData);
     };
@@ -92,12 +98,16 @@ const AddResume = () => {
 
                     <Field name="commentDate" validate={[required("Comment date is required")]}>
                         {(field, props) => (
-                            <FormFields.Input
+                            <CustomDateRangePicker.SingleDatePicker
                                 {...props}
                                 id="comment-date"
+                                placeholder="Comment Date"
                                 label="Comment Date"
-                                type="date"
-                                value={field.value}
+                                value={value}
+                                onChange={e => {
+                                    setValue(form, "commentDate", e.value.selected || "");
+                                    setDate(e)
+                                }}
                                 error={field.error}
                             />
                         )}
