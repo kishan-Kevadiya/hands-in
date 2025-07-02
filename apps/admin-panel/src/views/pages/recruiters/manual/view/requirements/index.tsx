@@ -55,7 +55,7 @@ const ManualRecruiterView = () => {
     const params = useParams();
     const companyId = (): number => +params.id;
 
-    const companyQuery = useQuery(() => ({
+    const manualRecruiterQuery = useQuery(() => ({
         queryKey: [QUERY_KEYS.MANUAL_RECRUITER.ONE],
         queryFn: () => manualRecruitersApis.getById(companyId()),
         enabled: !!companyId(),
@@ -68,14 +68,14 @@ const ManualRecruiterView = () => {
                 <FormFields.BackButton />
                 <h3>Manual Recruiter Details</h3>
             </div>
-            <Show when={companyQuery.isLoading}>
+            <Show when={manualRecruiterQuery.isLoading}>
                 <div>Loading...</div>
             </Show>
-            <Show when={companyQuery.error}>
+            <Show when={manualRecruiterQuery.error}>
                 <div>Error fetching recruiter details.</div>
             </Show>
-            <Show when={companyQuery.data}>
-                <ManualRecruiterDetails data={companyQuery.data} />
+            <Show when={manualRecruiterQuery.data}>
+                <ManualRecruiterDetails data={manualRecruiterQuery.data} />
             </Show>
 
             <RequirementTable id={companyId()} />

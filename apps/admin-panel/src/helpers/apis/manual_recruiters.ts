@@ -28,6 +28,13 @@ const createRequirement = async (data: any) => {
     return response.data;
 };
 
+const updateRequirement = async (id: number, status: string) => {
+    const response = await api.patch("/manual-recruiters/requirements?id=" + id, {
+        paymentStatus: status
+    });
+    return response.data;
+};
+
 const getRequirementById = async (requirementId: number) => {
     const response = await api.get(`/manual-recruiters/${requirementId}/requirement`);
     return response.data;
@@ -70,6 +77,7 @@ export const manualRecruitersApis = {
     create,
     getRequirementsByRecruiterId,
     createRequirement,
+    updateRequirement,
     getRequirementById,
     addResumeToRequirement,
     getResumesWithCommentsByRequirementId,

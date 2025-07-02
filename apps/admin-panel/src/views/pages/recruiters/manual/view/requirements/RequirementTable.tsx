@@ -1,5 +1,5 @@
 import { createSignal, createMemo, onMount, onCleanup, startTransition, Suspense, Match, Switch } from "solid-js";
-import { useQuery } from "@tanstack/solid-query";
+import { useMutation, useQuery } from "@tanstack/solid-query";
 import { Subject } from "rxjs";
 import { debounceTime } from "rxjs/operators";
 import Table from "@components/table";
@@ -36,14 +36,35 @@ const columns = [
     }),
     recruiterColumnHelper.accessor("paymentStatus", {
         header: "Payment Status",
-        cell: info =>  {
+        cell: info => {
             const value = info.getValue();
+            const [status, setStatus] = createSignal(value);
 
-            if (value === "paid") {
-                return <Badge.Success> Paid </Badge.Success>
-            }
+            const updateRecruiterMutatin = useMutation(
+                () => ({
+                    mutationFn: (status: string) => manualRecruitersApis.updateRequirement(info.row.original.id, status),
+                }),
+            );
 
-            return <Badge.Secondary> UnPaid </Badge.Secondary>
+            const handleChange = async (e: Event) => {
+                const newValue = (e.target as HTMLSelectElement).value;
+                setStatus(newValue);
+                await updateRecruiterMutatin.mutateAsync(newValue)
+            };
+
+            return (
+                <div class="d-flex align-center gap-1">
+                    <FormFields.Select id="update-status" value={status()} options={[
+                        { value: "paid", label: "Paid" },
+                        { value: "unpaid", label: "Unpaid" },
+                    ]} onChange={handleChange} />
+                    {status() === "paid" ? (
+                        <Badge.Success>Paid</Badge.Success>
+                    ) : (
+                        <Badge.Secondary>UnPaid</Badge.Secondary>
+                    )}
+                </div>
+            );
         }
     }),
     recruiterColumnHelper.accessor("createdAt", {

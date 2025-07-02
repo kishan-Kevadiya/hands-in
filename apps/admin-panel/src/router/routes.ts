@@ -99,11 +99,17 @@ const OtherRoutes: RouteType[] = [
     layout: "main",
     label: "Add Finances"
   }
-]
-
+];
 
 export const routes: RouteType[] = [
-  // Public routes
+  {
+    path: "/",
+    component: lazy(() => import("../views/components/auth/Login")),
+    layout: "auth",
+    meta: {
+      public: true,
+    },
+  },
   {
     path: "/login",
     component: lazy(() => import("../views/components/auth/Login")),
@@ -112,7 +118,6 @@ export const routes: RouteType[] = [
       public: true,
     },
   },
-  // Private routes
   {
     path: "/dashboard",
     component: lazy(() => import("../views/pages/dashboard")),
@@ -221,5 +226,3 @@ export const routes: RouteType[] = [
   },
   ...OtherRoutes
 ];
-
-
