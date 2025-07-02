@@ -12,7 +12,6 @@ import { QUERY_KEYS } from "@utils/constants";
 import { manualRecruitersApis } from "@apis/manual_recruiters";
 import { createColumnHelper } from "@tanstack/solid-table";
 import { A, useParams } from "@solidjs/router";
-import { Badge } from "@components/badge";
 
 type Requirement = {
     id: number;
