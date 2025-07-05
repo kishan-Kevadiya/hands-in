@@ -39,7 +39,7 @@ import Resume from "@/pages/main/Resume/Resume";
 import Support from "@/pages/main/support/Support";
 import PrivacyPolicy from "@/pages/privacy-policy/PrivacyPolicy";
 import TermsofService from "@/pages/terms-of-service/TermsofService";
-import React from "react";
+import React, { lazy } from "react";
 import {
     createBrowserRouter,
     Navigate,
@@ -48,6 +48,9 @@ import {
 } from "react-router";
 import { JOBS } from ".";
 import ProtectedRouter from "./ProtectedRouter";
+
+// ** Unsubscribe page component
+const UnsubscribePage = lazy(() => import("../pages/unsubscribe/index"));
 
 const AppRoutes: React.FC = () => {
     const rotues = createBrowserRouter([
@@ -86,7 +89,7 @@ const AppRoutes: React.FC = () => {
                 {
                     path: "contact-us",
                     element: <ContactUs />,
-                },
+                }
             ],
         },
         {
@@ -240,6 +243,10 @@ const AppRoutes: React.FC = () => {
         {
             path: "terms-and-conditions",
             element: <TermsofService />,
+        },
+        {
+            path: "unsubscribe",
+            element: <UnsubscribePage />,
         },
         {
             path: "*",
