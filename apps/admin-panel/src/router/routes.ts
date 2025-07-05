@@ -189,7 +189,7 @@ export const routes: RouteType[] = [
   {
     path: "/manual-recruiter",
     component: lazy(() => import("../views/pages/recruiters/manual")),
-    label: "Recuiters",
+    label: "Manual Recuiters",
     icon: CompanyIcon,
     meta: {
       inSidebar: true,

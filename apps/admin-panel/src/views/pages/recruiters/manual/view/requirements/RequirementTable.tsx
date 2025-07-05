@@ -1,5 +1,5 @@
-import { createSignal, createMemo, onMount, onCleanup, startTransition, Suspense, Match, Switch } from "solid-js";
-import { useMutation, useQuery } from "@tanstack/solid-query";
+import { createSignal, createMemo, onMount, onCleanup, startTransition, Suspense, Match, Switch, Show } from "solid-js";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/solid-query";
 import { Subject } from "rxjs";
 import { debounceTime } from "rxjs/operators";
 import Table from "@components/table";
@@ -8,10 +8,12 @@ import { FormFields } from "@components/form";
 import { Modal } from "@components/modal";
 import { useModal } from "@helpers/contexts/Modal";
 import { getDateTime, PAGE_SIZE } from "@utils/index";
-import { QUERY_KEYS } from "@utils/constants";
+import { ACTIONS, QUERY_KEYS } from "@utils/constants";
 import { manualRecruitersApis } from "@apis/manual_recruiters";
 import { createColumnHelper } from "@tanstack/solid-table";
 import { A, useParams } from "@solidjs/router";
+import { useAuth } from "@helpers/contexts/Auth";
+import { DeleteIcon } from "@icons/index";
 
 type Requirement = {
     id: number;
@@ -19,6 +21,7 @@ type Requirement = {
     adresss: string;
     paymentStatus: string;
     createdAt: string;
+    actions: string
 };
 
 const recruiterColumnHelper = createColumnHelper<Requirement>();
@@ -28,6 +31,9 @@ type RequirementTableProps = {
 }
 
 const RequirementTable = (props: RequirementTableProps) => {
+    const { hasPermission } = useAuth();
+    const queryClient = useQueryClient();
+
     const columns = [
         recruiterColumnHelper.accessor("title", {
             header: "Title",
@@ -44,8 +50,8 @@ const RequirementTable = (props: RequirementTableProps) => {
                 const value = info.getValue();
 
                 const updateRecruiterMutatin = useMutation(() => ({
-                        mutationFn: (status: string) => manualRecruitersApis.updateRequirement(info.row.original.id, status),
-                    }));
+                    mutationFn: (status: string) => manualRecruitersApis.updateRequirement(info.row.original.id, status),
+                }));
 
                 const handleChange = async (e: Event) => {
                     const newValue = (e.target as HTMLSelectElement).value;
@@ -58,7 +64,7 @@ const RequirementTable = (props: RequirementTableProps) => {
                             { value: "paid", label: "Paid" },
                             { value: "unpaid", label: "Unpaid" },
                         ]} onChange={handleChange} />
-                       
+
                     </div>
                 );
             }
@@ -67,11 +73,32 @@ const RequirementTable = (props: RequirementTableProps) => {
             header: "Created At",
             cell: info => getDateTime(info.getValue()),
         }),
+        recruiterColumnHelper.accessor("actions", {
+            header: "Actions",
+            cell: (info) => {
+                const { id } = info.row.original;
+                return <>
+                    <Show when={hasPermission(ACTIONS.manualRecruiter.delete)} >
+                        <span
+                            class="delete-icon"
+                            onClick={() => {
+                                setDeleteRequirementId(id);
+                                modalContext.open();
+                            }}
+                            style={{ cursor: "pointer" }}
+                        >
+                            <DeleteIcon />
+                        </span>
+                    </Show>
+                </>
+            }
+        }),
     ];
 
     const { id } = useParams();
     const modalContext = useModal();
     const [pagination, setPagination] = createSignal({ pageIndex: 1, limit: PAGE_SIZE });
+    const [deleteRequirementId, setDeleteRequirementId] = createSignal<number | null>(null);
     const [search, setSearch] = createSignal("");
     const searchSubject = new Subject<string>();
     let searchSubscription: any;
@@ -109,6 +136,17 @@ const RequirementTable = (props: RequirementTableProps) => {
         refetchOnWindowFocus: true,
     }));
 
+    const deleteRequirement = useMutation(() => (
+        {
+            mutationFn: (id: number) => manualRecruitersApis.deleteRequirement(id),
+            onSuccess: () => {
+                queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.MANUAL_RECRUITER.REQ_READ] });
+                modalContext.close();
+                setDeleteRequirementId(null);
+            },
+        }
+    ));
+
     const tableData = createMemo(() => Array.isArray(query.data?.data) ? query.data.data : []);
     const totalRequirements = createMemo(() => query.data?.totalCount ?? 0);
 
@@ -122,9 +160,14 @@ const RequirementTable = (props: RequirementTableProps) => {
                 open={modalContext.isOpen()}
                 title="Delete Requirement"
                 message="Are you sure you want to delete this requirement?"
-                onClose={() => modalContext.close()}
+                onClose={() => {
+                    modalContext.close();
+                    setDeleteRequirementId(null);
+                }}
                 onConfirm={() => {
-                    // handle delete logic here
+                    if (deleteRequirementId()) {
+                        deleteRequirement.mutate(deleteRequirementId()!);
+                    }
                 }}
             />
 

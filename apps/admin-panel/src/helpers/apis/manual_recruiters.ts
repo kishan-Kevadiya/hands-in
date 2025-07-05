@@ -35,6 +35,11 @@ const updateRequirement = async (id: number, status: string) => {
     return response.data;
 };
 
+const deleteRequirement = async (id: number) => {
+     const response = await api.delete("/manual-recruiters/requirements?id=" + id);
+    return response.data;
+}
+
 const getRequirementById = async (requirementId: number) => {
     const response = await api.get(`/manual-recruiters/${requirementId}/requirement`);
     return response.data;
@@ -77,6 +82,7 @@ export const manualRecruitersApis = {
     create,
     getRequirementsByRecruiterId,
     createRequirement,
+    deleteRequirement,
     updateRequirement,
     getRequirementById,
     addResumeToRequirement,
