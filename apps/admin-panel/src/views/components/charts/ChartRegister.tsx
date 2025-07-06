@@ -6,7 +6,8 @@ import {
   PointElement,
   LineElement,
   LinearScale,
-  Filler
+  Filler,
+  Title
 } from "chart.js";
 
 // Common component to register Chart.js plugins
@@ -19,6 +20,7 @@ type ChartRegisterProps = {
 const ChartRegister = (props: ChartRegisterProps) => {
   onMount(() => {
     Chart.register([
+      Title,
       LineController,
       CategoryScale,
       PointElement,

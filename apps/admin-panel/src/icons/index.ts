@@ -30,6 +30,7 @@ import CommentIcon from "./Comment";
 import SendIcon from "./Send";
 import RevenueIcon from "./Revenue";
 import UptrendArrowIcon from "./UptrendArrow";
+import JobIcon from "./Jobs";
 
 export {
   AddCircleIcon,
@@ -62,5 +63,6 @@ export {
   CommentIcon,
   SendIcon,
   RevenueIcon,
-  UptrendArrowIcon
+  UptrendArrowIcon,
+  JobIcon
 };

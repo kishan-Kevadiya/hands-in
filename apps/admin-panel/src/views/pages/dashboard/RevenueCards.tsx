@@ -9,7 +9,6 @@ import { financialTransactionsApis } from '@apis/finanacial_transactions';
 
 import "./styles.css"
 
-
 const RevenueCards: Component = () => {
     const query = useQuery(() => ({
         queryKey: [QUERY_KEYS.FINANCES.ANALYTICS],

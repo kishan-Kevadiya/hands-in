@@ -15,6 +15,10 @@ export const QUERY_KEYS = Object.freeze({
     COUNT: "recruiter-count",
     JOBS: "recruiter-jobs",
   },
+  JOBS: {
+    COUNT_BY_TITLE: "count-by-title",
+    COUNT_BY_DATE: "count-by-date"
+  },
   USER: {
     ALL: "users-all",
     ONE: "users-one",

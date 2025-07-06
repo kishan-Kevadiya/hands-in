@@ -3,7 +3,7 @@
 
 .dashboard-counts {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 1rem;
     align-items: center;
     margin-bottom: 1rem;
@@ -23,7 +23,7 @@
             font-weight: 800;
         }
 
-        .icon { 
+        .icon {
             width: 32px;
             height: 32px;
             position: absolute;
@@ -43,10 +43,16 @@
                 color: var(--color-primary);
             }
         }
-        &[data-card="2"] {
 
+        &[data-card="2"] {
             .icon {
                 color: var(--color-secondary);
+            }
+        }
+
+        &[data-card="3"] {
+            .icon {
+                color: var(--color-info);
             }
         }
     }
@@ -56,6 +62,10 @@
     .charts {
         display: flex;
         gap: 1rem;
+    }
+
+    .jobs-bar-chart, .jobs-posted-over-time-page {
+        height: 400px;
     }
 
     .company-onboarding-chart,
@@ -119,6 +129,7 @@
         &[data-type="expense"] {
             background: linear-gradient(to right, #b1223a, #DD2D4A);
             transition: transform 0.2s, box-shadow 0.2s;
+
             .icon {
                 transform: rotate(70deg)
             }

@@ -1,14 +1,16 @@
 import CompanyOnboarding from "@components/charts/CompanyOboarding";
 import UserOnboarding from "@components/charts/UserOnboarding";
+import JobsBarChart from "@components/charts/JobsBarChart";
+import JobByTime from "@components/charts/JobByTime";
+
 import { useQuery } from "@tanstack/solid-query";
 import { Show } from "solid-js";
 import { companyApis } from "@apis/company";
 
 import RevenueCards from "./RevenueCards";
-import { CandidateIcon, CompanyIcon } from "@icons/index";
+import { CandidateIcon, CompanyIcon, JobIcon } from "@icons/index";
 
 import "./styles.css";
-
 
 function Dashboard(_props: any) {
   const dashboardDataQuery = useQuery(() => ({
@@ -25,7 +27,7 @@ function Dashboard(_props: any) {
       >
         <div class="dashboard-counts card">
           <div class="count-card" data-card="1">
-            <h3 class="text-primary">Recuiters</h3>
+            <h3>Recuiters</h3>
             <p class="count">{dashboardDataQuery.data?.company || 0}</p>
 
             <span class="icon">
@@ -33,17 +35,30 @@ function Dashboard(_props: any) {
             </span>
           </div>
           <div class="count-card" data-card="2">
-            <h3 class="text-secondary">Candidates</h3>
+            <h3>Candidates</h3>
             <p class="count">{dashboardDataQuery.data?.user || 0}</p>
-               <span class="icon">
-            <CandidateIcon />
-
-               </span>
+            <span class="icon">
+              <CandidateIcon />
+            </span>
+          </div>
+          <div class="count-card" data-card="3">
+            <h3>Jobs</h3>
+            <p class="count">{dashboardDataQuery.data?.jobs || 0}</p>
+            <span class="icon">
+              <JobIcon />
+            </span>
           </div>
         </div>
       </Show>
-      <div class="dashboard-page card">
 
+      <div class="dashboard-page card">
+        <JobByTime />
+      </div>
+      <div class="dashboard-page card">
+        <JobsBarChart />
+      </div>
+
+      <div class="dashboard-page card">
         <div class="charts">
           <CompanyOnboarding />
           <UserOnboarding />

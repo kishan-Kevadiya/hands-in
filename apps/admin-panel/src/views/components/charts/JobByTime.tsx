@@ -1,16 +1,16 @@
 import { createMemo, createSignal, Show } from "solid-js";
 import { DefaultChart } from "solid-chartjs";
 import { useQuery } from "@tanstack/solid-query";
-import { companyApis } from "@apis/company";
 import { QUERY_KEYS } from "@utils/constants";
 import ChartRegister from "./ChartRegister";
 import { CustomDateRangePicker } from "../date-picker";
 import { getDateRange } from "@utils";
 import type { PickerValue } from "@rnwonder/solid-date-picker";
+import { jobApis } from "@helpers/apis/jobs";
 
-type CompanyData = { count: number; date: string };
+type JobsData = { count: number; date: string };
 
-const CompanyOnboarding = () => {
+const JobByTime = () => {
   const dateRange = getDateRange();
 
   const [value, setValue] = createSignal<PickerValue>({
@@ -24,24 +24,23 @@ const CompanyOnboarding = () => {
   // 2. Handle date change
   const handleDateChange = (value: PickerValue) => {
     if (value && value.value.end && value.value.start) {
-      console.log("Selected date range:", value);
       setValue(value);
     }
   };
 
   const companyCountQuery = useQuery(() => ({
-    queryKey: [QUERY_KEYS.RECRUITER.COUNT, value().value.start, value().value.end],
-    queryFn: () => companyApis.getCountByDate({ startDate: value().value.start || "", endDate: value().value.end || "" }),
+    queryKey: [QUERY_KEYS.JOBS.COUNT_BY_DATE, value().value.start, value().value.end],
+    queryFn: () => jobApis.getCountByDate({ startDate: value().value.start || "", endDate: value().value.end || "" }),
   }));
 
   // Prepare Chart.js data and options
   const chartData = createMemo(() => {
     if (companyCountQuery.data) {
       const labels = companyCountQuery.data.result.map(
-        (item: CompanyData) => item.date,
+        (item: JobsData) => item.date,
       );
       const data = companyCountQuery.data.result.map(
-        (item: CompanyData) => item.count,
+        (item: JobsData) => item.count,
       );
       return {
         labels,
@@ -49,8 +48,8 @@ const CompanyOnboarding = () => {
           {
             label: "Count",
             data,
-            backgroundColor: "rgba(111, 41, 171, 0.2)",
-            borderColor: "#6f29ab",
+            backgroundColor: "rgba(0, 99, 132, 0.2)",
+            borderColor: "rgb(0, 99, 132)",
             borderWidth: 2,
             fill: true,
             tension: 0.3,
@@ -67,10 +66,15 @@ const CompanyOnboarding = () => {
   const chartOptions = createMemo(() => ({
     responsive: true,
     maintainAspectRatio: false,
+    layout: {
+      padding: {
+        bottom: 50
+      },
+    },
     plugins: {
       title: {
         display: true,
-        text: "Recuiters Over Time",
+        text: "Jobs Over Time",
       },
       legend: {
         display: false,
@@ -91,6 +95,10 @@ const CompanyOnboarding = () => {
           display: true,
           text: "Count",
         },
+        ticks: {
+          precision: 0,
+          stepSize: 1
+        },
         beginAtZero: true,
       },
     },
@@ -98,9 +106,9 @@ const CompanyOnboarding = () => {
 
   return (
     <ChartRegister>
-      <div class="company-onboarding-chart">
+      <div class="jobs-posted-over-time-page">
         <div class="d-flex align-center gap-2 justify-between mb-4">
-          <h2 class="mb-1 text-primary">Recuiters Onboarding</h2>
+          <h2 class="mb-1 text-primary">Jobs Over Time</h2>
           <CustomDateRangePicker.RangePicker onChange={handleDateChange} value={value} placeholder="Please select a range" id="date-range-filter" />
         </div>
         <Show
@@ -126,4 +134,4 @@ const CompanyOnboarding = () => {
   );
 };
 
-export default CompanyOnboarding;
+export default JobByTime;
