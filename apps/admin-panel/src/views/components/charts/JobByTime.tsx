@@ -33,21 +33,32 @@ const JobByTime = () => {
     queryFn: () => jobApis.getCountByDate({ startDate: value().value.start || "", endDate: value().value.end || "" }),
   }));
 
+  const Data = createMemo(() => {
+    if (jobsCountQuery.data) {
+      return jobsCountQuery.data.result.reduce(
+        (acc: { labels: [], data: [] }  , d: JobsData) => {
+          return {
+            labels: [...acc.labels, d.date],
+            data: [...acc.data, d.count],
+          };
+        },
+        { labels: [], data: [] } 
+      );
+    }
+
+    return { labels: [], data: [] };
+  });
+
   // Prepare Chart.js data and options
   const chartData = createMemo(() => {
     if (jobsCountQuery.data) {
-      const labels = jobsCountQuery.data.result.map(
-        (item: JobsData) => item.date,
-      );
-      const data = jobsCountQuery.data.result.map(
-        (item: JobsData) => item.count,
-      );
+
       return {
-        labels,
+        labels: Data().labels,
         datasets: [
           {
             label: "Count",
-            data,
+            data: Data().data,
             backgroundColor: "rgba(0, 99, 132, 0.2)",
             borderColor: "rgb(0, 99, 132)",
             borderWidth: 2,
@@ -56,7 +67,6 @@ const JobByTime = () => {
             pointRadius: 3,
             pointBackgroundColor: "#6f29ab",
             pointBorderColor: "#fff",
-            // No 'type' property for line chart dataset
           },
         ],
       };
@@ -91,6 +101,8 @@ const JobByTime = () => {
         },
       },
       y: {
+        min: 0,
+        max: Math.max(...Data().data) + 2,
         title: {
           display: true,
           text: "Count",

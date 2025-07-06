@@ -34,21 +34,32 @@ const UserOnboarding = () => {
     queryFn: () => usersApis.getCountByDate({ startDate: value().value.start || "", endDate: value().value.end || "" }),
   }));
 
+  const Data = createMemo(() => {
+    if (userCountQuery.data) {
+      return userCountQuery.data.result.reduce(
+        (acc: { labels: [], data: [] }, d: UserData) => {
+          return {
+            labels: [...acc.labels, d.date],
+            data: [...acc.data, d.count],
+          };
+        },
+        { labels: [], data: [] }
+      );
+    }
+
+    return { labels: [], data: [] };
+  });
+
+
   // Prepare Chart.js data and options
   const chartData = createMemo(() => {
     if (userCountQuery.data) {
-      const labels = userCountQuery.data.result.map(
-        (item: UserData) => item.date,
-      );
-      const data = userCountQuery.data.result.map(
-        (item: UserData) => item.count,
-      );
       return {
-        labels,
+        labels: Data().labels,
         datasets: [
           {
             label: "User Count",
-            data,
+            data: Data().data,
             backgroundColor: "rgba(190, 12, 199, 0.1)",
             borderColor: "pink",
             borderWidth: 2,
@@ -57,7 +68,6 @@ const UserOnboarding = () => {
             pointRadius: 3,
             pointBackgroundColor: "pink",
             pointBorderColor: "#fff",
-            // No 'type' property for line chart dataset
           },
         ],
       };
@@ -67,7 +77,7 @@ const UserOnboarding = () => {
   const chartOptions = createMemo(() => ({
     responsive: true,
     maintainAspectRatio: false,
-     layout: {
+    layout: {
       padding: {
         bottom: 10
       }
@@ -82,7 +92,6 @@ const UserOnboarding = () => {
       },
       tooltip: {
         enabled: true,
-        // Fix: mode should be one of the allowed string literals
         mode: "index" as const,
         intersect: false,
         callbacks: {
@@ -135,12 +144,17 @@ const UserOnboarding = () => {
         },
       },
       y: {
-         
+        min: 0,
+        max: Math.max(...Data().data) + 2,
         title: {
           display: true,
           text: "User Count",
         },
         beginAtZero: true,
+        ticks: {
+          precision: 0,
+          stepSize: 1
+        },
       },
     },
   }));

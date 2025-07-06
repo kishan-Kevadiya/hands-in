@@ -34,21 +34,32 @@ const CompanyOnboarding = () => {
     queryFn: () => companyApis.getCountByDate({ startDate: value().value.start || "", endDate: value().value.end || "" }),
   }));
 
+
+  const Data = createMemo(() => {
+    if (companyCountQuery.data) {
+      return companyCountQuery.data.result.reduce(
+        (acc: { labels: [], data: [] }, d: CompanyData) => {
+          return {
+            labels: [...acc.labels, d.date],
+            data: [...acc.data, d.count],
+          };
+        },
+        { labels: [], data: [] }
+      );
+    }
+
+    return { labels: [], data: [] };
+  });
+
   // Prepare Chart.js data and options
   const chartData = createMemo(() => {
     if (companyCountQuery.data) {
-      const labels = companyCountQuery.data.result.map(
-        (item: CompanyData) => item.date,
-      );
-      const data = companyCountQuery.data.result.map(
-        (item: CompanyData) => item.count,
-      );
       return {
-        labels,
+        labels: Data().labels,
         datasets: [
           {
             label: "Count",
-            data,
+            data: Data().data,
             backgroundColor: "rgba(111, 41, 171, 0.2)",
             borderColor: "#6f29ab",
             borderWidth: 2,
@@ -92,6 +103,12 @@ const CompanyOnboarding = () => {
         },
       },
       y: {
+        min: 0,
+        max: Math.max(...Data().data) + 2,
+        ticks: {
+          precision: 0,
+          stepSize: 1
+        },
         title: {
           display: true,
           text: "Count",

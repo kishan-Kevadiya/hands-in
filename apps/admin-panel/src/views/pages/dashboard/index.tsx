@@ -51,18 +51,21 @@ function Dashboard(_props: any) {
         </div>
       </Show>
 
-      <div class="dashboard-page card">
-        <JobByTime />
-      </div>
-      <div class="dashboard-page card">
-        <JobsBarChart />
-      </div>
 
       <div class="dashboard-page card">
         <div class="charts">
           <CompanyOnboarding />
           <UserOnboarding />
         </div>
+      </div>
+
+
+      <div class="dashboard-page card">
+        <JobsBarChart />
+      </div>
+
+      <div class="dashboard-page card">
+        <JobByTime />
       </div>
     </>
 
