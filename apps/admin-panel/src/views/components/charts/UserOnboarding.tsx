@@ -67,6 +67,11 @@ const UserOnboarding = () => {
   const chartOptions = createMemo(() => ({
     responsive: true,
     maintainAspectRatio: false,
+     layout: {
+      padding: {
+        bottom: 10
+      }
+    },
     plugins: {
       title: {
         display: true,
@@ -130,6 +135,7 @@ const UserOnboarding = () => {
         },
       },
       y: {
+         
         title: {
           display: true,
           text: "User Count",

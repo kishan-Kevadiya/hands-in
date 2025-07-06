@@ -66,6 +66,11 @@ const CompanyOnboarding = () => {
 
   const chartOptions = createMemo(() => ({
     responsive: true,
+    layout: {
+      padding: {
+        bottom: 10
+      }
+    },
     maintainAspectRatio: false,
     plugins: {
       title: {

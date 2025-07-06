@@ -28,18 +28,18 @@ const JobByTime = () => {
     }
   };
 
-  const companyCountQuery = useQuery(() => ({
+  const jobsCountQuery = useQuery(() => ({
     queryKey: [QUERY_KEYS.JOBS.COUNT_BY_DATE, value().value.start, value().value.end],
     queryFn: () => jobApis.getCountByDate({ startDate: value().value.start || "", endDate: value().value.end || "" }),
   }));
 
   // Prepare Chart.js data and options
   const chartData = createMemo(() => {
-    if (companyCountQuery.data) {
-      const labels = companyCountQuery.data.result.map(
+    if (jobsCountQuery.data) {
+      const labels = jobsCountQuery.data.result.map(
         (item: JobsData) => item.date,
       );
-      const data = companyCountQuery.data.result.map(
+      const data = jobsCountQuery.data.result.map(
         (item: JobsData) => item.count,
       );
       return {
@@ -112,11 +112,11 @@ const JobByTime = () => {
           <CustomDateRangePicker.RangePicker onChange={handleDateChange} value={value} placeholder="Please select a range" id="date-range-filter" />
         </div>
         <Show
-          when={!companyCountQuery.isLoading && !companyCountQuery.error}
+          when={!jobsCountQuery.isLoading && !jobsCountQuery.error}
           fallback={
-            companyCountQuery.isLoading ? (
+            jobsCountQuery.isLoading ? (
               <div>Loading...</div>
-            ) : companyCountQuery.error ? (
+            ) : jobsCountQuery.error ? (
               <div>Error loading data</div>
             ) : null
           }
