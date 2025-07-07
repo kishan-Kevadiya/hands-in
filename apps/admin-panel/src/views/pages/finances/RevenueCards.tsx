@@ -7,7 +7,7 @@ import { UptrendArrowIcon } from '@icons/index';
 import { QUERY_KEYS } from '@utils/constants';
 import { financialTransactionsApis } from '@apis/finanacial_transactions';
 
-import "./styles.css"
+import "../dashboard/styles.css"
 
 const RevenueCards: Component = () => {
     const query = useQuery(() => ({

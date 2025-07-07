@@ -6,8 +6,6 @@ import JobByTime from "@components/charts/JobByTime";
 import { useQuery } from "@tanstack/solid-query";
 import { Show } from "solid-js";
 import { companyApis } from "@apis/company";
-
-import RevenueCards from "./RevenueCards";
 import { CandidateIcon, CompanyIcon, JobIcon } from "@icons/index";
 
 import "./styles.css";
@@ -20,7 +18,6 @@ function Dashboard(_props: any) {
 
   return (
     <>
-      <RevenueCards />
       <Show
         when={dashboardDataQuery.data}
         fallback={<p>Loading dashboard data...</p>}

@@ -14,6 +14,7 @@ import { formatRupee, getDateTime } from "@utils";
 import { Badge } from "@components/badge";
 import { useAuth } from "@helpers/contexts/Auth";
 import { DeleteIcon } from "@icons/index";
+import RevenueCards from "./RevenueCards";
 
 export type Finances = {
     id: number;
@@ -164,6 +165,7 @@ export default function Finances() {
                     }
                 }}
             />
+            <RevenueCards />
             <div class="card">
                 <div class="d-flex justify-between align-center ">
                     <div class="d-flex align-center">
