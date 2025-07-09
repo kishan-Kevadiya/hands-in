@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/solid-query";
+import { useMutation, useQuery } from "@tanstack/solid-query";
 import { QUERY_KEYS } from "@utils/constants";
 import { manualRecruitersApis } from "@apis/manual_recruiters"; 
 import { recruiterColumns, type Recruiter } from "../columns"; 
@@ -7,8 +7,8 @@ import Table from "@components/table";
 import Loader from "@components/Loader";
 import { Modal } from "@components/modal";
 import { useModal } from "@helpers/contexts/Modal";
-import { Subject, from } from "rxjs";
-import { debounceTime, switchMap } from "rxjs/operators";
+import { Subject } from "rxjs";
+import { debounceTime } from "rxjs/operators";
 import { PAGE_SIZE } from "@utils/index";
 import {
     createMemo,
@@ -38,8 +38,6 @@ const ManualRecruiters = () => {
     let searchSubscription: any;
 
     // RxJS Subjects for recruiter deletion
-    const deleteRecruiterSubject = new Subject<number>();
-    let deleteRecruiterSubscription: any;
     const deleteActionSubject = new Subject<number>();
     let deleteActionSubscription: any;
 
@@ -53,18 +51,6 @@ const ManualRecruiters = () => {
                 });
             });
 
-        deleteRecruiterSubscription = deleteRecruiterSubject
-            .pipe(
-                switchMap((recruiterId) =>
-                    from(manualRecruitersApis.remove(recruiterId))
-                )
-            )
-            .subscribe(() => {
-                queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.MANUAL_RECRUITER.READ] });
-                modalContext.close();
-                setSelectedRecruiterId(null);
-            });
-
         deleteActionSubscription = deleteActionSubject.subscribe((id) => {
             setSelectedRecruiterId(id);
             modalContext.open();
@@ -73,7 +59,6 @@ const ManualRecruiters = () => {
 
     onCleanup(() => {
         searchSubscription?.unsubscribe();
-        deleteRecruiterSubscription?.unsubscribe();
         deleteActionSubscription?.unsubscribe();
     });
 
@@ -94,6 +79,15 @@ const ManualRecruiters = () => {
         suspense: false,
         keepPreviousData: true,
         refetchOnWindowFocus: true,
+    }));
+
+    const deleteRecruiterMutation = useMutation(() => ({
+        mutationFn: (recruiterId: number) => manualRecruitersApis.remove(recruiterId),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.MANUAL_RECRUITER.READ] });
+            modalContext.close();
+            setSelectedRecruiterId(null);
+        },
     }));
 
 function handleSearchInput(e: Event) {
@@ -124,9 +118,10 @@ return (
             }}
             onConfirm={() => {
                 if (selectedRecruiterId()) {
-                    deleteRecruiterSubject.next(selectedRecruiterId()!);
+                    deleteRecruiterMutation.mutate(selectedRecruiterId()!);
                 }
             }}
+            isLoading={deleteRecruiterMutation.isPending}
         />
 
         <div class="admin-recruiter-list card">

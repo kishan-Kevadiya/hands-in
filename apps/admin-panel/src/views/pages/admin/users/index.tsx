@@ -111,6 +111,7 @@ const UserList = () => {
             deleteUserMutation.mutate(selectedRoleId()!);
           }
         }}
+        isLoading={deleteUserMutation.isPending}
       />
 
       <div class="admin-user-list card">

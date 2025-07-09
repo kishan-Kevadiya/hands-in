@@ -164,6 +164,7 @@ export default function Finances() {
                         deleteMutation.mutate(id);
                     }
                 }}
+                isLoading={deleteMutation.isPending}
             />
             <RevenueCards />
             <div class="card">

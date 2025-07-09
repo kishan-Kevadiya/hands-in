@@ -13,6 +13,7 @@ interface ModalProps {
   message: string;
   onClose: () => void;
   onConfirm?: () => void;
+  isLoading?: boolean;
 }
 
 const getModalStyles = (type: ModalType): { icon: JSXElement } => {
@@ -51,8 +52,12 @@ function BaseModal(props: ModalProps & { type: ModalType }) {
               </button>
             </Show>
             <Show when={props.type === "delete" && props.onConfirm}>
-              <button class="custom-modal-btn delete" onClick={props.onConfirm}>
-                Delete
+              <button
+                class="custom-modal-btn delete"
+                onClick={props.onConfirm}
+                disabled={props.isLoading}
+              >
+                {props.isLoading ? "Deleting..." : "Delete"}
               </button>
             </Show>
           </div>

@@ -107,6 +107,7 @@ export default function CompanyList() {
             deleteCompanyMutation.mutate(selectedCompanyId()!);
           }
         }}
+        isLoading={deleteCompanyMutation.isPending}
       />
       <div class="card">
         <div class="d-flex justify-between align-center ">

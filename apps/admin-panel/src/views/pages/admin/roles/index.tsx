@@ -117,6 +117,7 @@ export default function RolesTable() {
             deleteMutation.mutate(selectedRoleId()!);
           }
         }}
+        isLoading={deleteMutation.isPending}
       />
 
       <div class="card">

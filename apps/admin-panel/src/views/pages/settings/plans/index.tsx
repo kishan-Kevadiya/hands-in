@@ -93,6 +93,7 @@ const PricingPage = () => {
             deletePackageMutation.mutate(selectedRoleId()!);
           }
         }}
+        isLoading={deletePackageMutation.isPending}
       />
       <div class="card">
         <div class="d-flex justify-between items-center ">

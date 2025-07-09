@@ -169,6 +169,7 @@ const RequirementTable = (props: RequirementTableProps) => {
                         deleteRequirement.mutate(deleteRequirementId()!);
                     }
                 }}
+                isLoading={deleteRequirement.isPending}
             />
 
             <div class="admin-requirement-list card">

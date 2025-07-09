@@ -34,6 +34,12 @@ api.interceptors.response.use(
 );
 
 // Create a QueryClient instance with default options for queries
-export const queryClient = new QueryClient();
+export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false
+    }
+  }
+});
 
 export default api;
