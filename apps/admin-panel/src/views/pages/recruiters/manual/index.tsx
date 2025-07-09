@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@tanstack/solid-query";
+import { useQuery } from "@tanstack/solid-query";
 import { QUERY_KEYS } from "@utils/constants";
 import { manualRecruitersApis } from "@apis/manual_recruiters"; 
 import { recruiterColumns, type Recruiter } from "../columns"; 
