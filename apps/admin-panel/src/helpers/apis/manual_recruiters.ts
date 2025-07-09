@@ -18,6 +18,11 @@ const create = async (data: any) => {
     return response.data;
 };
 
+const remove = async (id: number) => {
+    const response = await api.delete("/manual-recruiters/" + id);
+    return response.data;
+};
+
 const getRequirementsByRecruiterId = async (id: number, filters: FiltersOptions) => {
     const response = await api.get(`/manual-recruiters/${id}/requirements`, { params: filters });
     return response.data;
@@ -80,6 +85,7 @@ export const manualRecruitersApis = {
     getAll,
     getById,
     create,
+    remove,
     getRequirementsByRecruiterId,
     createRequirement,
     deleteRequirement,

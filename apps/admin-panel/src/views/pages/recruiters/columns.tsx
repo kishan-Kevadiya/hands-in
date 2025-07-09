@@ -129,43 +129,66 @@ export type Recruiter = {
   address: string;
   requirementCount: number;
   createdAt: string;
-  updatedAt: string;
+  actions: any;
 };
 
 const recruiterColumnHelper = createColumnHelper<Recruiter>();
 
-export const recruiterColumns = [
-  recruiterColumnHelper.accessor((row) => row, {
-    id: "emailAndCompanyName",
-    header: "Company Name",
-    cell: (info) => {
-      const row = info.getValue();
-      return (
-        <A href={`/manual-recruiter/${row.id}`}>
-          <p class="font-bold">{row.name}</p>
-          <p>
-            {row.email}
-          </p>
-        </A>
-      );
-    },
-  }),
+export const recruiterColumns = (
+  deleteActionSubject: Subject<number>, 
+) => {
+  const { hasPermission } = useAuth();
+  return [
+    recruiterColumnHelper.accessor((row) => row, {
+      id: "emailAndCompanyName",
+      header: "Company Name",
+      cell: (info) => {
+        const row = info.getValue();
+        return (
+          <A href={`/manual-recruiter/${row.id}`}>
+            <p class="font-bold">{row.name}</p>
+            <p>
+              {row.email}
+            </p>
+          </A>
+        );
+      },
+    }),
 
-  recruiterColumnHelper.accessor("description", {
-    header: "Description",
-    cell: (info) => <span>{info.getValue()}</span>,
-  }),
-  recruiterColumnHelper.accessor("address", {
-    header: "Address",
-    cell: (info) => <span>{info.getValue()}</span>,
-  }),
+    recruiterColumnHelper.accessor("description", {
+      header: "Description",
+      cell: (info) => <span>{info.getValue()}</span>,
+    }),
+    recruiterColumnHelper.accessor("address", {
+      header: "Address",
+      cell: (info) => <span>{info.getValue()}</span>,
+    }),
 
-  recruiterColumnHelper.accessor("requirementCount", {
-    header: "No. Requirements",
-    cell: (info) => <span>{info.getValue()}</span>,
-  }),
-  recruiterColumnHelper.accessor("createdAt", {
-    header: "Created At",
-    cell: (info) => <span>{timeAgo(info.getValue())}</span>,
-  })
-];
+    recruiterColumnHelper.accessor("requirementCount", {
+      header: "No. Requirements",
+      cell: (info) => <span>{info.getValue()}</span>,
+    }),
+    recruiterColumnHelper.accessor("createdAt", {
+      header: "Created At",
+      cell: (info) => <span>{timeAgo(info.getValue())}</span>,
+    }),
+    recruiterColumnHelper.accessor("actions", {
+      header: "Created At",
+      cell: (info) => {
+        const { id } = info.row.original;
+        return <>
+          <Show when={hasPermission(ACTIONS.manualRecruiter.delete)} >
+            <span
+              class="delete-icon"
+              onClick={() => {
+                deleteActionSubject.next(id)
+              }}
+              style={{ cursor: "pointer" }}
+            >
+              <DeleteIcon />
+            </span>
+          </Show>
+        </>
+      },
+    })]
+}

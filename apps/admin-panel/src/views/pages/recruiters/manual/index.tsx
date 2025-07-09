@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/solid-query";
+import { useMutation, useQuery } from "@tanstack/solid-query";
 import { QUERY_KEYS } from "@utils/constants";
 import { manualRecruitersApis } from "@apis/manual_recruiters"; 
 import { recruiterColumns, type Recruiter } from "../columns"; 
@@ -7,76 +7,94 @@ import Table from "@components/table";
 import Loader from "@components/Loader";
 import { Modal } from "@components/modal";
 import { useModal } from "@helpers/contexts/Modal";
-import { Subject } from "rxjs";
-import { debounceTime } from "rxjs/operators";
+import { Subject, from } from "rxjs";
+import { debounceTime, switchMap } from "rxjs/operators";
 import { PAGE_SIZE } from "@utils/index";
 import {
-createMemo,
-createSignal,
-Match,
-onCleanup,
-onMount,
-startTransition,
-Suspense,
-Switch,
+    createMemo,
+    createSignal,
+    Match,
+    onCleanup,
+    onMount,
+    startTransition,
+    Suspense,
+    Switch,
 } from "solid-js";
+import { queryClient } from "@helpers/axios";
 
 const ManualRecruiters = () => {
-const modalContext = useModal();
+    const modalContext = useModal();
+    const [selectedRecruiterId, setSelectedRecruiterId] = createSignal<number | null>(null);
 
-// Pagination and search state
-const [pagination, setPagination] = createSignal({
-    pageIndex: 1,
-    limit: PAGE_SIZE,
-});
-const [search, setSearch] = createSignal("");
+    // Pagination and search state
+    const [pagination, setPagination] = createSignal({
+        pageIndex: 1,
+        limit: PAGE_SIZE,
+    });
+    const [search, setSearch] = createSignal("");
 
-// RxJS Subject for search input
-const searchSubject = new Subject<string>();
-let searchSubscription: any;
+    // RxJS Subject for search input
+    const searchSubject = new Subject<string>();
+    let searchSubscription: any;
 
-onMount(() => {
-    searchSubscription = searchSubject
-        .pipe(debounceTime(300))
-        .subscribe((value) => {
-            startTransition(() => {
-                setSearch(value);
-                setPagination((p) => ({ ...p, pageIndex: 1 }));
+    // RxJS Subjects for recruiter deletion
+    const deleteRecruiterSubject = new Subject<number>();
+    let deleteRecruiterSubscription: any;
+    const deleteActionSubject = new Subject<number>();
+    let deleteActionSubscription: any;
+
+    onMount(() => {
+        searchSubscription = searchSubject
+            .pipe(debounceTime(300))
+            .subscribe((value) => {
+                startTransition(() => {
+                    setSearch(value);
+                    setPagination((p) => ({ ...p, pageIndex: 1 }));
+                });
             });
+
+        deleteRecruiterSubscription = deleteRecruiterSubject
+            .pipe(
+                switchMap((recruiterId) =>
+                    from(manualRecruitersApis.remove(recruiterId))
+                )
+            )
+            .subscribe(() => {
+                queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.MANUAL_RECRUITER.READ] });
+                modalContext.close();
+                setSelectedRecruiterId(null);
+            });
+
+        deleteActionSubscription = deleteActionSubject.subscribe((id) => {
+            setSelectedRecruiterId(id);
+            modalContext.open();
         });
-});
+    });
 
-onCleanup(() => {
-    searchSubscription?.unsubscribe();
-});
+    onCleanup(() => {
+        searchSubscription?.unsubscribe();
+        deleteRecruiterSubscription?.unsubscribe();
+        deleteActionSubscription?.unsubscribe();
+    });
 
-// Query for recruiters with pagination and search
-const query = useQuery(() => ({
-    queryKey: [
-        QUERY_KEYS.MANUAL_RECRUITER.READ,
-        pagination().pageIndex,
-        pagination().limit,
-        search(),
-    ],
-    queryFn: () =>
-        manualRecruitersApis.getAll({
-            page: pagination().pageIndex,
-            limit: pagination().limit,
-            search: search(),
-        }),
-    suspense: false,
-    keepPreviousData: true,
-    refetchOnWindowFocus: true,
-}));
-
-// Mutation for deleting a recruiter
-// const deleteRecruiterMutation = useMutation(() => ({
-//     mutationFn: (recruiterId: string) => manualRecruitersApis.remove(recruiterId),
-//     onSuccess: () => {
-//         queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.MANUAL_RECRUITER.DELETE] });
-//         modalContext.close();
-//     },
-// }));
+    // Query for recruiters with pagination and search
+    const query = useQuery(() => ({
+        queryKey: [
+            QUERY_KEYS.MANUAL_RECRUITER.READ,
+            pagination().pageIndex,
+            pagination().limit,
+            search(),
+        ],
+        queryFn: () =>
+            manualRecruitersApis.getAll({
+                page: pagination().pageIndex,
+                limit: pagination().limit,
+                search: search(),
+            }),
+        suspense: false,
+        keepPreviousData: true,
+        refetchOnWindowFocus: true,
+    }));
 
 function handleSearchInput(e: Event) {
     e.preventDefault();
@@ -100,11 +118,14 @@ return (
             open={modalContext.isOpen()}
             title="Delete Recruiter"
             message="Are you sure you want to delete this recruiter?"
-            onClose={() => modalContext.close()}
+            onClose={() => {
+                modalContext.close();
+                setSelectedRecruiterId(null);
+            }}
             onConfirm={() => {
-                // if (selectedRecruiterId()) {
-                //     deleteRecruiterMutation.mutate(selectedRecruiterId()!);
-                // }
+                if (selectedRecruiterId()) {
+                    deleteRecruiterSubject.next(selectedRecruiterId()!);
+                }
             }}
         />
 
@@ -140,7 +161,7 @@ return (
                     <Match when={!query.isLoading && !query.isError}>
                         <Suspense fallback={<Loader />}>
                             <Table<Recruiter>
-                                columns={recruiterColumns}
+                                columns={recruiterColumns(deleteActionSubject)}
                                 data={tableData()}
                                 total_rms={totalRecruiters()}
                                 itemsPerPage={pagination().limit}

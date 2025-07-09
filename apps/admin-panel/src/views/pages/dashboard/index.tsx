@@ -40,7 +40,7 @@ function Dashboard(_props: any) {
           </div>
           <div class="count-card" data-card="3">
             <h3>Jobs</h3>
-            <p class="count">{dashboardDataQuery.data?.jobs || 0}</p>
+            <p class="count">{dashboardDataQuery.data?.jobs || 0}<small class="fw-400 ml-1">(<strong>{dashboardDataQuery.data.openJobs}</strong> are active)</small> </p>
             <span class="icon">
               <JobIcon />
             </span>
