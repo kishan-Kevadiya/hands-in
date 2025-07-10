@@ -20,7 +20,7 @@ export default function UnsubscribeForm() {
     const emailParam = searchParams.get('email') || '';
     const [selectedReasons, setSelectedReasons] = useState<string[]>([]);
 
-    const { data: subscriber, isLoading, isError } = useQuery({
+    const { data: subscriber, isLoading, isError, refetch } = useQuery({
         queryKey: ['subscriber', emailParam],
         queryFn: () => getSubscriberByEmail(emailParam),
         enabled: !!emailParam,
@@ -31,6 +31,7 @@ export default function UnsubscribeForm() {
         mutationFn: (data: { email: string; reasons: string }) => unsubscribeMe(data.email, data.reasons),
         onSuccess: () => {
             toast.success('Successfully unsubscribed!');
+            refetch()
         },
         onError: (error) => {
             console.error('Unsubscribe failed:', error);

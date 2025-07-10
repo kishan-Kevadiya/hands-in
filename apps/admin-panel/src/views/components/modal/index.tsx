@@ -1,9 +1,10 @@
 import { Show, type JSXElement } from "solid-js";
 
-import "./styles.css";
 import DeleteIcon from "@icons/Delete";
 import SuccessIcon from "@icons/modal/Success";
 import InfoIcon from "@icons/modal/Info";
+
+import "./styles.css";
 
 type ModalType = "delete" | "success" | "info" | "warning";
 

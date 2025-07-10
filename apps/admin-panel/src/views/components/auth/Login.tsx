@@ -107,11 +107,11 @@ const LoginPage = () => {
           </Field>
 
           <FormFields.Button
-            disabled={loginForm.invalid || loginMutation.isPending}
+            disabled={loginForm.invalid || loginMutation.isPending || loginMutation.isSuccess}
             variant="primary"
             type="submit"
             class="w-100 mt-4"
-            label={loginMutation.isPending ? "Logging..." : "Login"}
+            label={loginMutation.isPending || loginMutation.isSuccess ? "Logging..." : "Login"}
           />
           {loginMutation.isError && (
             <ErrorMessage error="Login failed. Please check your credentials." />
