@@ -116,6 +116,9 @@ export const ACTIONS = Object.freeze({
   subscription: {
     read: "subscription.read",
   },
+  reviews: {
+    read: "reviews.read",
+  }
 });
 
 

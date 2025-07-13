@@ -62,6 +62,7 @@ const LoginPage = () => {
           <img src={logo} alt="Logo" />
         </div>
 
+
         <Form onSubmit={handleSubmit} class="login-form">
           <Field
             name="email"

@@ -11,7 +11,8 @@ import {
   SettingPlansIcon,
   UserRolesIcon,
   UserSettingIcon,
-  RevenueIcon
+  RevenueIcon,
+  CommentIcon
 } from "@icons/index";
 
 const OtherRoutes: RouteType[] = [
@@ -177,7 +178,16 @@ export const routes: RouteType[] = [
       permissions: [ACTIONS.coupon.read],
     },
   },
-
+  {
+    path: "/reviews",
+    component: lazy(() => import("../views/pages/reviews")),
+    label: "Reviews",
+    icon: CommentIcon,
+    meta: {
+      inSidebar: true,
+      permissions: [ACTIONS.reviews.read],
+    },
+  },
   {
     path: "divider-no-path",
     group: "Manual",

@@ -14,7 +14,6 @@
     .sidebar-logo {
         padding: var(--size-20);
         margin-bottom: 0.5rem;
-        border-bottom: 1px solid var(--border-color);
         height: 72px;
         box-sizing: border-box;
 
@@ -30,7 +29,7 @@
 
         list-style: none;
 
-        font-weight: 600;
+        font-weight: 500;
 
         a {
             text-decoration: none;

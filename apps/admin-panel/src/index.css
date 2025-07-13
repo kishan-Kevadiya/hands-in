@@ -9,7 +9,6 @@ body {
     padding: 0;
     height: 100%;
     width: 100%;
-    font-weight: 500;
     color: var(--text-color);
 }
 
@@ -32,13 +31,15 @@ textarea {
     padding: 0;
     box-sizing: border-box;
     font-family: inherit;
+
+    letter-spacing: 0.02rem;
 }
 
 /* Headings */
 h1,
 h2,
 h3 {
-    font-weight: 600;
+    font-weight: 500;
 }
 
 h1 {

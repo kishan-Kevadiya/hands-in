@@ -6,7 +6,7 @@
 
     --main-bg: #fafafa;
 
-    --text-color: #4d4d4d;
+    --text-color: #16191f;
     --text-secondary-color: #757575;
     --sidebar-bg: #f4f7f8;
 
@@ -27,7 +27,7 @@
 
     --color-purple: #8338EC;
 
-    --border-color: #ecedec;
+    --border-color: rgba(0, 0, 0, 0.09);
     --border-color-dark: oklch(87.1% .006 286.286);
 
     --font-size-xs: 0.75rem;
