@@ -27,8 +27,8 @@ const AuthPassword: React.FC<PasswordFieldProps> = ({
                                 className:
                                     "!w-full !text-black !bg-field border-none focus:!shadow-none !rounded-xl pr-12", // add padding-right for icon space
                             },
-                            hideIcon: { className: "!cursor-pointer absolute right-2 top-1/2 -translate-y-1/2" },
-                            showIcon: { className: "!cursor-pointer absolute right-2 top-1/2 -translate-y-1/2" },
+                            hideIcon: { className: "!cursor-pointer absolute right-2 top-1/2 " },
+                            showIcon: { className: "!cursor-pointer absolute right-2 top-1/2 " },
                         }}
                         className="w-full"
                         placeholder={placeholder}

@@ -74,7 +74,7 @@ const MainLayout: React.FC = () => {
                     </div>
                     <div
                         className={twMerge(
-                            "w-full h-full overflow-auto py-4 md:pl-4 pl-2 lg:pr-20 md:pr-4 pr-2 bg-[#F7FAFF] transition-[width] duration-100 ease-in-out",
+                            "w-full h-full overflow-auto py-4 md:pl-4 pl-2 pr-4 bg-[#F7FAFF] transition-[width] duration-100 ease-in-out",
                             isCollapsed
                                 ? "lg:w-[calc(100%-80px)]"
                                 : "lg:w-[calc(100%-230px)]"
