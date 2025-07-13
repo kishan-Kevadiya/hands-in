@@ -6,9 +6,12 @@
 
     --main-bg: #fafafa;
 
-    --text-color: #312d3f;
+    --text-color: #4d4d4d;
     --text-secondary-color: #757575;
     --sidebar-bg: #f4f7f8;
+
+    --ring-color: oklch(96.7% .003 264.542);
+    --ring-color-danger: rgba(255, 59, 63, 0.2); /* #ff3b3f,  */
 
     --color-primary: #3d1660;
     --color-primary-light: #7a65d6;
@@ -21,10 +24,11 @@
     --color-danger: #DD2D4A;
     --color-warning: #FFC300;
 
+
     --color-purple: #8338EC;
 
     --border-color: #ecedec;
-    --border-color-dark: #b0b3bb;
+    --border-color-dark: oklch(87.1% .006 286.286);
 
     --font-size-xs: 0.75rem;
     --font-size-sm: 0.875rem;
