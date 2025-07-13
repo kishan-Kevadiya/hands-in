@@ -9,7 +9,7 @@ export const browseJobsSchema = z.object({
         experience: z.number(),
         canGiveTest: z.boolean().optional(),
         canGiveTestDaysAfter: z.number().optional(),
-    })).optional(),
+    })),
 });
 
 export type BrowseJobsSchema = z.infer<typeof browseJobsSchema>;

@@ -239,7 +239,6 @@ const BrowseJobs: React.FC = () => {
                 {/* Next Button */}
                 <div className="flex justify-center md:w-1/4 w-1/2">
                     <AuthButton
-                        disabled={browseJobForm.watch("roles")?.length === 0}
                         label="Next"
                         onClick={browseJobForm.handleSubmit(onSubmit)}
                     />

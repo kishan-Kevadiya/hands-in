@@ -167,7 +167,7 @@ const Resume: React.FC = () => {
     };
 
     const onSubmit = async (data: resumeSetupField) => {
-        if (educationData.length === 0 || experienceData.length === 0)
+        if (educationData.length === 0)
             return showToast(
                 "error",
                 "Please add at least one education and experience"
@@ -240,38 +240,38 @@ const Resume: React.FC = () => {
                 }
             });
 
-            experienceData?.map((experience, index) => {
-                formData.append(
-                    `experiences[${index}][jobTitle]`,
-                    experience.jobTitle
-                );
-                formData.append(
-                    `experiences[${index}][jobDescription]`,
-                    experience.jobDescription
-                );
-                formData.append(
-                    `experiences[${index}][company]`,
-                    experience.companyName
-                );
-                formData.append(
-                    `experiences[${index}][jobType]`,
-                    experience.jobType as JobType
-                );
-                formData.append(
-                    `experiences[${index}][startDate]`,
-                    moment(experience.start_experience_date).format(
-                        "YYYY-MM-DD"
-                    )
-                );
-                if (!experience.isCurrentlyWorking) {
-                    formData.append(
-                        `experiences[${index}][endDate]`,
-                        moment(experience.end_experience_date).format(
-                            "YYYY-MM-DD"
-                        )
-                    );
-                }
-            });
+            experienceData?.forEach((experience, index) => {
+                           formData.append(
+                               `experiences[${index}][jobTitle]`,
+                               experience.jobTitle
+                           );
+                           formData.append(
+                               `experiences[${index}][jobDescription]`,
+                               experience.jobDescription
+                           );
+                           formData.append(
+                               `experiences[${index}][company]`,
+                               experience.companyName
+                           );
+                           formData.append(
+                               `experiences[${index}][jobType]`,
+                               experience.jobType as JobType
+                           );
+                           formData.append(
+                               `experiences[${index}][startDate]`,
+                               moment(experience.start_experience_date).format(
+                                   "YYYY-MM-DD"
+                               )
+                           );
+                           if (!experience.isCurrentlyWorking) {
+                               formData.append(
+                                   `experiences[${index}][endDate]`,
+                                   moment(experience.end_experience_date).format(
+                                       "YYYY-MM-DD"
+                                   )
+                               );
+                           }
+                       });
 
             data.soft_skills?.map((skill, index) => {
                 formData.append(`softSkills[${index}]`, skill);
