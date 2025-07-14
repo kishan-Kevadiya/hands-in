@@ -97,7 +97,7 @@ const Login: React.FC = () => {
 
             <div className="flex flex-col gap-2 w-full">
                 <p className="md:text-3xl text-2xl font-medium text-[#0C1421]">
-                    Welcome Back!
+                    Welcome back!
                 </p>
                 <p className="md:text-base text-sm text-[#313957]">
                     It’s your day. Show up, stand out — sign in to unlock new

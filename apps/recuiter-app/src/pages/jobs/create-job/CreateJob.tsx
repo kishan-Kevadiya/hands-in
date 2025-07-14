@@ -249,7 +249,6 @@ const CreateJob: React.FC = () => {
                 "expiry_date",
                 new Date(data?.expiry_date || "")
             );
-            console.log(data?.experience);
 
             createJobForm.setValue("experience", data?.experience || 0);
             createJobForm.setValue("work_model", data?.work_model || "");

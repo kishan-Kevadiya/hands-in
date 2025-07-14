@@ -114,7 +114,7 @@ const PreviewJob: React.FC = () => {
                                 : CREATE_JOB
                         }
                         replace
-                        className="md:w-8 md:h-8 w-5 h-5-center justify-center rounded-md bg-[#F0F0F0]"
+                        className="md:w-8 md:h-8 w-5 h-5 flex justify-center items-center rounded-md bg-[#F0F0F0]"
                     >
                         <i className="pi pi-arrow-left text-sm"></i>
                     </Link>

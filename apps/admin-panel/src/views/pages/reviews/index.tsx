@@ -31,7 +31,6 @@ type ReviewPageProps = {
 }
 
 const ReviewPage: Component<ReviewPageProps> = (props: ReviewPageProps) => {
-  console.log(props)
 
   const [pagination, setPagination] = createSignal({ page: 1, limit: 10 });
   const [search, setSearch] = createSignal("");
@@ -95,8 +94,6 @@ const ReviewPage: Component<ReviewPageProps> = (props: ReviewPageProps) => {
       header: "Company",
       cell: (info) =>  {
         const { row } = info;
-
-        console.log(row.original.companyName, "Company Name")
 
         if (row.original.companyName) {
           return <span class="fw-600">{row.original.companyName}</span>;

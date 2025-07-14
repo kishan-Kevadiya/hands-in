@@ -12,6 +12,7 @@ import AuthInput from "@/components/ui/auth/AuthInput";
 import AuthTextArea from "@/components/ui/auth/AuthTextArea";
 import ChipField from "@/components/ui/auth/ChipFiled";
 import Datepicker from "@/components/ui/auth/Datepicker";
+import SecondaryButton from "@/components/ui/auth/SecondaryButton";
 import SelectField from "@/components/ui/auth/SelectField";
 import PrimaryButton from "@/components/ui/buttons/PrimaryButton";
 import CustomPDFViewer from "@/components/ui/customPDFViewer/CustomPDFViewer";
@@ -203,8 +204,8 @@ const Resume: React.FC = () => {
             formData.append(
                 "name",
                 ProfileDetails.data?.user.firstName +
-                    " " +
-                    ProfileDetails.data?.user.lastName
+                " " +
+                ProfileDetails.data?.user.lastName
             );
             formData.append("title", ProfileDetails.data?.user.bio ?? "");
             formData.append("email", ProfileDetails.data?.user.email ?? "");
@@ -241,37 +242,37 @@ const Resume: React.FC = () => {
             });
 
             experienceData?.forEach((experience, index) => {
-                           formData.append(
-                               `experiences[${index}][jobTitle]`,
-                               experience.jobTitle
-                           );
-                           formData.append(
-                               `experiences[${index}][jobDescription]`,
-                               experience.jobDescription
-                           );
-                           formData.append(
-                               `experiences[${index}][company]`,
-                               experience.companyName
-                           );
-                           formData.append(
-                               `experiences[${index}][jobType]`,
-                               experience.jobType as JobType
-                           );
-                           formData.append(
-                               `experiences[${index}][startDate]`,
-                               moment(experience.start_experience_date).format(
-                                   "YYYY-MM-DD"
-                               )
-                           );
-                           if (!experience.isCurrentlyWorking) {
-                               formData.append(
-                                   `experiences[${index}][endDate]`,
-                                   moment(experience.end_experience_date).format(
-                                       "YYYY-MM-DD"
-                                   )
-                               );
-                           }
-                       });
+                formData.append(
+                    `experiences[${index}][jobTitle]`,
+                    experience.jobTitle
+                );
+                formData.append(
+                    `experiences[${index}][jobDescription]`,
+                    experience.jobDescription
+                );
+                formData.append(
+                    `experiences[${index}][company]`,
+                    experience.companyName
+                );
+                formData.append(
+                    `experiences[${index}][jobType]`,
+                    experience.jobType as JobType
+                );
+                formData.append(
+                    `experiences[${index}][startDate]`,
+                    moment(experience.start_experience_date).format(
+                        "YYYY-MM-DD"
+                    )
+                );
+                if (!experience.isCurrentlyWorking) {
+                    formData.append(
+                        `experiences[${index}][endDate]`,
+                        moment(experience.end_experience_date).format(
+                            "YYYY-MM-DD"
+                        )
+                    );
+                }
+            });
 
             data.soft_skills?.map((skill, index) => {
                 formData.append(`softSkills[${index}]`, skill);
@@ -438,8 +439,6 @@ const Resume: React.FC = () => {
             setExperienceData([]);
         }
     }, [ProfileDetails.data, ResumeDetails.data]);
-
-    console.log("---------", resumeLink.data)
 
     return (
         <div className="flex flex-col w-full gap-6">
@@ -714,7 +713,7 @@ const Resume: React.FC = () => {
                                 <div className="flex flex-col w-full gap-10">
                                     {/* Education */}
                                     <div className="flex gap-2 items-start">
-                                        <div className="flex flex-col w-full gap-0 lg:gap-4 md:gap-2">
+                                        <div className="flex flex-col w-full gap-2">
                                             <h3 className="text-2xl font-semibold">
                                                 Education
                                             </h3>
@@ -767,66 +766,14 @@ const Resume: React.FC = () => {
                                                             {education?.isPresent
                                                                 ? "Present"
                                                                 : moment(
-                                                                      education?.end_date?.toString()
-                                                                  ).format(
-                                                                      "MMMM, YYYY"
-                                                                  )}
+                                                                    education?.end_date?.toString()
+                                                                ).format(
+                                                                    "MMMM, YYYY"
+                                                                )}
                                                         </p>
                                                     </div>
                                                 )
                                             )}
-
-                                            <PrimaryButton
-                                                label="+ &nbsp;&nbsp;Add Education"
-                                                type="button"
-                                                onClick={async () => {
-                                                    if (!showEducationForm)
-                                                        setShowEducationForm(
-                                                            true
-                                                        );
-                                                    else {
-                                                        const educationValues =
-                                                            resumeEducationForm.getValues(
-                                                                "educations"
-                                                            );
-                                                        if (
-                                                            !educationValues.schoolName ||
-                                                            !educationValues.degreeType ||
-                                                            !educationValues.course
-                                                        )
-                                                            return;
-                                                        setEducationData([
-                                                            ...educationData,
-                                                            {
-                                                                ...resumeEducationForm.getValues(
-                                                                    "educations"
-                                                                ),
-                                                                id: uuidv4(),
-                                                            },
-                                                        ]);
-                                                        setShowEducationForm(
-                                                            false
-                                                        );
-                                                        resumeEducationForm.reset(
-                                                            {
-                                                                educations: {
-                                                                    schoolName:
-                                                                        "",
-                                                                    degreeType:
-                                                                        "",
-                                                                    course: "",
-                                                                    start_date:
-                                                                        new Date(),
-                                                                    end_date:
-                                                                        new Date(),
-                                                                },
-                                                            }
-                                                        );
-                                                    }
-                                                }}
-                                                labelStyle="text-black font-semibold"
-                                                className="bg-[#FFDAE5] w-fit gap-3 mb-4 px-3 py-3"
-                                            />
 
                                             {showEducationForm && (
                                                 <div className="flex flex-col gap-2 lg:w-2/4">
@@ -1005,6 +952,65 @@ const Resume: React.FC = () => {
                                                     </div>
                                                 </div>
                                             )}
+
+                                            <div className="flex gap-2">
+                                                <PrimaryButton
+                                                    label={showEducationForm ? 'Save' : "+ Add Education"}
+                                                    type="button"
+                                                    onClick={async () => {
+                                                        if (!showEducationForm)
+                                                            setShowEducationForm(
+                                                                true
+                                                            );
+                                                        else {
+                                                            const educationValues =
+                                                                resumeEducationForm.getValues(
+                                                                    "educations"
+                                                                );
+                                                            if (
+                                                                !educationValues.schoolName ||
+                                                                !educationValues.degreeType ||
+                                                                !educationValues.course
+                                                            )
+                                                                return;
+                                                            setEducationData([
+                                                                ...educationData,
+                                                                {
+                                                                    ...resumeEducationForm.getValues(
+                                                                        "educations"
+                                                                    ),
+                                                                    id: uuidv4(),
+                                                                },
+                                                            ]);
+                                                            setShowEducationForm(
+                                                                false
+                                                            );
+                                                            resumeEducationForm.reset(
+                                                                {
+                                                                    educations: {
+                                                                        schoolName:
+                                                                            "",
+                                                                        degreeType:
+                                                                            "",
+                                                                        course: "",
+                                                                        start_date:
+                                                                            new Date(),
+                                                                        end_date:
+                                                                            new Date(),
+                                                                    },
+                                                                }
+                                                            );
+                                                        }
+                                                    }}
+                                                    labelStyle="text-black font-semibold"
+                                                    className="bg-[#FFDAE5] w-fit gap-3 mb-4 px-3 py-3"
+                                                />
+
+                                                {showEducationForm && (
+                                                    <SecondaryButton label="Cancel"
+                                                        className="bg-[#FFDAE5] mb-4 !w-[6rem]" onClick={() => setShowEducationForm(false)} />
+                                                )}
+                                            </div>
                                         </div>
                                     </div>
 
@@ -1015,7 +1021,7 @@ const Resume: React.FC = () => {
                                         </div>
 
                                         <div className="flex gap-2">
-                                            <div className="flex flex-col w-full gap-0 lg:gap-4 md:gap-2">
+                                            <div className="flex flex-col w-full gap-2">
                                                 {experienceData?.map(
                                                     (experience, index) => (
                                                         <div
@@ -1068,79 +1074,15 @@ const Resume: React.FC = () => {
                                                                     {experience?.isCurrentlyWorking
                                                                         ? "Present"
                                                                         : moment(
-                                                                              experience?.end_experience_date?.toString()
-                                                                          ).format(
-                                                                              "MMMM, YYYY"
-                                                                          )}
+                                                                            experience?.end_experience_date?.toString()
+                                                                        ).format(
+                                                                            "MMMM, YYYY"
+                                                                        )}
                                                                 </p>
                                                             </div>
                                                         </div>
                                                     )
                                                 )}
-
-                                                <PrimaryButton
-                                                    label="+ &nbsp;&nbsp;Add Experience"
-                                                    type="button"
-                                                    onClick={async () => {
-                                                        if (
-                                                            !showExperienceForm
-                                                        ) {
-                                                            setShowExperienceForm(
-                                                                true
-                                                            );
-                                                        } else {
-                                                            const experienceValue =
-                                                                resumeExperienceForm.getValues(
-                                                                    "experiences"
-                                                                );
-                                                            if (
-                                                                !experienceValue.jobTitle ||
-                                                                !experienceValue.jobDescription ||
-                                                                !experienceValue.companyName ||
-                                                                !experienceValue.jobType
-                                                            )
-                                                                return;
-                                                            setExperienceData([
-                                                                ...experienceData,
-                                                                {
-                                                                    ...resumeExperienceForm.getValues(
-                                                                        "experiences"
-                                                                    ),
-                                                                    id: uuidv4(),
-                                                                    jobType:
-                                                                        resumeExperienceForm.getValues(
-                                                                            "experiences"
-                                                                        )
-                                                                            .jobType as JobType,
-                                                                },
-                                                            ]);
-                                                            setShowExperienceForm(
-                                                                false
-                                                            );
-                                                            resumeExperienceForm.reset(
-                                                                {
-                                                                    experiences:
-                                                                        {
-                                                                            jobTitle:
-                                                                                "",
-                                                                            jobDescription:
-                                                                                "",
-                                                                            companyName:
-                                                                                "",
-                                                                            jobType:
-                                                                                null,
-                                                                            start_experience_date:
-                                                                                new Date(),
-                                                                            end_experience_date:
-                                                                                new Date(),
-                                                                        },
-                                                                }
-                                                            );
-                                                        }
-                                                    }}
-                                                    labelStyle="text-black font-semibold"
-                                                    className="bg-[#FFDAE5] w-fit gap-3 mb-4 px-3 py-3"
-                                                />
 
                                                 {showExperienceForm && (
                                                     <div className="flex flex-col gap-2 lg:w-2/4">
@@ -1334,6 +1276,76 @@ const Resume: React.FC = () => {
                                                         </div>
                                                     </div>
                                                 )}
+
+                                                <div className="flex gap-2">
+                                                    <PrimaryButton
+                                                        label={showExperienceForm ? 'Save' : "+ Add Experience"}
+                                                        type="button"
+                                                        onClick={async () => {
+                                                            if (
+                                                                !showExperienceForm
+                                                            ) {
+                                                                setShowExperienceForm(
+                                                                    true
+                                                                );
+                                                            } else {
+                                                                const experienceValue =
+                                                                    resumeExperienceForm.getValues(
+                                                                        "experiences"
+                                                                    );
+                                                                if (
+                                                                    !experienceValue.jobTitle ||
+                                                                    !experienceValue.jobDescription ||
+                                                                    !experienceValue.companyName ||
+                                                                    !experienceValue.jobType
+                                                                )
+                                                                    return;
+                                                                setExperienceData([
+                                                                    ...experienceData,
+                                                                    {
+                                                                        ...resumeExperienceForm.getValues(
+                                                                            "experiences"
+                                                                        ),
+                                                                        id: uuidv4(),
+                                                                        jobType:
+                                                                            resumeExperienceForm.getValues(
+                                                                                "experiences"
+                                                                            )
+                                                                                .jobType as JobType,
+                                                                    },
+                                                                ]);
+                                                                setShowExperienceForm(
+                                                                    false
+                                                                );
+                                                                resumeExperienceForm.reset(
+                                                                    {
+                                                                        experiences:
+                                                                        {
+                                                                            jobTitle:
+                                                                                "",
+                                                                            jobDescription:
+                                                                                "",
+                                                                            companyName:
+                                                                                "",
+                                                                            jobType:
+                                                                                null,
+                                                                            start_experience_date:
+                                                                                new Date(),
+                                                                            end_experience_date:
+                                                                                new Date(),
+                                                                        },
+                                                                    }
+                                                                );
+                                                            }
+                                                        }}
+                                                        labelStyle="text-black font-semibold"
+                                                        className="bg-[#FFDAE5] w-fit gap-3 px-3 py-3"
+                                                    />
+                                                    {showExperienceForm && (
+                                                        <SecondaryButton label="Cancel"
+                                                            className="bg-[#FFDAE5] !w-[6rem]" onClick={() => setShowExperienceForm(false)} />
+                                                    )}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -1363,51 +1375,51 @@ const Resume: React.FC = () => {
                                             {resumeCreateForm.watch(
                                                 "soft_skills"
                                             )?.length > 0 && (
-                                                <div className="flex flex-wrap gap-2 my-2">
-                                                    {resumeCreateForm.watch(
-                                                        "soft_skills"
-                                                    )?.length > 0 ? (
-                                                        resumeCreateForm
-                                                            .watch(
-                                                                "soft_skills"
-                                                            )
-                                                            ?.map(
-                                                                (
-                                                                    skill,
-                                                                    index
-                                                                ) => (
-                                                                    <ChipField
-                                                                        label={
-                                                                            skill
-                                                                        }
-                                                                        key={
-                                                                            index
-                                                                        }
-                                                                        removable
-                                                                        onRemove={() => {
-                                                                            resumeCreateForm.setValue(
-                                                                                "soft_skills",
-                                                                                resumeCreateForm
-                                                                                    .watch(
-                                                                                        "soft_skills"
-                                                                                    )
-                                                                                    .filter(
-                                                                                        (
-                                                                                            item
-                                                                                        ) =>
-                                                                                            item !==
-                                                                                            skill
-                                                                                    )
-                                                                            );
-                                                                        }}
-                                                                    />
+                                                    <div className="flex flex-wrap gap-2 my-2">
+                                                        {resumeCreateForm.watch(
+                                                            "soft_skills"
+                                                        )?.length > 0 ? (
+                                                            resumeCreateForm
+                                                                .watch(
+                                                                    "soft_skills"
                                                                 )
-                                                            )
-                                                    ) : (
-                                                        <></>
-                                                    )}
-                                                </div>
-                                            )}
+                                                                ?.map(
+                                                                    (
+                                                                        skill,
+                                                                        index
+                                                                    ) => (
+                                                                        <ChipField
+                                                                            label={
+                                                                                skill
+                                                                            }
+                                                                            key={
+                                                                                index
+                                                                            }
+                                                                            removable
+                                                                            onRemove={() => {
+                                                                                resumeCreateForm.setValue(
+                                                                                    "soft_skills",
+                                                                                    resumeCreateForm
+                                                                                        .watch(
+                                                                                            "soft_skills"
+                                                                                        )
+                                                                                        .filter(
+                                                                                            (
+                                                                                                item
+                                                                                            ) =>
+                                                                                                item !==
+                                                                                                skill
+                                                                                        )
+                                                                                );
+                                                                            }}
+                                                                        />
+                                                                    )
+                                                                )
+                                                        ) : (
+                                                            <></>
+                                                        )}
+                                                    </div>
+                                                )}
 
                                             <div className="flex items-start gap-2 lg:w-1/2 md:w-1/2">
                                                 <div className="w-3/5 md:w-full">
@@ -1453,9 +1465,9 @@ const Resume: React.FC = () => {
                                                             ).length > 0
                                                                 ? undefined
                                                                 : (resumeCreateForm
-                                                                      .formState
-                                                                      .errors
-                                                                      .soft_skills as FieldError)
+                                                                    .formState
+                                                                    .errors
+                                                                    .soft_skills as FieldError)
                                                         }
                                                     />
                                                 </div>
@@ -1517,51 +1529,51 @@ const Resume: React.FC = () => {
                                             {resumeCreateForm.watch(
                                                 "hard_skills"
                                             )?.length > 0 && (
-                                                <div className="flex flex-wrap gap-2 my-2">
-                                                    {resumeCreateForm.watch(
-                                                        "hard_skills"
-                                                    )?.length > 0 ? (
-                                                        resumeCreateForm
-                                                            .watch(
-                                                                "hard_skills"
-                                                            )
-                                                            ?.map(
-                                                                (
-                                                                    skill,
-                                                                    index
-                                                                ) => (
-                                                                    <ChipField
-                                                                        label={
-                                                                            skill
-                                                                        }
-                                                                        key={
-                                                                            index
-                                                                        }
-                                                                        removable
-                                                                        onRemove={() => {
-                                                                            resumeCreateForm.setValue(
-                                                                                "hard_skills",
-                                                                                resumeCreateForm
-                                                                                    .watch(
-                                                                                        "hard_skills"
-                                                                                    )
-                                                                                    .filter(
-                                                                                        (
-                                                                                            item
-                                                                                        ) =>
-                                                                                            item !==
-                                                                                            skill
-                                                                                    )
-                                                                            );
-                                                                        }}
-                                                                    />
+                                                    <div className="flex flex-wrap gap-2 my-2">
+                                                        {resumeCreateForm.watch(
+                                                            "hard_skills"
+                                                        )?.length > 0 ? (
+                                                            resumeCreateForm
+                                                                .watch(
+                                                                    "hard_skills"
                                                                 )
-                                                            )
-                                                    ) : (
-                                                        <></>
-                                                    )}
-                                                </div>
-                                            )}
+                                                                ?.map(
+                                                                    (
+                                                                        skill,
+                                                                        index
+                                                                    ) => (
+                                                                        <ChipField
+                                                                            label={
+                                                                                skill
+                                                                            }
+                                                                            key={
+                                                                                index
+                                                                            }
+                                                                            removable
+                                                                            onRemove={() => {
+                                                                                resumeCreateForm.setValue(
+                                                                                    "hard_skills",
+                                                                                    resumeCreateForm
+                                                                                        .watch(
+                                                                                            "hard_skills"
+                                                                                        )
+                                                                                        .filter(
+                                                                                            (
+                                                                                                item
+                                                                                            ) =>
+                                                                                                item !==
+                                                                                                skill
+                                                                                        )
+                                                                                );
+                                                                            }}
+                                                                        />
+                                                                    )
+                                                                )
+                                                        ) : (
+                                                            <></>
+                                                        )}
+                                                    </div>
+                                                )}
 
                                             <div className="flex items-start gap-2 lg:w-1/2 md:w-1/2">
                                                 <div className="w-3/5 md:w-full">
@@ -1607,9 +1619,9 @@ const Resume: React.FC = () => {
                                                             ).length > 0
                                                                 ? undefined
                                                                 : (resumeCreateForm
-                                                                      .formState
-                                                                      .errors
-                                                                      .hard_skills as FieldError)
+                                                                    .formState
+                                                                    .errors
+                                                                    .hard_skills as FieldError)
                                                         }
                                                     />
                                                 </div>
@@ -1655,41 +1667,39 @@ const Resume: React.FC = () => {
 
                                             {resumeCreateForm.watch("languages")
                                                 ?.length > 0 && (
-                                                <div className="flex flex-wrap gap-2 my-2">
-                                                    {languageFieldArray?.fields
-                                                        ?.length > 0 ? (
-                                                        languageFieldArray.fields?.map(
-                                                            (skill, index) => (
-                                                                <ChipField
-                                                                    label={`${
-                                                                        skill.language
-                                                                    } | ${
-                                                                        skill?.level
-                                                                            ?.charAt(
-                                                                                0
+                                                    <div className="flex flex-wrap gap-2 my-2">
+                                                        {languageFieldArray?.fields
+                                                            ?.length > 0 ? (
+                                                            languageFieldArray.fields?.map(
+                                                                (skill, index) => (
+                                                                    <ChipField
+                                                                        label={`${skill.language
+                                                                            } | ${skill?.level
+                                                                                ?.charAt(
+                                                                                    0
+                                                                                )
+                                                                                ?.toUpperCase() +
+                                                                            skill?.level
+                                                                                ?.slice(
+                                                                                    1
+                                                                                )
+                                                                                ?.toLowerCase()
+                                                                            }`}
+                                                                        key={index}
+                                                                        removable
+                                                                        onRemove={() =>
+                                                                            languageFieldArray.remove(
+                                                                                index
                                                                             )
-                                                                            ?.toUpperCase() +
-                                                                        skill?.level
-                                                                            ?.slice(
-                                                                                1
-                                                                            )
-                                                                            ?.toLowerCase()
-                                                                    }`}
-                                                                    key={index}
-                                                                    removable
-                                                                    onRemove={() =>
-                                                                        languageFieldArray.remove(
-                                                                            index
-                                                                        )
-                                                                    }
-                                                                />
+                                                                        }
+                                                                    />
+                                                                )
                                                             )
-                                                        )
-                                                    ) : (
-                                                        <></>
-                                                    )}
-                                                </div>
-                                            )}
+                                                        ) : (
+                                                            <></>
+                                                        )}
+                                                    </div>
+                                                )}
 
                                             <div className="flex flex-col w-full gap-4 items-end lg:w-1/2 md:flex-row md:w-3/4">
                                                 <div className="flex gap-2 w-full items-center md:w-4/6">

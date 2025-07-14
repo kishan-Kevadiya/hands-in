@@ -14,12 +14,9 @@ const AuthLayout: React.FC = () => {
                     className="bg-no-repeat bg-contain bg-center lg:flex hidden flex-col justify-items-start items-start h-full rounded-3xl max-w-[50%] aspect-[0.88] bg-primary p-10 text-white"
                 >
                     <div className="w-full h-full flex flex-col gap-6 bg-white/20 backdrop-blur-sm rounded-3xl p-6 tracking-[-1px]">
-                        <p className="text-2xl font-bold leading-12">
-                            Your gateway to endless
-                            <span className="font-extrabold text-[#BE3F63]"> Opportunities</span>
-                            <br />
-                            Let’s find a job you love.
-                        </p>
+                        <h1 className="text-[2.5rem]">
+                            Let’s find a Job you love.
+                        </h1>
                         <div className="w-11/12 h-11/12 flex items-center justify-center">
                             <img
                                 src={AuthBanner}

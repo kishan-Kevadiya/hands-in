@@ -222,17 +222,12 @@ const Support: React.FC = () => {
                                     Contact us
                                 </p>
                                 <Link
-                                    to={"tel:+91 7861944202"}
+                                    to={"tel:+91 9773497763"}
                                     className="text-black md:text-sm text-xs font-medium"
                                 >
-                                    +91-78619 44202
+                                    +91-97734 97763
                                 </Link>
-                                <Link
-                                    to={"tel:+91 8866929832"}
-                                    className="text-black md:text-sm text-xs font-medium"
-                                >
-                                    +91-88669 29832
-                                </Link>
+                                
                             </div>
                         </div>
                     </div>
