@@ -9,7 +9,8 @@ export const QUERY_KEYS = Object.freeze({
     USERS: "admin-users",
     ROLES: "admin-roles",
   },
-  RECRUITER: { // changed from COMPANY to RECRUITER
+  RECRUITER: {
+    // changed from COMPANY to RECRUITER
     ALL: "recruiter-all",
     ONE: "recruiter-one",
     COUNT: "recruiter-count",
@@ -17,7 +18,7 @@ export const QUERY_KEYS = Object.freeze({
   },
   JOBS: {
     COUNT_BY_TITLE: "count-by-title",
-    COUNT_BY_DATE: "count-by-date"
+    COUNT_BY_DATE: "count-by-date",
   },
   USER: {
     ALL: "users-all",
@@ -56,10 +57,9 @@ export const QUERY_KEYS = Object.freeze({
   FINANCES: {
     READ: "finances-read",
     CREATE: "finances-create",
-    ANALYTICS: "finances-analytics"
-  }
+    ANALYTICS: "finances-analytics",
+  },
 });
-
 
 export const ACTIONS = Object.freeze({
   recruiter: {
@@ -118,18 +118,17 @@ export const ACTIONS = Object.freeze({
   },
   reviews: {
     read: "reviews.read",
-  }
+  },
 });
-
 
 // PHone types
 export const PhoneTypes = ["personal", "office", "whatsapp", "other"];
 
 export const TransactionType = ["expense", "revenue"];
 
+export const PriorityTypes = ["high", "medium", "low"];
+
 // ** Assets ** //
 export const ASSETS = Object.freeze({
   RESUMES: "assets/resumes",
 });
-
-

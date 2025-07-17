@@ -24,7 +24,7 @@ export type Company = {
   isOnboardingCompleted: boolean;
   createdAt: string;
   updatedAt: string;
-  actions?: string
+  actions?: string;
 };
 
 const columnHelper = createColumnHelper<Company>();
@@ -101,30 +101,31 @@ export const companyColumns = (
       header: "Actions",
       cell: (info) => {
         const { id } = info.row.original;
-        return <>
-          <Show when={hasPermission(ACTIONS.recruiter.delete)} >
-            <span
-              class="delete-icon"
-              onClick={() => {
-                deleteActionSubject.next(id);
-              }}
-              style={{ cursor: "pointer" }}
-            >
-              <DeleteIcon />
-            </span>
-          </Show>
-        </>
-      }
-    }
-    ),
-  ]
-}
-
+        return (
+          <>
+            <Show when={hasPermission(ACTIONS.recruiter.delete)}>
+              <span
+                class="delete-icon"
+                onClick={() => {
+                  deleteActionSubject.next(id);
+                }}
+                style={{ cursor: "pointer" }}
+              >
+                <DeleteIcon />
+              </span>
+            </Show>
+          </>
+        );
+      },
+    }),
+  ];
+};
 
 export type Recruiter = {
   id: number;
   name: string;
   email: string;
+  priority: string;
   description: string;
   address: string;
   requirementCount: number;
@@ -134,9 +135,7 @@ export type Recruiter = {
 
 const recruiterColumnHelper = createColumnHelper<Recruiter>();
 
-export const recruiterColumns = (
-  deleteActionSubject: Subject<number>, 
-) => {
+export const recruiterColumns = (deleteActionSubject: Subject<number>) => {
   const { hasPermission } = useAuth();
   return [
     recruiterColumnHelper.accessor((row) => row, {
@@ -147,9 +146,7 @@ export const recruiterColumns = (
         return (
           <A href={`/manual-recruiter/${row.id}`}>
             <p class="font-bold">{row.name}</p>
-            <p>
-              {row.email}
-            </p>
+            <p>{row.email}</p>
           </A>
         );
       },
@@ -164,6 +161,21 @@ export const recruiterColumns = (
       cell: (info) => <span>{info.getValue()}</span>,
     }),
 
+    recruiterColumnHelper.accessor("priority", {
+      header: "Priority",
+      cell: (info) => {
+        const value = info.getValue();
+
+        const badgeForPriority: { [key: string]: any } = {
+          low: <Badge.Info>Low</Badge.Info>,
+          medium: <Badge.Success>Medium</Badge.Success>,
+          high: <Badge.Danger>High</Badge.Danger>,
+        };
+
+        return badgeForPriority[value] || "--";
+      },
+    }),
+
     recruiterColumnHelper.accessor("requirementCount", {
       header: "No. Requirements",
       cell: (info) => <span>{info.getValue()}</span>,
@@ -176,19 +188,22 @@ export const recruiterColumns = (
       header: "Created At",
       cell: (info) => {
         const { id } = info.row.original;
-        return <>
-          <Show when={hasPermission(ACTIONS.manualRecruiter.delete)} >
-            <span
-              class="delete-icon"
-              onClick={() => {
-                deleteActionSubject.next(id)
-              }}
-              style={{ cursor: "pointer" }}
-            >
-              <DeleteIcon />
-            </span>
-          </Show>
-        </>
+        return (
+          <>
+            <Show when={hasPermission(ACTIONS.manualRecruiter.delete)}>
+              <span
+                class="delete-icon"
+                onClick={() => {
+                  deleteActionSubject.next(id);
+                }}
+                style={{ cursor: "pointer" }}
+              >
+                <DeleteIcon />
+              </span>
+            </Show>
+          </>
+        );
       },
-    })]
-}
+    }),
+  ];
+};

@@ -781,7 +781,7 @@ const Resume: React.FC = () => {
                                                         register={resumeEducationForm.register(
                                                             `educations.schoolName`
                                                         )}
-                                                        placeholder="School Name"
+                                                        placeholder="School Name*"
                                                         errorMsg={
                                                             resumeEducationForm
                                                                 .formState
@@ -799,7 +799,7 @@ const Resume: React.FC = () => {
                                                         render={({ field }) => (
                                                             <SelectField
                                                                 {...field}
-                                                                placeholder="Select here"
+                                                                placeholder="Select here*"
                                                                 options={
                                                                     qualificationList?.qualifications?.map(
                                                                         (
@@ -825,7 +825,7 @@ const Resume: React.FC = () => {
                                                         register={resumeEducationForm.register(
                                                             `educations.course`
                                                         )}
-                                                        placeholder="Course"
+                                                        placeholder="Course*"
                                                         errorMsg={
                                                             resumeEducationForm
                                                                 .formState
@@ -854,7 +854,7 @@ const Resume: React.FC = () => {
                                                                         register={
                                                                             field
                                                                         }
-                                                                        placeholder="Start Date"
+                                                                        placeholder="Start Date*"
                                                                         dateFormat="dd/mm/yy"
                                                                         value={
                                                                             field.value
@@ -898,7 +898,7 @@ const Resume: React.FC = () => {
                                                                             register={
                                                                                 field
                                                                             }
-                                                                            placeholder="End Date"
+                                                                            placeholder="End Date*"
                                                                             dateFormat="dd/mm/yy"
                                                                             value={
                                                                                 field.value
@@ -1090,7 +1090,7 @@ const Resume: React.FC = () => {
                                                             register={resumeExperienceForm.register(
                                                                 `experiences.jobTitle`
                                                             )}
-                                                            placeholder="Job Title"
+                                                            placeholder="Job Title*"
                                                             errorMsg={
                                                                 resumeExperienceForm
                                                                     .formState
@@ -1104,7 +1104,7 @@ const Resume: React.FC = () => {
                                                                 `experiences.jobDescription`
                                                             )}
                                                             rows={3}
-                                                            placeholder="Enter here"
+                                                            placeholder="Enter here*"
                                                             errorMsg={
                                                                 resumeExperienceForm
                                                                     .formState
@@ -1117,7 +1117,7 @@ const Resume: React.FC = () => {
                                                             register={resumeExperienceForm.register(
                                                                 `experiences.companyName`
                                                             )}
-                                                            placeholder="Company Name"
+                                                            placeholder="Company Name*"
                                                             errorMsg={
                                                                 resumeExperienceForm
                                                                     .formState
@@ -1137,7 +1137,7 @@ const Resume: React.FC = () => {
                                                             }) => (
                                                                 <SelectField
                                                                     {...field}
-                                                                    placeholder="Select here"
+                                                                    placeholder="Select here*"
                                                                     options={[
                                                                         {
                                                                             label: "Full Time",
@@ -1182,7 +1182,7 @@ const Resume: React.FC = () => {
                                                                             register={
                                                                                 field
                                                                             }
-                                                                            placeholder="Start Date"
+                                                                            placeholder="Start Date*"
                                                                             dateFormat="dd/mm/yy"
                                                                             value={
                                                                                 field.value
@@ -1221,7 +1221,7 @@ const Resume: React.FC = () => {
                                                                                 register={
                                                                                     field
                                                                                 }
-                                                                                placeholder="End Date"
+                                                                                placeholder="End Date*"
                                                                                 dateFormat="dd/mm/yy"
                                                                                 value={
                                                                                     field.value

@@ -15,6 +15,10 @@
         font-size: 0.8rem;
     }
 
+    .custom-input:is(textarea) {
+        padding-block: 0.5rem;
+        height: auto;
+    }
 
     .custom-input {
         padding: 0.25rem 0.75rem;
@@ -70,7 +74,6 @@
             vertical-align: middle;
         }
     }
-
 }
 
 .custom-checkbox-group {
@@ -173,9 +176,10 @@
     background-color: var(--bg-color);
     color: var(--t-color);
     cursor: pointer;
-    transition: background 0.2s,
-    box-shadow 0.2s,
-    color 0.2s;
+    transition:
+        background 0.2s,
+        box-shadow 0.2s,
+        color 0.2s;
 
     &:hover,
     &:focus {
@@ -294,11 +298,11 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
-        input:checked+.switch-slider {
+        input:checked + .switch-slider {
             background-color: var(--color-primary);
         }
 
-        input:checked+.switch-slider:before {
+        input:checked + .switch-slider:before {
             transform: translateX(19px);
         }
     }
@@ -330,7 +334,6 @@
         border-radius: 0.375rem;
         box-shadow: 0 1px 2px 0 #0000000d;
 
-
         &.error {
             border-color: var(--color-danger);
         }
@@ -339,12 +342,10 @@
     .ql-editor-container:focus-within {
         outline: 4px solid var(--ring-color);
 
-
         &.error {
             border-color: var(--color-danger);
             outline-color: var(--ring-color-danger);
         }
-
     }
 }
 

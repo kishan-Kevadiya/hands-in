@@ -10,7 +10,7 @@
     --text-secondary-color: #757575;
     --sidebar-bg: #f4f7f8;
 
-    --ring-color: oklch(96.7% .003 264.542);
+    --ring-color: rgba(0, 0, 0, 0.06);
     --ring-color-danger: rgba(255, 59, 63, 0.2); /* #ff3b3f,  */
 
     --color-primary: #3d1660;
@@ -21,14 +21,13 @@
     --color-info: #4d4dff;
 
     --color-success: #008000;
-    --color-danger: #DD2D4A;
-    --color-warning: #FFC300;
+    --color-danger: #dd2d4a;
+    --color-warning: #ffc300;
 
-
-    --color-purple: #8338EC;
+    --color-purple: #8338ec;
 
     --border-color: rgba(0, 0, 0, 0.09);
-    --border-color-dark: oklch(87.1% .006 286.286);
+    --border-color-dark: oklch(87.1% 0.006 286.286);
 
     --font-size-xs: 0.75rem;
     --font-size-sm: 0.875rem;

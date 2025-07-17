@@ -11,7 +11,7 @@ import {
   Match,
   batch,
   Switch,
-  Index
+  Index,
 } from "solid-js";
 
 import { A, useNavigate } from "@solidjs/router";
@@ -131,12 +131,15 @@ function PasswordInput(props: InputProps) {
         type={type()}
         {...others}
       />
-      <span class="eye-icon" onClick={() => {
-        batch(() => {
-          setHide(prev => !prev);
-          setType(type() === "password" ? "text" : "password");
-        })
-      }}>
+      <span
+        class="eye-icon"
+        onClick={() => {
+          batch(() => {
+            setHide((prev) => !prev);
+            setType(type() === "password" ? "text" : "password");
+          });
+        }}
+      >
         <Switch>
           <Match when={hide()}>
             <OpenEyeIcon />
@@ -159,14 +162,16 @@ function Select(props: SelectProps) {
     "class",
     "id",
     "value",
-    "onChange"
+    "onChange",
   ]);
 
-
-  console.log(local.value)
   return (
     <div class={containerBase}>
-      {local.label && <label for={local.id} class={labelBase}>{local.label}</label>}
+      {local.label && (
+        <label for={local.id} class={labelBase}>
+          {local.label}
+        </label>
+      )}
       <select
         id={local.id}
         class={`${inputBase} ${local.class ?? ""}`}
@@ -175,7 +180,11 @@ function Select(props: SelectProps) {
         {...others}
       >
         <Index each={local.options}>
-          {(opt) => <option value={opt().value} selected={local.value === opt().value}>{opt().label}</option>}
+          {(opt) => (
+            <option value={opt().value} selected={local.value === opt().value}>
+              {opt().label}
+            </option>
+          )}
         </Index>
       </select>
       {local.error && <ErrorMessage error={local.error} />}
@@ -426,7 +435,6 @@ type TextareaProps = JSX.TextareaHTMLAttributes<HTMLTextAreaElement> & {
 };
 
 // const textareaBase = "custom-textarea";
-
 function Textarea(props: TextareaProps) {
   const [local, others] = splitProps(props, [
     "label",
@@ -459,7 +467,10 @@ function Textarea(props: TextareaProps) {
 function SelectInputCombo(props: { children: JSX.Element; error?: string }) {
   return (
     <>
-      <div class="select-input-combo" classList={{ error: props.error ? true : false }}>
+      <div
+        class="select-input-combo"
+        classList={{ error: props.error ? true : false }}
+      >
         {props.children}
       </div>
     </>
@@ -478,5 +489,5 @@ export const FormFields = {
   QuillEditor,
   Textarea,
   PasswordInput,
-  SelectInputCombo
+  SelectInputCombo,
 };
