@@ -7,45 +7,63 @@ import { FormFields } from "@components/form";
 import { QUERY_KEYS } from "@utils/constants";
 import RequirementTable from "./requirements/RequirementTable";
 
+import "../styles.css";
+import { renderBadgeForPriority } from "../../columns";
+
+
 const ManualRecruiterDetails = (props: { data: any }) => {
     const { data } = props;
     return (
-        <div
-            style={{
-                display: "grid",
-                "grid-template-columns": "1fr 2fr",
-                gap: "1rem",
-                "align-items": "center",
-            }}
-            class="card"
-        >
-            <div class="fw-600">Name</div>
-            <div>{data.name || "-"}</div>
+        <div class="details card">
+            <div class="grid-item">
+                <small>Name</small>
+                <p>{data.name}</p>
+            </div>
 
-            <div class="fw-600">Email</div>
-            <div>{data.email || "-"}</div>
+             <div class="grid-item">
+                <small>Email</small>
+                <p>{data.email || "--"}</p>
+            </div>
+            
+             {/* -- Description -- */}
+            <div class="grid-item">
+                <small>Description</small>
+                <p>{data.description || "-"}</p>
+            </div>
 
-            <div class="fw-600">Description</div>
-            <div>{data.description || "-"}</div>
+            {/* -- Address -- */}
+            <div class="grid-item">
+                <small>Address</small>
+                <p>{data.address || "-"}</p>
+            </div>
 
-            <div class="fw-600">Address</div>
-            <div>{data.address || "-"}</div>
+             <div class="grid-item">
+                <small>Priority</small>
+                <p>{renderBadgeForPriority[data.priority]}</p>
+            </div>
 
-            <div class="fw-600">Created At</div>
-            <div>{getDateTime(data.createdAt) || "-"}</div>
+            {/* -- Created At -- */}
+            <div class="grid-item">
+                <small>Created At</small>
+                <p>{getDateTime(data.createdAt) || "-"}</p>
+            </div>
 
-            <div class="fw-600">Phones</div>
-            <div>
-                <Show when={data.phones?.length}>
-                    <ul style={{ margin: 0, padding: 0, "list-style": "none" }}>
-                        {data.phones.map((p: any) => (
-                            <li>
-                                <span class="fw-600">{p.phoneType}:</span> {p.phone}
-                            </li>
-                        ))}
-                    </ul>
-                </Show>
-                <Show when={!data.phones?.length}>-</Show>
+            {/* -- Phones -- */}
+            <div class="grid-item">
+                <small>Phones</small>
+                {/* Using a div here instead of h2 for better list formatting */}
+                <div>
+                    <Show when={data.phones?.length}>
+                        <ul style={{ margin: 0, padding: 0, "list-style": "none" }}>
+                            {data.phones.map((p: any) => (
+                                <li> 
+                                    <p><small>{p.phoneType.toUpperCase()}:</small> {p.phone}</p>
+                                </li>
+                            ))}
+                        </ul>
+                    </Show>
+                    <Show when={!data.phones?.length}>-</Show>
+                </div>
             </div>
         </div>
     );
@@ -63,7 +81,7 @@ const ManualRecruiterView = () => {
     }));
 
     return (
-        <div>
+        <div class="manual-recruiter-detail-page">
             <div class="d-flex align-center gap-2 card p-3">
                 <FormFields.BackButton />
                 <h3>Manual Recruiter Details</h3>

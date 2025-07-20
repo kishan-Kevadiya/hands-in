@@ -8,6 +8,36 @@
     }
 }
 
+.manual-recruiter-detail-page {
+    .details {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1rem;
+
+        .grid-item {
+            small {
+                font-weight: 600;
+            }
+
+            p {
+                font-size: var(--font-size-sm);
+            }
+        }
+    }
+}
+
+.add-requirement-page {
+    .form {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.5rem;
+
+        .quill-editor-description {
+            grid-column: 1 / -1;
+        }
+    }
+}
+
 .resume-list-page {
     .resume-card-page {
         margin-bottom: 1rem;
@@ -26,17 +56,27 @@
 
 
         .comments-section {
-            height: 300px;
-            display: flex;
+
+            height: 200px;
+            display: grid;
+            grid-template-columns: 7fr 3fr;
             gap: 1rem;
-            position: relative;
 
             .comment-form {
-                position: absolute;
+
+                /* position: absolute;
                 bottom: 0;
                 left: 0;
                 right: 0;
-                flex: 1;
+                flex: 1; */
+                textarea {
+                    min-height: 10rem;
+
+                }
+
+                .custom-form-group {
+                    margin-bottom: 0.5rem;
+                }
 
 
                 .date-container .custom-form-group {
@@ -46,8 +86,21 @@
             }
 
             .comments {
-                height: 70%;
-                flex: 1;
+                background-color: rgba(0, 0, 0, 0.02);
+                padding: 0.5rem;
+                border-radius: 1rem;
+
+                .comment-one-page {
+                    border-radius: 1rem;
+                    height: 185px;
+                    .comment-container {
+                        background-color: rgba(255, 255, 255, 0.9);
+
+                        .comment {
+                            font-size: var(--font-size-sm);
+                        }
+                    }
+                }
             }
         }
 
@@ -76,10 +129,26 @@
 }
 
 .requirements-view-page {
-    display: flex;
-    gap: 1rem;
 
-    .resume-list-page {
-        flex: 1;
+    .custom-form-group {
+        margin-bottom: 0;
+    }
+
+    .requirement-detail-card {
+        dl {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1rem;
+
+            .grid-item {
+                dt {
+                    font-weight: 600;
+                }
+
+                p {
+                    font-size: var(--font-size-sm);
+                }
+            }
+        }
     }
 }

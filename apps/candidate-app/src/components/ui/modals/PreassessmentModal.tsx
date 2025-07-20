@@ -45,7 +45,7 @@ const PreassessmentModal: React.FC<PreassessmentModalProps> = ({
         <Dialog
             visible={visible}
             modal
-            onHide={() => {}}
+            onHide={() => { }}
             onClick={(e) => {
                 e.stopPropagation();
             }}
@@ -75,9 +75,20 @@ const PreassessmentModal: React.FC<PreassessmentModalProps> = ({
                             <br className="hidden md:block" />
                             <span className="inline-flex">
                                 <Star />
-                            {"\u00A0"} Preassessment!
+                                {"\u00A0"} Preassessment!
                             </span>
                         </div>
+
+                        <div className="flex items-center gap-2">
+                            <span>
+                              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 4a8 8 0 1 0 0 16 8 8 0 0 0 0-16zM2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12zm10-6a1 1 0 0 1 1 1v4.586l2.707 2.707a1 1 0 0 1-1.414 1.414l-3-3A1 1 0 0 1 11 12V7a1 1 0 0 1 1-1z" fill="#DF6789"/>
+                              </svg>
+                            </span>
+
+                            <h3 className="text-2xl"><span className="font-bold">4</span> mins</h3>
+                        </div>
+
                         <p className="text-[#424242] text-base text-center font-medium">
                             Taking the test is mandatory to apply for any job.
                         </p>
@@ -104,7 +115,7 @@ const PreassessmentModal: React.FC<PreassessmentModalProps> = ({
                             ))}
                         </div>
 
-                        {(selectedChoice?.canGiveTest === undefined || selectedChoice?.canGiveTest)  ? (
+                        {(selectedChoice?.canGiveTest === undefined || selectedChoice?.canGiveTest) ? (
                             <div className="flex w-full items-center justify-center gap-4">
                                 {/* <div className="w-2/5">
                                     <SecondaryButton

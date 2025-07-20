@@ -33,8 +33,6 @@ const BrowseJobs: React.FC = () => {
     }
 
     const [visible, setVisible] = useState(false);
-    const [role, setRole] = useState<RoleTable>();
-    const [experienceYear, setExperienceYear] = useState<number>(0);
 
     const browseJobForm = useForm<BrowseJobsSchema>({
         defaultValues: {
@@ -44,19 +42,19 @@ const BrowseJobs: React.FC = () => {
         resolver: zodResolver(browseJobsSchema),
     });
 
-    const { append: appendRole, remove: removeRole } = useFieldArray({
+    const { fields, append: appendRole, remove: removeRole, update: updateRole } = useFieldArray({
         control: browseJobForm.control,
         name: "roles",
     });
 
     const onSubmit = async (data: BrowseJobsSchema) => {
-        if (data.roles?.length === 0) {
-            showToast("error", "Please select at least one role");
+        if (!data.roles.every((role) => role.roleName)) {
+            showToast("error", "Please select at least one role or fill all the fields");
             return;
         }
         try {
             const formData = new FormData();
-            data.roles?.map((role, index) => {
+            data.roles?.forEach((role, index) => {
                 formData.append(`roles[${index}][roleId]`, role.roleId);
                 formData.append(
                     `roles[${index}][experience]`,
@@ -81,17 +79,29 @@ const BrowseJobs: React.FC = () => {
     });
 
     useEffect(() => {
+        removeRole([0, 1, 2]);
+        appendRole({
+            roleId: "",
+            experience: 0,
+            roleName: "",
+        })
+    }, [])
+
+    useEffect(() => {
         if (ProfileDetails.data) {
             const rolesData = ProfileDetails.data?.tests?.map((role) => ({
                 roleId: role?.roleId,
                 roleName: role?.roleName,
-                experience: role?.experience,
+                // Assuming API returns experience that needs conversion for the slider (0-100)
+                // If API already provides the slider value, no conversion is needed.
+                experience: role?.experience ? role.experience * 3.34 : 0,
                 canGiveTest: role?.canGiveTest,
                 canGiveTestDaysAfter: role?.canGiveTestDaysAfter,
             }));
             browseJobForm.setValue("roles", rolesData);
         }
-    }, [ProfileDetails.data]);
+    }, [ProfileDetails.data, browseJobForm]);
+
 
     return (
         <div className="relative bg-gradient-to-tr from-[#FFB2DF]/50 to-[#E9D0FF]/50 flex items-center justify-center h-screen lg:py-10 lg:px-14 md:p-6 p-4">
@@ -117,64 +127,70 @@ const BrowseJobs: React.FC = () => {
                 </h1>
 
                 <p className="text-center lg:text-base text-sm text-[#8B8B8B] font-medium md:leading-8 leading-6">
-                    Here, you enter your experience for the assessment test.{" "}
+                    Here, you enter your experience for the assessment test. It will take hardly <strong className="text-[#000]">4</strong> mins.{" "}
                     <br className="hidden md:block" /> The company can view both
                     your profile experience and assessment experience.
                 </p>
 
                 <div className=" flex flex-col gap-4 border border-[#EAEAEA] p-6 rounded-2xl lg:w-1/2 md:w-11/12 w-full">
-                    <div className="flex md:flex-row flex-col gap-6 w-full">
-                        <div className="md:w-1/2 flex flex-col gap-4">
-                            <AuthLabel
-                                labelStyle="text-black font-medium"
-                                label="You may choose up to 3 roles!"
-                            />
-                            <SelectField
-                                // filter
-                                label="Role:"
-                                placeholder="Search here"
-                                errorMsg={
-                                    browseJobForm.formState.errors.roles?.[0]
-                                        ?.roleName
-                                }
-                                optionLabel="title"
-                                options={roleList?.roles
-                                    .filter(
-                                        (role: RoleTable) =>
-                                            !browseJobForm
-                                                .watch("roles")
-                                                ?.map((role) => role.roleId)
-                                                .includes(role.id)
-                                    )
-                                    .map((role: RoleTable) => ({
-                                        title: role.title,
-                                        id: role.id,
-                                    }))}
-                                filter
-                                filterPlaceholder="Search here"
-                                virtualScrollerOptions={{ itemSize: 38 }}
-                                value={role}
-                                onChange={(e) => {
-                                    setRole({
-                                        id: e.value.id,
-                                        title: e.value.title,
-                                    });
-                                }}
-                            />
+                    <AuthLabel
+                        labelStyle="text-black font-medium"
+                        label={"You may choose up to 3 roles!"}
+                    />
+                    {fields.map((item, index) => (
+                        <div key={item.id} className="flex md:flex-row flex-col gap-6 w-full">
+                            <div className="md:w-1/2 flex flex-col gap-4">
+
+                                <SelectField
+                                    label="Role:"
+                                    placeholder="Search here"
+                                    errorMsg={
+                                        browseJobForm.formState.errors.roles?.[index]
+                                            ?.roleName
+                                    }
+                                    name={`roles.${index}.roleName`}
+                                    optionLabel="title"
+                                    options={roleList?.roles
+                                        .filter(
+                                            (role: RoleTable) =>
+                                                !browseJobForm
+                                                    .watch("roles")
+                                                    ?.map((r) => r.roleId)
+                                                    .includes(role.id) || item.roleId === role.id
+                                        )
+                                        .map((role: RoleTable) => ({
+                                            title: role.title,
+                                            id: role.id,
+                                        }))}
+                                    filter
+                                    filterPlaceholder="Search here"
+                                    virtualScrollerOptions={{ itemSize: 38 }}
+                                    value={{ id: item.roleId, title: item.roleName }}
+                                    onChange={(e) => {
+                                        if (e?.value) {
+                                            updateRole(index, {
+                                                ...item,
+                                                roleId: e.value.id,
+                                                roleName: e.value.title,
+                                            });
+                                        }
+                                    }}
+                                />
+                            </div>
+                            <div className="md:w-1/2 -mt-4">
+                                <SliderField
+                                    value={item.experience}
+                                    label="Experience"
+                                    onChange={(e) => {
+                                        updateRole(index, {
+                                            ...item,
+                                            experience: e.value as number
+                                        });
+                                    }}
+                                />
+                            </div>
                         </div>
-                        <div className="md:w-1/2">
-                            <AuthLabel
-                                labelStyle="text-[#8B8B8B] font-medium"
-                                label="Experience"
-                            />
-                            <SliderField
-                                value={experienceYear}
-                                onChange={(e) => {
-                                    setExperienceYear(e.value as number);
-                                }}
-                            />
-                        </div>
-                    </div>
+                    ))}
                     <div className="flex items-center justify-center">
                         {browseJobForm.watch("roles")!.length >= 3 ? (
                             <p className="text-primary font-bold">
@@ -183,22 +199,14 @@ const BrowseJobs: React.FC = () => {
                         ) : (
                             <SecondaryButton
                                 onClick={() => {
-                                    if (
-                                        role?.id &&
-                                        role?.title &&
-                                        experienceYear >= 0
-                                    ) {
-                                        appendRole({
-                                            roleId: role?.id ?? "",
-                                            roleName: role?.title ?? "",
-                                            experience: experienceYear,
-                                        });
-                                        setRole({ id: "", title: "" });
-                                        setExperienceYear(0);
-                                    }
+                                    appendRole({
+                                        roleId: "",
+                                        roleName: "",
+                                        experience: 0, // Default slider value
+                                    });
                                 }}
                                 customStyle="text-primary md:w-1/5 w-1/2"
-                                label="Add"
+                                label="Add Role"
                             />
                         )}
                     </div>

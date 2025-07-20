@@ -18,6 +18,11 @@ const create = async (data: any) => {
     return response.data;
 };
 
+const updateRecruiter = async  (id: number, data: any) => {
+    const response = await api.put("/manual-recruiters?id="+id, data);
+    return response.data;
+};
+
 const remove = async (id: number) => {
     const response = await api.delete("/manual-recruiters/" + id);
     return response.data;
@@ -94,6 +99,7 @@ export const manualRecruitersApis = {
     addResumeToRequirement,
     getResumesWithCommentsByRequirementId,
     addResume,
+    updateRecruiter,
     addCommentToResume,
     getCommentsByResumeId
 };

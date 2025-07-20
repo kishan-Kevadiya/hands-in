@@ -29,7 +29,7 @@ const JobCard: React.FC<{ data: JobTable }> = ({ data }) => {
             }}
             onClick={() => {
                 if (data.id) {
-                    navigate(`/jobs/${data?.id}`);
+                    navigate(`/jobs/${data.id}/applications`);
                     queryClient.removeQueries({
                         queryKey: [USE_QUERY_KEYS.GET_ONE_JOB],
                     });
@@ -149,7 +149,7 @@ const JobCard: React.FC<{ data: JobTable }> = ({ data }) => {
                                                 .toLowerCase()}
                                         :
                                         <span className="text-[#393939] font-medium">
-                                            &nbsp;{" "}
+                                            {" "}
                                             {languages.proficiency
                                                 .charAt(0)
                                                 .toUpperCase() +

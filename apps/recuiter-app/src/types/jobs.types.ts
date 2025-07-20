@@ -97,10 +97,10 @@ export interface CreateAndUpdateJobRequest {
     description?: string;
     jobType: JobType;
     vacancy: number;
-    minimumSalary: number | null;
-    maximumSalary: number | null;
+    minimumSalary: number | null | undefined;
+    maximumSalary: number | null | undefined;
     salaryPeriod: SalaryPeriod;
-    incentiveAmount: number | null;
+    incentiveAmount: number | null | undefined;
     incentivePeriod: IncentivePeriod;
     expiry: string;
     experience: number;

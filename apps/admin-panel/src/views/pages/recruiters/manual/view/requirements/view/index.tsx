@@ -17,6 +17,11 @@ type Requirement = {
     title: string;
     address: string;
     paymentStatus: string;
+    salaryMax: number;
+    salaryMin: number;
+    workType: string;
+    gender: string;
+    priority: string;
     createdAt: string;
     updatedAt: string;
 };
@@ -33,31 +38,63 @@ const RequirementDetails: Component<{ requirement: Requirement }> = (props) => {
                 <FormFields.BackButton />
                 <h3 id="requirement-details-heading">Requirement Details</h3>
             </header>
-            <dl
-                style={{
-                    display: "grid",
-                    "grid-template-columns": "1fr 2fr",
-                    gap: "1rem",
-                    "align-items": "center",
-                }}
-                class="card"
-            >
-                <dt class="fw-600">Title</dt>
-                <dd>{requirement.title}</dd>
+            <dl class="card ">
+                <div class="grid-item">
+                    <small class="fw-600">Title</small>
+                    <p>{requirement.title}</p>
+                </div>
 
-                <dt class="fw-600">Address</dt>
-                <dd>{requirement.address}</dd>
+                <div class="grid-item">
+                    <small class="fw-600">Address</small>
+                    <p>{requirement.address}</p>
+                </div>
 
-                <dt class="fw-600">Payment Status</dt>
-                <dd>
-                    {requirement.paymentStatus === "paid" ? <Badge.Success>Paid</Badge.Success> : <Badge.Danger> Unpaid</Badge.Danger>}
-                </dd>
+                <div class="grid-item">
+                    <small class="fw-600">Payment Status</small>
+                    <p>
+                        {requirement.paymentStatus === "paid" ? <Badge.Success>Paid</Badge.Success> : <Badge.Danger> Unpaid</Badge.Danger>}
+                    </p>
+                </div>
 
-                <dt class="fw-600">Created At</dt>
-                <dd>{getDateTime(requirement.createdAt)}</dd>
+                {/* -- Salary Range -- */}
+                <div class="grid-item">
+                    <small>Salary Range (LPA)</small>
+                    <p>{requirement.salaryMin && requirement.salaryMax ? `${requirement.salaryMin / 100000} - ${requirement.salaryMax / 100000}` : "-"}</p>
+                </div>
 
-                <dt class="fw-600">Updated At</dt>
-                <dd>{getDateTime(requirement.updatedAt)}</dd>
+                {/* -- Priority -- */}
+                <div class="grid-item">
+                    <small>Priority</small>
+                    <p>{requirement.priority || "-"}</p>
+                </div>
+
+                {/* -- Gender -- */}
+                <div class="grid-item">
+                    <small>Gender</small>
+                    <p>{requirement.gender || "-"}</p>
+                </div>
+
+                {/* -- Work Type -- */}
+                <div class="grid-item">
+                    <small>Work Type</small>
+                    <p>{requirement.workType || "-"}</p>
+                </div>
+
+                {/* -- Payment Status -- */}
+                <div class="grid-item">
+                    <small>Payment Status</small>
+                    <p>{requirement.paymentStatus || "-"}</p>
+                </div>
+
+                <div class="grid-item">
+                    <small class="fw-600">Updated At</small>
+                    <p>{getDateTime(requirement.updatedAt)}</p>
+                </div>
+
+                <div class="grid-item">
+                    <small class="fw-600">Created At</small>
+                    <p>{getDateTime(requirement.createdAt)}</p>
+                </div>
             </dl>
         </section>
     );

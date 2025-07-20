@@ -6,7 +6,10 @@ import { DeleteIcon } from "@icons/index";
 import { Subject } from "rxjs"; // Import Subject
 import { Show } from "solid-js";
 import { useAuth } from "@helpers/contexts/Auth";
-import { ACTIONS } from "@utils/constants";
+import { ACTIONS, PriorityTypes } from "@utils/constants";
+import { FormFields } from "@components/form";
+import { useMutation } from "@tanstack/solid-query";
+import { manualRecruitersApis } from "@helpers/apis/manual_recruiters";
 
 export type Company = {
   id: string;
@@ -135,6 +138,13 @@ export type Recruiter = {
 
 const recruiterColumnHelper = createColumnHelper<Recruiter>();
 
+
+export const renderBadgeForPriority: { [key: string]: any } = ({
+  low: <Badge.Info>Low</Badge.Info>,
+  medium: <Badge.Success>Medium</Badge.Success>,
+  high: <Badge.Danger>High</Badge.Danger>,
+});
+
 export const recruiterColumns = (deleteActionSubject: Subject<number>) => {
   const { hasPermission } = useAuth();
   return [
@@ -163,17 +173,28 @@ export const recruiterColumns = (deleteActionSubject: Subject<number>) => {
 
     recruiterColumnHelper.accessor("priority", {
       header: "Priority",
-      cell: (info) => {
+      cell: info => {
         const value = info.getValue();
 
-        const badgeForPriority: { [key: string]: any } = {
-          low: <Badge.Info>Low</Badge.Info>,
-          medium: <Badge.Success>Medium</Badge.Success>,
-          high: <Badge.Danger>High</Badge.Danger>,
+        const updateRecruiterMutatin = useMutation(() => ({
+          mutationFn: (data: { priority: string }) => manualRecruitersApis.updateRecruiter(info.row.original.id, data),
+        }));
+
+        const handleChange = async (e: Event) => {
+          const newValue = (e.target as HTMLSelectElement).value;
+          await updateRecruiterMutatin.mutateAsync({ priority : newValue})
         };
 
-        return badgeForPriority[value] || "--";
-      },
+        return (
+          <div class="d-flex align-center gap-1">
+            <FormFields.Select id="update-status" name="" value={value} options={PriorityTypes.map((p) => ({
+              value: p,
+              label: p.toLocaleUpperCase(),
+            }))} onChange={handleChange} />
+
+          </div>
+        );
+      }
     }),
 
     recruiterColumnHelper.accessor("requirementCount", {

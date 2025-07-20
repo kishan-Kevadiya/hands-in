@@ -128,6 +128,12 @@ export const TransactionType = ["expense", "revenue"];
 
 export const PriorityTypes = ["high", "medium", "low"];
 
+export const RequirementPriorityTypes = ["highest", "high", "medium", "low", "lowest"];
+
+export const RequirementGenderTypes = ["male", "female", "any"];
+
+export const RequirementWorkTypes = ["full_time", "part_time", "contract", "intership", "temporary"];
+
 // ** Assets ** //
 export const ASSETS = Object.freeze({
   RESUMES: "assets/resumes",

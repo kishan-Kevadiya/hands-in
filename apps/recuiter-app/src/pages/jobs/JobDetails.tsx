@@ -227,12 +227,12 @@ const JobDetails: React.FC = () => {
                     </div>
                 </div>
 
-                <div className="w-full flex md:flex-row flex-col md:items-center items-end justify-between gap-4">
+                <div className="w-full flex md:flex-row flex-col md:items-center items-end justify-between gap-4 mb-2">
                     <div className="flex flex-col gap-1 w-full">
                         {OneJobDetails.data?.job?.languages?.length > 0 && (
                             <>
                                 <div className="md:text-2xl text-lg font-semibold">
-                                    <div className="flex items-center gap-2">
+                                    <div className="flex items-center gap-2 mb-2">
                                         <img
                                             src={LanguageIcon}
                                             alt="full-times"
@@ -256,7 +256,7 @@ const JobDetails: React.FC = () => {
                                                         .toLowerCase()}
                                                 :
                                                 <span className="text-[#393939] font-medium">
-                                                    &nbsp;{" "}
+                                                    {" "}
                                                     {language.proficiency
                                                         .charAt(0)
                                                         .toUpperCase() +

@@ -38,9 +38,9 @@ const CommentsView: Component<CommentsViewProps> = (props) => {
                 </Match>
                 <Match when={commentQuery.data && commentQuery.data.length > 0}>
                     <For each={commentQuery.data}>
-                        {(item: Comment) => (
+                        {(item: Comment, index) => (
                             <div class='comment-container'>
-                                <p class='comment'>{item.comment}</p>
+                                <p class='comment'>{index() + 1}. {item.comment}</p>
                                 <small class='comment-date'>{new Date(item.commentDate).toDateString()}</small>
                             </div>
                         )}

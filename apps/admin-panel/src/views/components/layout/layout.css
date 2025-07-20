@@ -85,7 +85,6 @@
 .main-layout-container {
     width: 100%;
     height: 100dvh;
-    /* display: flex; */
     display: grid;
     grid-template-columns: max(15%, 200px) 85%;
     background-color: var(--main-bg);

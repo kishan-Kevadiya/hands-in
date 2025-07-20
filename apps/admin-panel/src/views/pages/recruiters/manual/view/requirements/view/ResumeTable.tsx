@@ -69,6 +69,29 @@ const ResumeCard = (props: ResumeCardProps) => {
             </div>
 
             <div class="comments-section">
+                <div class="comments">
+                    <Switch>
+                        <Match when={!showComments()}>
+                            <div class="text-light">
+                                To load comments, please click on the Comments button.
+                            </div>
+                        </Match>
+                        <Match when={showComments()}>
+                            <Suspense fallback={<div>Loading comments...</div>}>
+                                <Show
+                                    when={resume.commentCount > 0}
+                                    fallback={
+                                        <div class="text-info">
+                                            No comments yet.
+                                        </div>
+                                    }
+                                >
+                                    <CommentsView resumeId={resume.id} />
+                                </Show>
+                            </Suspense>
+                        </Match>
+                    </Switch>
+                </div>
                 <Form onSubmit={(values: AddCommentForm, event: SubmitEvent) => {
                     handleSubmit({
                         ...values,
@@ -122,29 +145,7 @@ const ResumeCard = (props: ResumeCardProps) => {
                     </div>
                 </Form>
 
-                <div class="comments">
-                    <Switch>
-                        <Match when={!showComments()}>
-                            <div class="text-light">
-                                To load comments, please click on the Comments button.
-                            </div>
-                        </Match>
-                        <Match when={showComments()}>
-                            <Suspense fallback={<div>Loading comments...</div>}>
-                                <Show
-                                    when={resume.commentCount > 0}
-                                    fallback={
-                                        <div class="text-info">
-                                            No comments yet.
-                                        </div>
-                                    }
-                                >
-                                    <CommentsView resumeId={resume.id} />
-                                </Show>
-                            </Suspense>
-                        </Match>
-                    </Switch>
-                </div>
+
             </div>
 
         </div>
@@ -226,10 +227,10 @@ const ResumeTable = (props: ResumeTableProps) => {
 
     return (
         <div class="resume-list-page">
-            <div class="d-flex justify-between items-center card">
+            <div class="d-flex justify-between items-center card p-3">
                 <div class="d-flex align-center gap-2">
-                    <h3>Resumes ({totalResumes()})</h3>
                     <FormFields.CircleButton href={`/manual-recruiter/requirement/resume/${props.requirementId}/add`} />
+                    <h3>Resumes ({totalResumes()})</h3>
                 </div>
                 <FormFields.Input
                     type="search"
