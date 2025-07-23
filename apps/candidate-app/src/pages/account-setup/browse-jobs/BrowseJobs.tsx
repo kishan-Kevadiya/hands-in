@@ -1,5 +1,4 @@
 import AuthButton from "@/components/ui/auth/AuthButton";
-import AuthLabel from "@/components/ui/auth/AuthLabel";
 import SecondaryButton from "@/components/ui/auth/SecondaryButton";
 import SelectField from "@/components/ui/auth/SelectField";
 import SliderField from "@/components/ui/auth/SliderField";
@@ -48,8 +47,13 @@ const BrowseJobs: React.FC = () => {
     });
 
     const onSubmit = async (data: BrowseJobsSchema) => {
+
+        if (data.roles.length === 0) {
+            showToast("error", "Please select at least one role");
+            return;
+        }
         if (!data.roles.every((role) => role.roleName)) {
-            showToast("error", "Please select at least one role or fill all the fields");
+            showToast("error", "Please fill all the fields");
             return;
         }
         try {
@@ -133,15 +137,15 @@ const BrowseJobs: React.FC = () => {
                 </p>
 
                 <div className=" flex flex-col gap-4 border border-[#EAEAEA] p-6 rounded-2xl lg:w-1/2 md:w-11/12 w-full">
-                    <AuthLabel
-                        labelStyle="text-black font-medium"
-                        label={"You may choose up to 3 roles!"}
-                    />
+
+                    <p className="text-black font-medium">You may choose up to 3 roles!</p>
+                    
                     {fields.map((item, index) => (
                         <div key={item.id} className="flex md:flex-row flex-col gap-6 w-full">
                             <div className="md:w-1/2 flex flex-col gap-4">
 
                                 <SelectField
+                                    id="selecteer"
                                     label="Role:"
                                     placeholder="Search here"
                                     errorMsg={
@@ -205,7 +209,7 @@ const BrowseJobs: React.FC = () => {
                                         experience: 0, // Default slider value
                                     });
                                 }}
-                                customStyle="text-primary md:w-1/5 w-1/2"
+                                customStyle="text-primary text-nowrap w-[8rem]"
                                 label="Add Role"
                             />
                         )}
