@@ -85,7 +85,11 @@ const Register: React.FC = () => {
                     render={({ field }) => (
                         <AuthPassword
                             value={field.value}
-                            onChange={field.onChange}
+                            onChange={e => {
+                                if(typeof field.onChange === 'function' ){
+                                    field.onChange(e);
+                                }
+                            }}
                             type="password"
                             placeholder="Password"
                             label="Password"

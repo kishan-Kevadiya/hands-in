@@ -27,7 +27,7 @@ const SelectField: React.FC<SelectFieldProps> = ({
             className={twMerge("flex flex-col w-full", dropdownContainerStyle)}
         >
             <div
-                className={`flex flex-col ${label ? "gap-1" : "gap-0"} w-full`}
+                className={`flex flex-col ${label ? "gap-2" : "gap-0"} w-full`}
             >
                 <AuthLabel label={label} />
                 <Dropdown

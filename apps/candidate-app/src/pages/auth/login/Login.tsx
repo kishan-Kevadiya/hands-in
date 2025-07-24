@@ -100,8 +100,8 @@ const Login: React.FC = () => {
                     Welcome back!
                 </p>
                 <p className="md:text-base text-sm text-[#313957]">
-                    It’s your day. Show up, stand out — sign in to unlock new
-                    opportunities.
+                    It’s your day. Show up, stand out — sign in to unlock <strong>New Job
+                    Opportunities.</strong>
                 </p>
             </div>
 
