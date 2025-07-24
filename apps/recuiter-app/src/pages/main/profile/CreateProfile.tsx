@@ -75,7 +75,7 @@ const CreateProfile: React.FC = () => {
         formData.append("companyName", data.companyName);
         formData.append("email", data.email);
         formData.append("phone", data.phone);
-        formData.append("description", data.describeYourCompany);
+        formData.append("description", data.describeYourCompany ?? "");
         formData.append("address", data.address);
         formData.append("postalCode", data.postalCode);
         formData.append("website", data.companyWebsite || "");
