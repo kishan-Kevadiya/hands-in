@@ -1,11 +1,11 @@
 @import "../../../styles/variables.css";
 .badge {
     display: inline-block;
-    padding: var(--size-4) calc(var(--size-8) + var(--size-4));
-    border-radius: var(--size-8);
+    padding: var(--size-4) var(--size-8);
+    border-radius: calc(var(--size-8) - 3px);
     font-size: var(--font-size-xs);
-    font-weight: 600;
-    line-height: 1.4;
+    font-weight: 500;
+    line-height: 1;
     vertical-align: middle;
     margin-inline: 0.2rem;
     transition:

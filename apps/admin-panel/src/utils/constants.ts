@@ -1,4 +1,7 @@
 export const QUERY_KEYS = Object.freeze({
+  ROLES_TITLE: {
+    ALL: 'roles-all',
+  },
   AUTH: {
     USER: "auth-user",
     LOGIN: "auth-login",

@@ -4,6 +4,7 @@ const getAll = async (filters?: {
   page?: number;
   limit?: number;
   search?: string;
+  roleId: string | null
 }) => {
   const response = await api.get("/users/get", {
     params: {
