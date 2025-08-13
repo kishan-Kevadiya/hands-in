@@ -9,6 +9,7 @@ export const ABOUT_US = "/about-us";
 export const CANDIDATE = "/candidate";
 export const COMPANY = "/company";
 export const CONTACTUS = "/contact-us";
+export const SARALAI="/saral-ai"
 
 
 // ==> Auth routes

@@ -16,6 +16,9 @@
     --color-primary: #df6789;
     --color-field: rgba(223, 103, 137, 0.08);
 
+    --color-purple: #3F1562;
+    --color-pink: #DF6789;
+
     /* fonts */
     --font-manrope: "Manrope", sans-serif;
 }
@@ -33,4 +36,9 @@ button {
     font-family: var(--font-manrope);
 }
 
+@layer utilities {
+  .gradient-purple-pink {
+    background-image: linear-gradient(135deg, #3F1562, #DF6789);
+  }
+}
 

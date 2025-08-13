@@ -48,6 +48,7 @@ import {
 } from "react-router";
 import { JOBS } from ".";
 import ProtectedRouter from "./ProtectedRouter";
+import SaralAI from "@/pages/landing-page/SaralAi";
 
 // ** Unsubscribe page component
 const UnsubscribePage = lazy(() => import("../pages/unsubscribe/index"));
@@ -65,6 +66,10 @@ const AppRoutes: React.FC = () => {
                 {
                     path: "build-resume-page",
                     element: <BuildResume />,
+                },
+                {
+                    path: "saral-ai",
+                    element: <SaralAI />,
                 },
                 {
                     path: "discover",
