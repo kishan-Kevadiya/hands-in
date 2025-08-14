@@ -13,7 +13,7 @@ import specificationThree from "@/assets/images/landing-page/SaralAiSpec3.png";
 const SaralAI = () => {
   return (
     <div>
-      {/* <HeroSection /> */}
+      <HeroSection />
       {/* <PromptScreen /> */}
       <SaralPromptScreen />
       {/* <CandidateCard />
@@ -678,7 +678,7 @@ function PromptScreen() {
         <h1 className="text-6xl sm:text-7xl md:text-8xl lg:text-[96px] leading-[1.1] font-extrabold text-[#3c295d] mb-8 relative inline-block">
           <span
             className="block opacity-95
-      [mask-image:linear-gradient(to_bottom,black_50%,transparent_100%)]
+      [mask-image:linear-gradient(to_bottom,black_10%,transparent_100%)]
       [mask-size:100%_100%]
       [mask-repeat:no-repeat]"
           >
@@ -760,8 +760,9 @@ function SaralPromptScreen() {
       {/* Overlay */}
       {isOpen && (
         <div
-          className="lg:hidden fixed inset-0 bg-black bg-opacity-50 z-30"
+          className="lg:hidden fixed inset-0 z-30"
           onClick={() => setIsOpen(false)}
+          style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
         />
       )}
 
@@ -770,7 +771,7 @@ function SaralPromptScreen() {
         }`}>
         {/* Logo and menu */}
         <div className="flex-1 overflow-hidden">
-          <div className="flex items-center gap-3 mb-8">
+          <div className="flex items-center justify-end gap-3 mb-8">
             <div className="bg-[#6f47c7] rounded-xl w-10 h-10 flex items-center justify-center">
               <svg
                 className="w-6 h-6 text-white"
@@ -910,17 +911,19 @@ function SaralPromptScreen() {
 
   {/* View More / Less */}
   {history.length > 4 && (
-   <button
-  onClick={() => setExpanded(!expanded)}
-  className="mt-4 text-xs font-medium px-4 py-2 rounded-full transition-all bg-clip-text text-transparent"
-  style={{
-    backgroundImage: "linear-gradient(90deg, #3F1562 0%, #DF6789 100%)",
-    WebkitBackgroundClip: "text",
-    WebkitTextFillColor: "transparent",
-  }}
->
-  {expanded ? "View Less" : "View More"}
-</button>
+    <div className="text-center">
+      <button
+      onClick={() => setExpanded(!expanded)}
+      className="mt-4 text-xs font-medium px-4 py-2 rounded-full transition-all bg-clip-text text-transparent"
+      style={{
+        backgroundImage: "linear-gradient(90deg, #3F1562 0%, #DF6789 100%)",
+        WebkitBackgroundClip: "text",
+        WebkitTextFillColor: "transparent",
+      }}
+    >
+      {expanded ? "View Less" : "View More"}
+    </button>
+  </div>
 
   )}
 </div>
