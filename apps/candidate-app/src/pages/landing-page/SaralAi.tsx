@@ -13,17 +13,17 @@ import specificationThree from "@/assets/images/landing-page/SaralAiSpec3.png";
 const SaralAI = () => {
   return (
     <div>
-      <HeroSection />
-      {/* <PromptScreen />
-            <SaralPromptScreen />
-            <CandidateCard />
+      {/* <HeroSection /> */}
+      {/* <PromptScreen /> */}
+      <SaralPromptScreen />
+      {/* <CandidateCard />
             <RichTextEditor  /> */}
-      <Specification />
+      {/* <Specification />
       <PricingSection />
       <FeaturesSection />
       <FoundersSection />
       <FAQSection />
-      <TryNowSection />
+      <TryNowSection /> */}
     </div>
   );
 };
@@ -247,25 +247,22 @@ function PricingSection() {
         {plans.map((plan, index) => (
           <div
             key={index}
-            className={`relative rounded-3xl border border-gray-200 shadow-sm p-8 flex flex-col justify-between overflow-hidden ${
-              plan.highlighted
-                ? "text-white bg-[url('src/assets/images/landing-page/pricing/pricingFrame.png')] bg-cover bg-top"
-                : "bg-white text-black"
-            }`}
+            className={`relative rounded-3xl border border-gray-200 shadow-sm p-8 flex flex-col justify-between overflow-hidden ${plan.highlighted
+              ? "text-white bg-[url('src/assets/images/landing-page/pricing/pricingFrame.png')] bg-cover bg-top"
+              : "bg-white text-black"
+              }`}
           >
             {/* Plan Header */}
             <div>
               <h3
-                className={`text-lg font-semibold ${
-                  plan.highlighted ? "text-white" : "text-gray-900"
-                }`}
+                className={`text-lg font-semibold ${plan.highlighted ? "text-white" : "text-gray-900"
+                  }`}
               >
                 {plan.name}
               </h3>
               <p
-                className={`text-sm mt-1 ${
-                  plan.highlighted ? "text-gray-300" : "text-gray-500"
-                }`}
+                className={`text-sm mt-1 ${plan.highlighted ? "text-gray-300" : "text-gray-500"
+                  }`}
               >
                 {plan.description}
               </p>
@@ -277,30 +274,27 @@ function PricingSection() {
 
             {/* Button */}
             <button
-              className={`mt-6 py-2 rounded-lg border transition-colors ${
-                plan.highlighted
-                  ? "border-purple-300 hover:bg-purple-700"
-                  : "border-gray-300 hover:bg-gray-100"
-              }`}
+              className={`mt-6 py-2 rounded-lg border transition-colors ${plan.highlighted
+                ? "border-purple-300 hover:bg-purple-700"
+                : "border-gray-300 hover:bg-gray-100"
+                }`}
             >
               Get Started
             </button>
 
             {/* Divider */}
             <hr
-              className={`my-6 ${
-                plan.highlighted
-                  ? "border-purple-600 opacity-60"
-                  : "border-gray-200"
-              }`}
+              className={`my-6 ${plan.highlighted
+                ? "border-purple-600 opacity-60"
+                : "border-gray-200"
+                }`}
             />
 
             {/* Features */}
             <div>
               <h4
-                className={`font-semibold mb-3 ${
-                  plan.highlighted ? "text-white" : "text-black"
-                }`}
+                className={`font-semibold mb-3 ${plan.highlighted ? "text-white" : "text-black"
+                  }`}
               >
                 Features
               </h4>
@@ -635,9 +629,8 @@ function FoundersSection() {
           {profiles.map((profile, idx) => (
             <div
               key={idx}
-              className={`flex ${
-                idx % 2 === 0 ? "justify-start" : "justify-end"
-              }`}
+              className={`flex ${idx % 2 === 0 ? "justify-start" : "justify-end"
+                }`}
             >
               <div
                 className={`flex items-center bg-[#F8EFFF] rounded-2xl shadow-sm px-3 sm:px-4 py-2 sm:py-3 w-full sm:w-auto gap-3 sm:gap-4 max-w-full sm:max-w-none`}
@@ -680,35 +673,42 @@ function PromptScreen() {
   return (
     <div className="min-h-screen flex flex-col justify-between items-center bg-gradient-to-b from-[#ede6fb] to-[#fff1e2]">
       {/* Heading */}
-      <div className="flex flex-1 flex-col justify-center items-center w-full">
-        <h1 className="text-7xl font-bold text-[#3c295d] mb-12 drop-shadow-[0_5px_15px_rgba(60,41,93,0.17)]">
+      <div className="flex flex-1 flex-col justify-center items-center h-[269px] w-full">
+
+        <h1 className="text-6xl sm:text-7xl md:text-8xl lg:text-[96px] leading-[1.1] font-extrabold text-[#3c295d] mb-8 relative inline-block">
           <span
-            className="opacity-80"
-            style={{
-              textShadow: "0 8px 24px rgba(60,41,93,0.25)",
-            }}
+            className="block opacity-95
+      [mask-image:linear-gradient(to_bottom,black_50%,transparent_100%)]
+      [mask-size:100%_100%]
+      [mask-repeat:no-repeat]"
           >
             SARAL AI
           </span>
         </h1>
+
         {/* Prompt Bar */}
-        <div className="w-full max-w-2xl flex items-center bg-white/60 rounded-full border border-pink-300 shadow-md px-6 py-4">
-          <input
-            className="flex-1 bg-transparent outline-none text-lg placeholder-gray-400"
-            placeholder="Type what you need. We’ll deliver who you need."
-          />
-          <button className="flex gap-1 text-[#3D1562] font-semibold px-6 py-2 ml-2  hover:scale-105 transition text-base">
-            <Star />
-            Rephrase
-          </button>
-          <button className="ml-2 p-2 rounded-xl w-[42px] h-[42px] bg-white/80 hover:bg-pink-50 border border-pink-200 flex items-center">
-            <img
-              src={ColoredLogo}
-              alt="coloredLogo"
-              className="aspect-[1] w-full"
+        <div className="w-[calc(100%-2rem)] md:w-[calc(100%-2rem)] lg:w-[904px] mx-4 md:mx-4 lg:mx-auto relative p-[2px] rounded-full bg-gradient-to-r from-[#EC83BB] to-[#B664DB] shadow-md">
+          <div className="flex items-center w-full bg-white rounded-full px-4 py-3 gap-2 sm:gap-4 overflow-hidden">
+            <input
+              className="w-full sm:w-3/4 bg-transparent outline-none text-base h-[55px] sm:text-lg placeholder-[#A6A6A6] truncate"
+              placeholder="Type what you need. We’ll deliver who you need."
             />
-          </button>
+
+            <button className="flex gap-1 items-center text-[#3D1562] opacity-80 font-semibold px-3 py-2 hover:scale-105 transition text-sm sm:text-base shrink-0">
+              <Star className="w-4 h-4 sm:w-5 sm:h-5" />
+              Rephrase
+            </button>
+
+            <button className="p-2 rounded-xl w-[40px] h-[40px] bg-white/80 hover:bg-pink-50 border border-pink-200 flex items-center justify-center shrink-0">
+              <img
+                src={ColoredLogo}
+                alt="coloredLogo"
+                className="aspect-square w-full"
+              />
+            </button>
+          </div>
         </div>
+
       </div>
       {/* Footer */}
       <footer className="mb-4 text-sm text-gray-500">
@@ -721,13 +721,55 @@ function PromptScreen() {
   );
 }
 
+
+
+
+const history = [
+  { title: "Senior React Developer...", results: "45 results", time: "2 hours ago" },
+  { title: "Lorem Ipsum is simply dummy", results: "45 results", time: "2 hours ago" },
+  { title: "Lorem Ipsum is simply dummy", results: "45 results", time: "2 hours ago" },
+  { title: "Lorem Ipsum is simply dummy", results: "45 results", time: "2 hours ago" },
+  { title: "Lorem Ipsum is simply dummy", results: "45 results", time: "2 hours ago" },
+];
+
 function SaralPromptScreen() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [expanded, setExpanded] = useState(false);
   return (
     <div className="min-h-screen flex bg-gradient-to-b from-[#ede6fb] to-[#fff1e2]">
-      {/* Sidebar */}
-      <aside className="w-[320px] bg-white/40 border-r border-[#ede6fb] p-6 flex flex-col justify-between">
+      {/* Mobile Menu Button */}
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="lg:hidden fixed top-4 left-4 z-50 bg-[#6f47c7] text-white p-2 rounded-lg shadow-lg"
+      >
+        <svg
+          className="w-6 h-6"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          viewBox="0 0 24 24"
+        >
+          {isOpen ? (
+            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+          ) : (
+            <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+          )}
+        </svg>
+      </button>
+
+      {/* Overlay */}
+      {isOpen && (
+        <div
+          className="lg:hidden fixed inset-0 bg-black bg-opacity-50 z-30"
+          onClick={() => setIsOpen(false)}
+        />
+      )}
+
+      {/* Sidebar - Made Sticky */}
+      <aside className={`w-80 lg:w-[320px] md:w-72 sm:w-64 bg-gradient-to-b from-[#F7EEFF] to-[#FFFFFF] border-r border-[#a693c4] p-6 flex flex-col justify-between h-screen z-40 transition-all duration-300 ${isOpen ? 'fixed top-0 left-0 translate-x-0' : 'fixed top-0 -translate-x-full lg:sticky lg:top-0 lg:left-0 lg:translate-x-0'
+        }`}>
         {/* Logo and menu */}
-        <div>
+        <div className="flex-1 overflow-hidden">
           <div className="flex items-center gap-3 mb-8">
             <div className="bg-[#6f47c7] rounded-xl w-10 h-10 flex items-center justify-center">
               <svg
@@ -746,14 +788,15 @@ function SaralPromptScreen() {
               </svg>
             </div>
           </div>
+
           {/* Search bar */}
           <div className="relative">
             <input
-              className="rounded-xl pl-10 pr-4 py-2 bg-[#fdefff]/70 focus:bg-white w-full placeholder:text-[#a47acf] border border-[#e2d6fa] text-[#574065] outline-none"
+              className="rounded-xl pl-10 pr-4 py-2 bg-white/50 focus:bg-white w-full placeholder:text-[#8b7aa8] border border-[#a693c4] text-[#4a3d5e] outline-none"
               placeholder="Search"
             />
             <svg
-              className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#a47acf]"
+              className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#8b7aa8]"
               fill="none"
               stroke="currentColor"
               strokeWidth="2"
@@ -763,57 +806,138 @@ function SaralPromptScreen() {
               <line x1="21" y1="21" x2="16.65" y2="16.65" />
             </svg>
           </div>
+
+          {/* New Chat Section */}
+    <div className="mt-4">
+  <button
+    className="flex items-center justify-center w-full bg-white/40 border border-[#a693c4] rounded-xl py-3 px-4
+               transition-all duration-300 ease-in-out group
+               hover:bg-purple-100 hover:shadow-lg hover:scale-[1]"
+  >
+    <svg
+      className="w-5 h-5 text-[#6f47c7] group-hover:text-[#5a3a9f] transition-colors duration-300 ease-in-out"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      viewBox="0 0 24 24"
+    >
+      <line
+        x1="12"
+        y1="5"
+        x2="12"
+        y2="19"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <line
+        x1="5"
+        y1="12"
+        x2="19"
+        y2="12"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+    <span
+      className="ml-2 text-[#2d1b4a] font-medium group-hover:text-[#1f1335]
+                 transition-colors duration-300 ease-in-out"
+    >
+      New Chat
+    </span>
+  </button>
+</div>
+
+
+
           {/* Menu */}
-          <div className="mt-7 flex flex-col gap-1">
-            <button className="flex items-center text-[#41316b] gap-2 py-2 px-2 hover:bg-[#e9d8f3] rounded-lg transition font-medium">
+          <div className="mt-6 flex flex-col gap-1">
+            <button className="flex items-center text-[#2d1b4a] gap-2 py-2 px-2 hover:bg-white/30 rounded-lg transition font-medium">
               <span>Saved Profiles</span>
-              <span className="ml-auto text-xs bg-[#bb9efa]/60 px-2 py-0.5 rounded-xl text-[#5d488e]">
+              <span className="ml-auto text-xs bg-white/60 px-2 py-0.5 rounded-xl text-[#6b47a3]">
                 3
               </span>
             </button>
-            <button className="flex items-center text-[#41316b] gap-2 py-2 px-2 hover:bg-[#e9d8f3] rounded-lg transition font-medium">
+            <button className="flex items-center text-[#2d1b4a] gap-2 py-2 px-2 hover:bg-white/30 rounded-lg transition font-medium">
               <span>LinkedIn Outreach</span>
             </button>
           </div>
+
           {/* Recent Searches */}
-          <div className="mt-10">
-            <h3 className="text-[#9677c4] tracking-wide font-semibold mb-2 ml-1 text-sm">
-              Recent Searches
-            </h3>
-            <div className="flex flex-col gap-1 h-40 overflow-auto pr-3">
-              <button className="flex items-center hover:bg-[#f4edfa] px-2 py-2 rounded-xl justify-between">
-                <span className="truncate text-left text-[#492e75] text-sm font-medium">
-                  Senior React Developer...
-                </span>
-                <span className="text-xs text-[#b698db]">2 hours ago</span>
-              </button>
-              {[...Array(4)].map((_, i) => (
-                <button
-                  key={i}
-                  className="flex items-center hover:bg-[#f4edfa] px-2 py-2 rounded-xl justify-between"
-                >
-                  <span className="truncate text-left text-[#492e75] text-sm font-medium">
-                    Lorem Ipsum is simply dummy
-                  </span>
-                  <span className="text-xs text-[#b698db]">2 hours ago</span>
-                </button>
-              ))}
-            </div>
-            <button className="text-[#7c5dbc] mt-2 text-xs font-medium hover:underline ml-1">
-              View More
-            </button>
-          </div>
+<div className="bg-white rounded-2xl shadow-md p-4 w-full max-w-sm">
+  {/* Header */}
+  <h3 className="text-[#6b54a3] tracking-wide font-semibold mb-3 flex items-center gap-2">
+    <svg width="18" height="19" viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_55_475)">
+<path d="M9.82514 1.25C8.01144 1.25883 6.25191 1.86907 4.82222 2.98511C3.39252 4.10115 2.37344 5.65994 1.92464 7.41725L1.37564 6.587C1.32367 6.50008 1.25463 6.42458 1.17268 6.36507C1.09074 6.30555 0.997593 6.26325 0.898858 6.24071C0.800123 6.21817 0.697845 6.21586 0.598193 6.23392C0.49854 6.25198 0.403578 6.29003 0.319032 6.34579C0.234486 6.40154 0.162108 6.47384 0.106263 6.55833C0.0504175 6.64282 0.0122618 6.73774 -0.00590345 6.83737C-0.0240687 6.937 -0.021867 7.03928 0.000568764 7.13804C0.0230045 7.2368 0.0652096 7.32999 0.124639 7.412L1.77464 9.9125C1.88925 10.0729 2.05824 10.1862 2.25014 10.2313C2.44609 10.2701 2.64948 10.2311 2.81714 10.1225L5.29214 8.45525C5.37747 8.40196 5.45122 8.33205 5.50897 8.24967C5.56673 8.16729 5.60732 8.07414 5.62834 7.97575C5.64935 7.87736 5.65035 7.77575 5.63129 7.67697C5.61222 7.57818 5.57347 7.48424 5.51735 7.40074C5.46123 7.31724 5.38889 7.24589 5.30462 7.19092C5.22035 7.13596 5.12589 7.09851 5.02685 7.08081C4.92782 7.0631 4.82623 7.06551 4.72814 7.08787C4.63005 7.11024 4.53746 7.15211 4.45589 7.211L3.33014 7.97C3.62975 6.75379 4.26519 5.64629 5.16395 4.77385C6.06272 3.90141 7.18861 3.29917 8.41319 3.03583C9.63776 2.7725 10.9117 2.85868 12.0897 3.28454C13.2676 3.7104 14.3021 4.4588 15.0752 5.44433C15.8483 6.42987 16.3288 7.61286 16.4619 8.85834C16.5949 10.1038 16.3753 11.3616 15.8279 12.4883C15.2805 13.6149 14.4274 14.565 13.3661 15.2301C12.3047 15.8952 11.0777 16.2486 9.82514 16.25C8.75139 16.2471 7.69422 15.985 6.7435 15.4859C5.79278 14.9869 4.97661 14.2656 4.36439 13.3835C4.30956 13.2993 4.23837 13.227 4.15505 13.1708C4.07173 13.1147 3.97797 13.0758 3.87935 13.0566C3.78073 13.0374 3.67925 13.0382 3.58095 13.059C3.48264 13.0797 3.38951 13.12 3.30707 13.1775C3.22464 13.2349 3.1546 13.3084 3.10109 13.3934C3.04759 13.4785 3.01172 13.5734 2.99561 13.6726C2.9795 13.7717 2.98349 13.8731 3.00733 13.9707C3.03117 14.0683 3.07438 14.1602 3.13439 14.2408C4.12969 15.6756 5.55901 16.7534 7.2123 17.3157C8.86558 17.8779 10.6556 17.895 12.3193 17.3645C13.9831 16.8339 15.4327 15.7836 16.4553 14.368C17.4778 12.9524 18.0193 11.2462 18.0001 9.5C18.0075 7.32268 17.151 5.23133 15.6184 3.68471C14.0859 2.1381 12.0024 1.2625 9.82514 1.25Z" fill="#3F1462"/>
+<path d="M9.75 4.9624C9.55109 4.9624 9.36032 5.04142 9.21967 5.18207C9.07902 5.32272 9 5.51349 9 5.7124V9.4999C9.00319 9.69816 9.08177 9.88776 9.21975 10.0302L11.4698 12.3004C11.6109 12.4394 11.8008 12.5177 11.9989 12.5187C12.197 12.5197 12.3877 12.4432 12.5303 12.3057C12.6715 12.1656 12.7512 11.9752 12.7521 11.7763C12.7529 11.5775 12.6748 11.3864 12.5347 11.2452L10.5 9.19165V5.7124C10.5 5.51349 10.421 5.32272 10.2803 5.18207C10.1397 5.04142 9.94891 4.9624 9.75 4.9624Z" fill="#3F1462"/>
+</g>
+<defs>
+<clipPath id="clip0_55_475">
+<rect width="18" height="18" fill="white" transform="translate(0 0.5)"/>
+</clipPath>
+</defs>
+</svg>
+
+    Recent Search
+  </h3>
+
+  {/* Divider */}
+  <div className="border-t border-[#e9e4f3] mb-3"></div>
+
+  {/* History List */}
+  <div
+    className={`flex flex-col gap-2 transition-all duration-300 ease-in-out ${
+      expanded ? "max-h-[400px]" : "max-h-40 overflow-hidden"
+    }`}
+  >
+    {history.map((item, i) => (
+      <button
+        key={i}
+        className="flex justify-between items-center bg-white hover:bg-[rgba(111,71,199,0.05)] px-4 py-3 rounded-xl shadow-sm transition-colors border border-transparent hover:border-[#a693c4]/30"
+      >
+        <div className="flex flex-col text-left">
+          <span className="truncate w-full max-w-[130px] overflow-hidden whitespace-nowrap">
+            {item.title}
+          </span>
+          <span className="text-xs text-[#7965a8]">{item.results}</span>
         </div>
+        <span className="text-xs text-[#7965a8] whitespace-nowrap">
+          {item.time}
+        </span>
+      </button>
+    ))}
+  </div>
+
+  {/* View More / Less */}
+  {history.length > 4 && (
+   <button
+  onClick={() => setExpanded(!expanded)}
+  className="mt-4 text-xs font-medium px-4 py-2 rounded-full transition-all bg-clip-text text-transparent"
+  style={{
+    backgroundImage: "linear-gradient(90deg, #3F1562 0%, #DF6789 100%)",
+    WebkitBackgroundClip: "text",
+    WebkitTextFillColor: "transparent",
+  }}
+>
+  {expanded ? "View Less" : "View More"}
+</button>
+
+  )}
+</div>
+
+
+        </div>
+
         {/* Plan/Credits */}
         <div>
-          <div className="flex items-center justify-between mb-3 text-[#8a76b6] text-sm">
+          <div className="flex items-center justify-between mb-3 text-[#6b54a3] text-sm">
             <span>Credits</span>
-            <span className="font-bold text-[#5d488e]">12/25</span>
+            <span className="font-bold text-[#4a3761]">12/25</span>
           </div>
-          <button className="w-full rounded-xl border border-[#b1a1dc] bg-white/80 py-2 mb-2 text-[#7e2fdc] hover:bg-[#f7ecff] font-semibold transition">
+          <button className="w-full rounded-xl border border-[#8b7aa8] bg-white/60 py-2 mb-2 text-[#6b47a3] hover:bg-white/80 font-semibold transition">
             Upgrade Plan
           </button>
-          <button className="w-full rounded-xl py-2 flex items-center justify-center gap-2 text-[#7c5dbc] text-sm hover:bg-[#f7ecff] transition">
+          <button className="w-full rounded-xl py-2 flex items-center justify-center gap-2 text-[#5b4791] text-sm hover:bg-white/20 transition">
             <svg
               className="w-5 h-5"
               fill="none"
@@ -833,94 +957,92 @@ function SaralPromptScreen() {
         </div>
       </aside>
 
-      {/* Main content */}
-      <main className="flex-1 flex flex-col items-center justify-center px-2">
-        <div className="flex items-center justify-between">
+      {/* Main content - Adjusted positioning */}
+      <main className="flex-1 min-h-screen flex flex-col">
+        {/* Header with Info and Home buttons */}
+        <div className="flex items-center justify-between p-4 sm:p-6 lg:px-8 pt-16 lg:pt-6">
           {/* Info Icon */}
           <button className="group flex items-center justify-center w-[33px] h-[33px] bg-white hover:bg-purple-200 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95">
             <InfoIcon />
           </button>
 
           {/* Home Section */}
-          <button className="group flex items-center space-x-3 px-4 py-2 bg-purple-50 hover:bg-purple-100 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95">
+          <button className="group flex items-center space-x-2 sm:space-x-3 px-3 sm:px-4 py-2 bg-purple-50 hover:bg-purple-100 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95">
             <Homeicon />
-            <span className="text-purple-700 font-medium group-hover:text-purple-800">
+            <span className="text-purple-700 font-medium group-hover:text-purple-800 text-sm sm:text-base">
               Home
             </span>
           </button>
         </div>
-        <div className="text-center mb-8">
-          <h1 className="text-[2.6rem] sm:text-5xl md:text-6xl font-bold text-[#4e356e] mb-2 tracking-tight">
-            Get Start With SARAL AI
-          </h1>
-          <p className="text-[#ba9acc] font-medium text-base tracking-wide">
-            No filters. No forms. Just the right candidates, right now.
-          </p>
+
+        {/* Centered content area */}
+        <div className="flex-1 flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-6 sm:mb-8 max-w-3xl w-full">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-[#4e356e] mb-3 sm:mb-4 tracking-tight leading-tight">
+              What Can I Help You With?
+            </h1>
+            <p className="text-[#ba9acc] font-medium text-sm sm:text-base lg:text-lg tracking-wide px-4">
+              Describe your ideal candidate and let AI find the perfect matches
+            </p>
+          </div>
+
+          <div className="w-full max-w-2xl flex flex-col items-center gap-3 sm:gap-4">
+            {/* Prompt Input */}
+            <div className="w-full flex flex-col sm:flex-row items-stretch sm:items-center bg-white/80 border border-[#f3cde9] rounded-2xl p-3 sm:p-4 shadow-sm gap-2 sm:gap-0">
+              <input
+                className="flex-1 bg-transparent outline-none text-sm sm:text-base md:text-lg placeholder-[#b79ad6] font-medium sm:pr-3 min-h-[40px] sm:min-h-0"
+                placeholder="when an unknown printer took a galley of type and scrambled"
+                autoFocus
+              />
+              <div className="flex items-center gap-2 justify-end">
+                <button
+                  className="rounded-xl bg-[#f0e3ff] text-[#a14cc9] px-3 sm:px-4 py-2 font-semibold hover:bg-[#ead1f7] transition text-xs sm:text-sm flex items-center gap-2"
+                >
+                  <svg
+                    className="w-4 h-4 sm:w-5 sm:h-5"
+                    stroke="currentColor"
+                    fill="none"
+                    strokeWidth="2"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M12 19v-6" strokeLinecap="round" />
+                    <circle cx="12" cy="12" r="10" />
+                  </svg>
+                  Rephrase
+                </button>
+                <button
+                  className="rounded-full p-2.5 sm:p-3 bg-gradient-to-br from-[#de7fdf] to-[#a881fa] hover:scale-105 transition shadow-md"
+                >
+                  <svg
+                    className="w-5 h-5 sm:w-6 sm:h-6 text-white"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="3"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M5 12h14M12 5l7 7-7 7"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
-        <form className="w-full max-w-2xl flex flex-col items-center gap-4">
-          {/* Prompt Input */}
-          <div className="w-full flex items-center bg-white/80 border border-[#f3cde9] rounded-2xl p-4 shadow-sm">
-            <input
-              className="flex-1 bg-transparent outline-none text-base md:text-lg placeholder-[#b79ad6] font-medium pr-3"
-              placeholder="Describe your ideal candidate..."
-              autoFocus
-            />
-            <button
-              type="button"
-              className="rounded-xl bg-[#f0e3ff] text-[#a14cc9] px-4 py-2 font-semibold hover:bg-[#ead1f7] transition text-sm flex items-center gap-2"
-            >
-              <svg
-                className="w-5 h-5"
-                stroke="currentColor"
-                fill="none"
-                strokeWidth="2"
-                viewBox="0 0 24 24"
-              >
-                <path d="M12 19v-6" strokeLinecap="round" />
-                <circle cx="12" cy="12" r="10" />
-              </svg>
-              Rephrase
-            </button>
-            <button
-              type="submit"
-              className="ml-2 rounded-full p-3 bg-gradient-to-br from-[#de7fdf] to-[#a881fa] hover:scale-105 transition shadow-md"
-            >
-              <svg
-                className="w-6 h-6 text-white"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="3"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  d="M5 12h14M12 5l7 7-7 7"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </button>
-          </div>
-          {/* Suggestion Chips */}
-          <div className="w-full flex flex-wrap gap-2 mt-1">
-            <span className="bg-[#f5ecff] text-[#775499] rounded-xl px-4 py-2 text-sm font-medium">
-              When an unknown printer took a galley of type and scrambled.
-            </span>
-            <span className="bg-[#f5ecff] text-[#775499] rounded-xl px-4 py-2 text-sm font-medium">
-              Sales Manager fluent in Hindi and English, 3+ years experience
-            </span>
-            <span className="bg-[#f5ecff] text-[#775499] rounded-xl px-4 py-2 text-sm font-medium">
-              Senior Graphic Designer with branding experience from Nasik
-            </span>
-          </div>
-        </form>
+
         {/* Footer */}
-        <footer className="absolute bottom-6 left-1/2 -translate-x-1/2 text-[13px] text-[#ad90c9]">
+        <footer className="text-center p-4 sm:p-6 text-xs sm:text-[13px] text-[#ad90c9] px-4">
           Saral AI simplifies sourcing, but human judgment is still key
         </footer>
       </main>
     </div>
   );
 }
+
+
+
 
 function CandidateCard() {
   return (

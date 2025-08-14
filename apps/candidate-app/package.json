@@ -28,6 +28,7 @@
     "lottie-react": "^2.4.1",
     "moment": "^2.30.1",
     "pdfjs-dist": "^3.4.120",
+    "pnpm": "^10.14.0",
     "primeicons": "^7.0.0",
     "primereact": "^10.9.2",
     "quill": "^2.0.3",
