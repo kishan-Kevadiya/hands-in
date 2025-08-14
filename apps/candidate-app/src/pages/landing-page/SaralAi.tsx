@@ -14,16 +14,16 @@ const SaralAI = () => {
   return (
     <div>
       <HeroSection />
-      {/* <PromptScreen /> */}
+      <PromptScreen />
       <SaralPromptScreen />
-      {/* <CandidateCard />
-            <RichTextEditor  /> */}
-      {/* <Specification />
+      <CandidateCard />
+            <RichTextEditor  />
+      <Specification />
       <PricingSection />
       <FeaturesSection />
       <FoundersSection />
       <FAQSection />
-      <TryNowSection /> */}
+      <TryNowSection />
     </div>
   );
 };
@@ -31,10 +31,13 @@ const SaralAI = () => {
 export default SaralAI;
 
 function HeroSection() {
+   const [pos, setPos] = useState({ x: 0, y: 0 });
+    const [hover, setHover] = useState(false);
+
   return (
     <main
       className="
-  relative z-10 flex flex-col items-center justify-center text-center px-8 
+  relative z-10 flex h-[100vh] flex-col items-center justify-center text-center px-8 
   min-h-[calc(100vh-100px)] 
   bg-black 
   bg-[url('src/assets/images/landing-page/Saral-ai-frame.png')] 
@@ -65,23 +68,48 @@ function HeroSection() {
 
       {/* CTA Button */}
       <div className="mb-16">
-        <button
-          className="px-8 py-4 rounded-full text-white text-lg font-medium relative overflow-hidden 
-             bg-gradient-to-r from-[#4A2780] to-[#2B0F49] 
-             shadow-[0_0_10px_2px_rgba(255,255,255,0.15)] 
-             hover:bg-gradient-to-r hover:from-[#7A4E8D] hover:to-[#3A1646] 
-             hover:shadow-[0_0_15px_3px_rgba(255,255,255,0.2)] 
-             transition-all duration-300 ease-in-out"
-        >
-          Start with 5 Free Credits
-          <span
-            className="absolute inset-0 rounded-full 
-               bg-[radial-gradient(circle_at_center,_rgba(255,_255,_255,_0.25),_transparent_70%)] 
-               pointer-events-none 
-               hover:bg-[radial-gradient(circle_at_center,_rgba(255,_255,_255,_0.35),_transparent_70%)] 
-               transition-all duration-300 ease-in-out"
-          />
-        </button>
+
+
+ <button
+      onMouseMove={(e) => {
+        const rect = e.currentTarget.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        setPos({ x, y });
+      }}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+      className="relative px-8 py-4 rounded-full text-white text-lg font-medium overflow-hidden 
+                 bg-gradient-to-r from-[#4A2780] to-[#2B0F49] 
+                 shadow-[0_0_10px_2px_rgba(255,255,255,0.05)] 
+                 transition-all duration-300 ease-in-out"
+      style={{
+        backgroundImage: hover
+          ? `
+            radial-gradient(
+              circle at ${pos.x}px ${pos.y}px,
+              hsl(${(pos.x + pos.y) % 360}, 80%, 70%, 0.1) 0%,
+              transparent 40%
+            ),
+            linear-gradient(to right, #4A2780, #2B0F49)
+          `
+          : "linear-gradient(to right, #4A2780, #2B0F49)",
+      }}
+    >
+      Start with 5 Free Credits
+
+      {/* Subtle border glow */}
+      {hover && (
+        <span
+          className="absolute inset-0 rounded-full pointer-events-none"
+          style={{
+            boxShadow: `0 0 15px 2px hsl(${(pos.x + pos.y) % 360}, 80%, 60%, 0.1) inset`,
+          }}
+        />
+      )}
+    </button>
+
       </div>
 
       {/* Bottom text */}
