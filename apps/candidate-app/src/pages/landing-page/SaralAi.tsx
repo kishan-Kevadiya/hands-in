@@ -13,22 +13,43 @@ import specificationThree from "@/assets/images/landing-page/SaralAiSpec3.png";
 const SaralAI = () => {
   return (
     <div>
-      <HeroSection />
+      {/* <HeroSection /> */}
       {/* <PromptScreen /> */}
-      {/* <SaralPromptScreen /> */}
+      <SaralPromptScreen />
       {/* <CandidateCard /> */}
       {/* <RichTextEditor  /> */}
-      {/* <Specification /> */}
-      {/* <PricingSection /> */}
-      {/* <FeaturesSection /> */}
-      {/* <FoundersSection /> */}
-      {/* <FAQSection /> */}
-      {/* <TryNowSection /> */}
+      {/* <Specification />
+      <PricingSection />
+      <FeaturesSection />
+      <FoundersSection />
+      <FAQSection />
+      <TryNowSection /> */}
+      {/* <DemoModalCheck /> */}
     </div>
   );
 };
 
 export default SaralAI;
+
+function DemoModalCheck() {
+  const [isPricingOpen, setIsPricingOpen] = useState(false);
+
+  return (
+    <div className="p-8">
+      <button
+        onClick={() => setIsPricingOpen(true)}
+        className="px-4 py-2 bg-blue-600 text-white rounded-lg"
+      >
+        Open Pricing
+      </button>
+
+      <PricingModal
+        isOpen={isPricingOpen}
+        onClose={() => setIsPricingOpen(false)}
+      />
+    </div>
+  );
+}
 
 function HeroSection() {
   const [pos, setPos] = useState({ x: 0, y: 0 });
@@ -37,61 +58,53 @@ function HeroSection() {
   return (
     <main
       className="
-  relative z-10 flex h-[100vh] flex-col items-center justify-center text-center px-8 
-  min-h-[calc(100vh-100px)] 
-  bg-black 
-  bg-[url('src/assets/images/landing-page/Saral-ai-frame.png')] 
-  bg-no-repeat 
-  bg-top bg-cover   /* Mobile priority */
-  lg:bg-contain     /* Large screen back to contain */
-"
+        relative z-10 flex flex-col items-center justify-center text-center px-4 sm:px-6 
+        min-h-screen 
+        bg-black bg-[url('src/assets/images/landing-page/Saral-ai-frame.png')] 
+        bg-no-repeat bg-top bg-cover 
+        lg:bg-contain
+        overflow-y-auto
+        pt-20 pb-12
+      "
     >
       {/* Top tagline */}
-      <div className="mt-6 mb-8">
-        <p className="px-6 py-1.5 text-xs font-medium tracking-wide rounded-full inline-block text-[#F1E4FB] bg-[#3F1562] border border-white/30 shadow-[0_0_0_1px_rgba(255,255,255,0.2)] backdrop-blur-md">
+      <div className="mt-4 mb-6 sm:mt-6 sm:mb-8">
+        <p className="px-4 py-1 text-[10px] sm:text-xs font-medium tracking-wide rounded-full inline-block text-[#F1E4FB] bg-[#3F1562] border border-white/30 shadow-[0_0_0_1px_rgba(255,255,255,0.2)] backdrop-blur-md">
           the easiest way to recruit.
         </p>
       </div>
 
       {/* Main heading */}
-      <div className="mb-12">
-        <h1 className="text-7xl md:text-8xl font-bold mb-6 tracking-tight">
+      <div className="mb-10 sm:mb-12">
+        <h1 className="text-7xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-bold mb-4 sm:mb-6 tracking-tight leading-tight">
           <span className="text-white">SARAL </span>
           <span className="text-[#E06689]">AI</span>
         </h1>
-        <p className="text-gray-300 text-xl max-w-3xl mx-auto leading-relaxed">
-          Saral is the fastest way to scout top Talent and send
-          <br />
+
+        <p className="text-gray-300 text-sm sm:text-base md:text-xl max-w-xl sm:max-w-3xl mx-auto leading-relaxed px-2">
+          Saral is the fastest way to scout top Talent and send{" "}
+          <br className="hidden sm:block" />
           AI-generated LinkedIn messages to connect instantly.
         </p>
       </div>
 
       {/* CTA Button */}
-      <div className="mb-16">
+      <div className="mb-12 sm:mb-16">
         <button
           onMouseMove={(e) => {
             const rect = e.currentTarget.getBoundingClientRect();
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
-
             setPos({ x, y });
           }}
           onMouseEnter={() => setHover(true)}
           onMouseLeave={() => setHover(false)}
-          className="relative px-8 py-4 rounded-full text-white text-lg font-medium overflow-hidden 
-                 bg-gradient-to-r from-[#4A2780] to-[#2B0F49] 
-                 shadow-[0_0_10px_2px_rgba(255,255,255,0.05)] 
-                 transition-all duration-300 ease-in-out"
+          className="relative px-6 sm:px-8 py-3 sm:py-4 rounded-full text-white text-sm sm:text-lg font-medium overflow-hidden bg-gradient-to-r from-[#4A2780] to-[#2B0F49] shadow-[0_0_10px_2px_rgba(255,255,255,0.05)] transition-all duration-300 ease-in-out"
           style={{
             backgroundImage: hover
-              ? `
-            radial-gradient(
-              circle at ${pos.x}px ${pos.y}px,
-              hsl(${(pos.x + pos.y) % 360}, 80%, 70%, 0.1) 0%,
-              transparent 40%
-            ),
-            linear-gradient(to right, #4A2780, #2B0F49)
-          `
+              ? `radial-gradient(circle at ${pos.x}px ${pos.y}px, hsl(${
+                  (pos.x + pos.y) % 360
+                }, 80%, 70%, 0.1) 0%, transparent 40%), linear-gradient(to right, #4A2780, #2B0F49)`
               : "linear-gradient(to right, #4A2780, #2B0F49)",
           }}
         >
@@ -111,10 +124,10 @@ function HeroSection() {
       </div>
 
       {/* Bottom text */}
-      <div>
-        <p className="text-gray-400 text-sm">
+      <div className="pb-6 sm:pb-0">
+        <p className="text-gray-400 text-xs sm:text-sm">
           <span className="font-medium text-[#E06689]">98%</span>{" "}
-          <span className="text-white ">Candidate Acceptance Rate</span>
+          <span className="text-white">Candidate Acceptance Rate</span>
         </p>
       </div>
     </main>
@@ -256,7 +269,7 @@ function PricingSection() {
   ];
 
   return (
-    <section className="py-16 bg-white">
+    <section className="bg-white md:py-16">
       {/* Section Header */}
       <div className="text-center mb-12">
         <h2 className="text-3xl md:text-4xl font-bold text-purple-900">
@@ -269,13 +282,13 @@ function PricingSection() {
       </div>
 
       {/* Pricing Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-8 md:mx-auto md:my-0">
         {plans.map((plan, index) => (
           <div
             key={index}
-            className={`relative rounded-3xl border border-gray-200 shadow-sm p-8 flex flex-col justify-between overflow-hidden ${
+            className={`relative rounded-[2rem] border border-gray-200 shadow-sm p-8 flex flex-col justify-between overflow-hidden ${
               plan.highlighted
-                ? "text-white bg-[url('src/assets/images/landing-page/pricing/pricingFrame.png')] bg-cover bg-top"
+                ? "text-white bg-[url('src/assets/images/landing-page/pricing/pricingFrame.png')] bg-no-repeat bg-cover bg-top "
                 : "bg-white text-black"
             }`}
           >
@@ -385,52 +398,69 @@ function FeaturesSection() {
       description: "Simply describe what you need, AI does the rest",
     },
   ];
+  const FeatureCardMobile = ({ icon, title, description }: any) => (
+    <div className="relative w-full border border-transparent p-5 text-center flex flex-col items-center bg-white transition-all duration-300 group hover:border-gray-300">
+      {/* Corner spans */}
+      <span className="absolute top-0 left-0 w-2 h-2  bg-gray-300 opacity-0 group-hover:opacity-100 transition-all duration-500"></span>
+      <span className="absolute top-0 right-0 w-2 h-2  bg-gray-300 opacity-0 group-hover:opacity-100 transition-all duration-500"></span>
+      <span className="absolute bottom-0 left-0 w-2 h-2  bg-gray-300 opacity-0 group-hover:opacity-100 transition-all duration-500"></span>
+      <span className="absolute bottom-0 right-0 w-2 h-2  bg-gray-300 opacity-0 group-hover:opacity-100 transition-all duration-500"></span>
 
-  const FeatureCard = ({ icon, title, description }: any) => {
-    return (
-      <div className="relative border border-transparent p-8 text-center transition-all duration-300 group hover:border-gray-300 transition duration-900 ease-in-out flex flex-col items-center">
-        {/* Corner Squares */}
-        <span className="absolute top-0 left-0 w-3 h-3 bg-gray-300 -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-900"></span>
-        <span className="absolute top-0 right-0 w-3 h-3 bg-gray-300 translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-900"></span>
-        <span className="absolute bottom-0 left-0 w-3 h-3 bg-gray-300 -translate-x-1/2 translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-900"></span>
-        <span className="absolute bottom-0 right-0 w-3 h-3 bg-gray-300 translate-x-1/2 translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-900"></span>
-
-        {/* Icon */}
-        <div className="w-16 h-16 mb-4 flex items-center justify-start rounded-[20px] bg-[#3F1562] shadow-[0_4px_10px_rgba(63,21,98,0.4)]">
-          <img
-            src={icon}
-            alt={title}
-            className="w-full h-full object-contain rounded-[20px] shadow-[0_6px_15px_rgba(63,21,98,0.3)]"
-          />
-        </div>
-
-        {/* Text */}
-        <h3 className="text-[#3F1562] font-semibold">{title}</h3>
-        <p className="text-[#9474AE] w-45 text-sm mt-1">{description}</p>
+      {/* Icon */}
+      <div className="w-14 h-14 mb-3 flex items-center justify-center rounded-[18px] bg-[#3F1562] shadow-[0_4px_10px_rgba(63,21,98,0.4)]">
+        <img src={icon} alt={title} className="w-9 h-9 object-contain" />
       </div>
-    );
-  };
+
+      {/* Text */}
+      <h3 className="text-[#3F1562] font-semibold text-base">{title}</h3>
+      <p className="text-[#9474AE] text-sm mt-1">{description}</p>
+    </div>
+  );
+
+  // ✅ Desktop card (with hover border animation)
+  const FeatureCardDesktop = ({ icon, title, description }: any) => (
+    <div className="relative border border-transparent p-8 text-center transition-all duration-300 group hover:border-gray-300 flex flex-col items-center">
+      {/* Corner Squares */}
+      <span className="absolute top-0 left-0 w-3 h-3 bg-gray-300 -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></span>
+      <span className="absolute top-0 right-0 w-3 h-3 bg-gray-300 translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></span>
+      <span className="absolute bottom-0 left-0 w-3 h-3 bg-gray-300 -translate-x-1/2 translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></span>
+      <span className="absolute bottom-0 right-0 w-3 h-3 bg-gray-300 translate-x-1/2 translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></span>
+
+      {/* Icon */}
+      <div className="w-16 h-16 mb-4 flex items-center justify-center rounded-[20px] bg-[#3F1562] shadow-[0_4px_10px_rgba(63,21,98,0.4)]">
+        <img src={icon} alt={title} className="w-10 h-10 object-contain" />
+      </div>
+      {/* Text */}
+      <h3 className="text-[#3F1562] font-semibold text-lg">{title}</h3>
+      <p className="text-[#9474AE] text-sm mt-2">{description}</p>
+    </div>
+  );
 
   return (
-    <section className="py-16 bg-white mt-8 mb-6">
+    <section className="py-8 sm:py-16 bg-white mt-6 sm:mt-8 mb-6">
       {/* Section header */}
-      <div className="text-center mb-12">
+      <div className="text-center mb-10 sm:mb-12 px-4">
         <h2 className="text-[20px] sm:text-5xl md:text-3.5xl font-bold text-[#3F1562]">
           Features That Matter
         </h2>
-
-        <p className="text-[#848199] mt-2">Why Recruiters Love Saral AI</p>
+        <p className="text-[#848199] mt-2 text-sm sm:text-base">
+          Why Recruiters Love Saral AI
+        </p>
       </div>
 
       {/* Features grid */}
-      <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3">
+      <div className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-y-6 sm:gap-8">
         {features.map((f, i) => (
-          <FeatureCard
-            key={i}
-            icon={f.icon}
-            title={f.title}
-            description={f.description}
-          />
+          <div key={i}>
+            {/* Mobile version */}
+            <div className="block md:hidden">
+              <FeatureCardMobile {...f} />
+            </div>
+            {/* Desktop version */}
+            <div className="hidden md:block">
+              <FeatureCardDesktop {...f} />
+            </div>
+          </div>
         ))}
       </div>
     </section>
@@ -476,7 +506,7 @@ function FAQSection() {
   const [openIndex, setOpenIndex] = useState<number | null>(3);
 
   return (
-    <section className="py-16 bg-white mb-18">
+    <section className="lg:py-16 bg-white mb-0 lg:mb-18">
       {/* Heading */}
       <div className="text-center mb-8">
         <h2 className="text-3xl md:text-4xl font-bold text-purple-900">FAQs</h2>
@@ -648,7 +678,7 @@ function FoundersSection() {
                     {item.title}
                   </span>
                 </div>
-                <p className="text-sm sm:text-base text-[#848199]  w-3/4 mt-2">
+                <p className="text-sm sm:text-base text-[#848199] w-full sm:w-3/4 mt-2">
                   {item.description}
                 </p>
               </div>
@@ -784,6 +814,7 @@ function SaralPromptScreen() {
   const [isOpen, setIsOpen] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [results, setResults] = useState(true);
 
   const history = [
     { title: "Software Engineer", results: "234 results", time: "2h ago" },
@@ -1210,16 +1241,18 @@ function SaralPromptScreen() {
         </div>
 
         {/* Centered content area */}
-        <div className="flex-1 flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8">
-
-          <div className="text-center mb-6 sm:mb-8 max-w-3xl w-full">
-            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-[#3F1462] mb-3 sm:mb-4 tracking-tight leading-tight">
-              What Can I Help You With?
-            </h1>
-            <p className="text-[#1F2937] opacity-40 font-medium text-sm sm:text-base lg:text-lg tracking-wide px-4">
-              Describe your ideal candidate and let AI find the perfect matches
-            </p>
-          </div>
+        <div className="flex-1 flex flex-col w-[100%] items-center justify-center px-4 sm:px-6 lg:px-8">
+          {!results && (
+            <div className="text-center mb-6 sm:mb-8 max-w-3xl w-full">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-[#3F1462] mb-3 sm:mb-4 tracking-tight leading-tight">
+                What Can I Help You With?
+              </h1>
+              <p className="text-[#1F2937] opacity-40 font-medium text-sm sm:text-base lg:text-lg tracking-wide px-4">
+                Describe your ideal candidate and let AI find the perfect
+                matches
+              </p>
+            </div>
+          )}
 
           <div className="w-full max-w-2xl flex flex-col items-center gap-3 sm:gap-4">
             {/* Prompt Input */}
@@ -1276,6 +1309,16 @@ function SaralPromptScreen() {
               </div>
             </div>
           </div>
+          {results && (
+            <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
+              <CandidateCard />
+              <CandidateCard />
+              <CandidateCard />
+              <CandidateCard />
+              <CandidateCard />
+              <CandidateCard />
+            </div>
+          )}
         </div>
 
         {/* Footer */}
@@ -1287,17 +1330,16 @@ function SaralPromptScreen() {
   );
 }
 
-
 function CandidateCard() {
   const [isSaved, setIsSaved] = useState(false);
-    const [size, setSize] = useState(150);
+  const [size, setSize] = useState(150);
 
   useEffect(() => {
     const updateSize = () => {
       if (window.innerWidth < 640) {
-        setSize(130); // small screens
+        setSize(130);
       } else {
-        setSize(150); // desktop
+        setSize(150);
       }
     };
 
@@ -1306,99 +1348,781 @@ function CandidateCard() {
     return () => window.removeEventListener("resize", updateSize);
   }, []);
 
-
   return (
-    <div className="min-h-screen bg-gradient-to-r from-[#FFFFFF] to-[#FCFCFC]  border-[5px] border-[#000000] p-3 flex items-center justify-center transition-all duration-300">
-      <div className="w-full max-w-[400px]"> {/* reduced width */}
-        
-        {/* Outer Border */}
-        <div
-          className={`p-[1.5px] rounded-lg transition-all duration-300 ${
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: 0.2 }}
+      className="w-full max-w-[400px] mx-auto"
+    >
+      <div
+        className={`p-[1.5px] rounded-lg transition-all duration-300 ${
           isSaved
-  ? "bg-gradient-to-r from-[#D8B4FE] to-[#FBCFE8]"
-  : "bg-gradient-to-r from-[#F3E8FF] to-[#FDECF5]"
-
+            ? "bg-gradient-to-r from-[#D8B4FE] to-[#FBCFE8]"
+            : "bg-gradient-to-r from-[#F3E8FF] to-[#FDECF5]"
+        }`}
+      >
+        <div
+          className={`rounded-lg p-3 relative transition-all duration-300 ${
+            isSaved
+              ? "bg-white/50 backdrop-blur-sm"
+              : "bg-gradient-to-br from-[#FFFFFF] to-[#F9EEEE]"
           }`}
         >
-          {/* Inner Card */}
+          {/* Header */}
+          <div className="flex items-start justify-between mb-4">
+            <div className="flex items-center space-x-2">
+              <div className="w-12 h-12 bg-[#F1DFFF] rounded-full flex items-center justify-center border border-purple-300">
+                <span className="text-2xl font-bold text-purple-800">L</span>
+              </div>
+              <div className="ml-2">
+                <h1 className="text-base font-bold text-[#3D1562] mb-0.5">
+                  Leslie A.
+                </h1>
+                <p className="text-xs text-[#3D1562] opacity-50">
+                  Frontend Designer
+                </p>
+              </div>
+            </div>
+            <div className="bg-transparent border-[2px] border-[#ffffff] rounded-md px-2 py-1">
+              <div className="flex items-center space-x-1">
+                <span className="text-[#0077B4] text-[15px] font-medium">
+                  View on
+                </span>
+                <svg
+                  width="25"
+                  height="16"
+                  viewBox="0 0 15 14"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M4.42822 2C4.42822 2.37084 4.31826 2.73335 4.11223 3.04169C3.9062 3.35004 3.61337 3.59036 3.27075 3.73227C2.92814 3.87419 2.55114 3.91132 2.18743 3.83897C1.82371 3.76663 1.48962 3.58805 1.2274 3.32583C0.965175 3.0636 0.786598 2.72951 0.714251 2.36579C0.641904 2.00208 0.679035 1.62508 0.820949 1.28247C0.962863 0.939857 1.20319 0.647022 1.51153 0.440994C1.81987 0.234967 2.18238 0.125 2.55322 0.125C3.0505 0.125 3.52742 0.322544 3.87905 0.674175C4.23068 1.02581 4.42822 1.50272 4.42822 2ZM4.00322 5.125V13.4088C4.00355 13.4699 3.9918 13.5304 3.96864 13.587C3.94548 13.6435 3.91138 13.695 3.86828 13.7383C3.82519 13.7816 3.77395 13.816 3.71752 13.8395C3.66109 13.8629 3.60058 13.875 3.53947 13.875H1.56322C1.50211 13.8752 1.44157 13.8632 1.38508 13.8399C1.32859 13.8166 1.27726 13.7824 1.23405 13.7392C1.19084 13.696 1.15659 13.6446 1.13328 13.5881C1.10997 13.5317 1.09806 13.4711 1.09822 13.41V5.125C1.09822 5.00167 1.14721 4.8834 1.23442 4.7962C1.32162 4.70899 1.4399 4.66 1.56322 4.66H3.53947C3.66258 4.66033 3.78054 4.70947 3.86747 4.79664C3.9544 4.88381 4.00322 5.00189 4.00322 5.125ZM14.3332 9.4375V13.4475C14.3334 13.5037 14.3224 13.5594 14.301 13.6113C14.2796 13.6632 14.2481 13.7104 14.2084 13.7502C14.1686 13.7899 14.1215 13.8214 14.0695 13.8428C14.0176 13.8642 13.9619 13.8752 13.9057 13.875H11.7807C11.7245 13.8752 11.6689 13.8642 11.6169 13.8428C11.565 13.8214 11.5178 13.7899 11.4781 13.7502C11.4383 13.7104 11.4069 13.6632 11.3854 13.6113C11.364 13.5594 11.3531 13.5037 11.3532 13.4475V9.56125C11.3532 8.98125 11.5232 7.02125 9.83697 7.02125C8.53072 7.02125 8.26447 8.3625 8.21197 8.965V13.4475C8.21198 13.5598 8.1678 13.6676 8.08898 13.7476C8.01015 13.8276 7.90302 13.8734 7.79072 13.875H5.73822C5.68214 13.875 5.62661 13.8639 5.57482 13.8824C5.52302 13.8209 5.47597 13.7894 5.43638 13.7497C5.39678 13.71 5.36541 13.6629 5.34406 13.611C5.32271 13.5591 5.31181 13.5036 5.31197 13.4475V5.08875C5.31181 5.03267 5.32271 4.97711 5.34406 4.92525C5.36541 4.87339 5.39678 4.82625 5.43638 4.78654C5.47597 4.74682 5.52302 4.71531 5.57482 4.69382C5.62661 4.67232 5.68214 4.66125 5.73822 4.66125H7.79072C7.9041 4.66125 8.01284 4.70629 8.09301 4.78646C8.17318 4.86663 8.21822 4.97537 8.21822 5.08875V5.81125C8.70322 5.08375 9.42197 4.5225 10.9557 4.5225C14.3532 4.5225 14.3332 7.695 14.3332 9.4375Z"
+                    fill="#0077B4"
+                  />
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          {/* Content */}
           <div
-            className={`rounded-lg p-3 relative transition-all duration-300 ${
-              isSaved
-                ? "bg-white/50 backdrop-blur-sm"
-                : "bg-gradient-to-br from-[#FFFFFF] to-[#F9EEEE]"
-            }`}
+            className={`${
+              isSaved ? "bg-white/70" : "bg-[#fcf9f9]"
+            } backdrop-blur-sm border-[2px] border-[#ffffff] rounded-lg p-3`}
           >
-            {/* Header */}
-            <div className="flex items-start justify-between mb-4">
-              <div className="flex items-center space-x-2">
-                <div className="w-12 h-12 bg-[#F1DFFF] rounded-full flex items-center justify-center border border-purple-300">
-                  <span className="text-2xl font-bold text-purple-800">L</span>
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-3">
+                <div>
+                  <p className="text-[#3D1562] text-[13px] mb-0.5 opacity-50">
+                    Experience
+                  </p>
+                  <p className="text-base opacity-90 font-bold text-[#3D1562]">
+                    5 yrs
+                  </p>
                 </div>
-                <div className="ml-2">
-                  <h1 className="text-base font-bold text-[#3D1562] mb-0.5">
-                    Leslie A.
-                  </h1>
-                  <p className="text-xs text-[#3D1562] opacity-50">Frontend Designer</p>
+                <div>
+                  <p className="text-[#3D1562] text-[13px] mb-0.5 opacity-50">
+                    Location
+                  </p>
+                  <p className="text-base opacity-90 font-bold text-[#3D1562]">
+                    Pune, MH
+                  </p>
                 </div>
               </div>
-              <div className="bg-transparent border-[2px] border-[#ffffff] rounded-md px-2 py-1">
-                <div className="flex items-center space-x-1">
-                  <span className=" text-[#0077B4] text-[15px] font-medium">
-                    View on
-                  </span>
-                  <svg width="25" height="16" viewBox="0 0 15 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M4.42822 2C4.42822 2.37084 4.31826 2.73335 4.11223 3.04169C3.9062 3.35004 3.61337 3.59036 3.27075 3.73227C2.92814 3.87419 2.55114 3.91132 2.18743 3.83897C1.82371 3.76663 1.48962 3.58805 1.2274 3.32583C0.965175 3.0636 0.786598 2.72951 0.714251 2.36579C0.641904 2.00208 0.679035 1.62508 0.820949 1.28247C0.962863 0.939857 1.20319 0.647022 1.51153 0.440994C1.81987 0.234967 2.18238 0.125 2.55322 0.125C3.0505 0.125 3.52742 0.322544 3.87905 0.674175C4.23068 1.02581 4.42822 1.50272 4.42822 2ZM4.00322 5.125V13.4088C4.00355 13.4699 3.9918 13.5304 3.96864 13.587C3.94548 13.6435 3.91138 13.695 3.86828 13.7383C3.82519 13.7816 3.77395 13.816 3.71752 13.8395C3.66109 13.8629 3.60058 13.875 3.53947 13.875H1.56322C1.50211 13.8752 1.44157 13.8632 1.38508 13.8399C1.32859 13.8166 1.27726 13.7824 1.23405 13.7392C1.19084 13.696 1.15659 13.6446 1.13328 13.5881C1.10997 13.5317 1.09806 13.4711 1.09822 13.41V5.125C1.09822 5.00167 1.14721 4.8834 1.23442 4.7962C1.32162 4.70899 1.4399 4.66 1.56322 4.66H3.53947C3.66258 4.66033 3.78054 4.70947 3.86747 4.79664C3.9544 4.88381 4.00322 5.00189 4.00322 5.125ZM14.3332 9.4375V13.4475C14.3334 13.5037 14.3224 13.5594 14.301 13.6113C14.2796 13.6632 14.2481 13.7104 14.2084 13.7502C14.1686 13.7899 14.1215 13.8214 14.0695 13.8428C14.0176 13.8642 13.9619 13.8752 13.9057 13.875H11.7807C11.7245 13.8752 11.6689 13.8642 11.6169 13.8428C11.565 13.8214 11.5178 13.7899 11.4781 13.7502C11.4383 13.7104 11.4069 13.6632 11.3854 13.6113C11.364 13.5594 11.3531 13.5037 11.3532 13.4475V9.56125C11.3532 8.98125 11.5232 7.02125 9.83697 7.02125C8.53072 7.02125 8.26447 8.3625 8.21197 8.965V13.4475C8.21198 13.5598 8.1678 13.6676 8.08898 13.7476C8.01015 13.8276 7.90302 13.8734 7.79072 13.875H5.73822C5.68214 13.875 5.62661 13.8639 5.57482 13.8424C5.52302 13.8209 5.47597 13.7894 5.43638 13.7497C5.39678 13.71 5.36541 13.6629 5.34406 13.611C5.32271 13.5591 5.31181 13.5036 5.31197 13.4475V5.08875C5.31181 5.03267 5.32271 4.97711 5.34406 4.92525C5.36541 4.87339 5.39678 4.82625 5.43638 4.78654C5.47597 4.74682 5.52302 4.71531 5.57482 4.69382C5.62661 4.67232 5.68214 4.66125 5.73822 4.66125H7.79072C7.9041 4.66125 8.01284 4.70629 8.09301 4.78646C8.17318 4.86663 8.21822 4.97537 8.21822 5.08875V5.81125C8.70322 5.08375 9.42197 4.5225 10.9557 4.5225C14.3532 4.5225 14.3332 7.695 14.3332 9.4375Z" fill="#0077B4"/>
-</svg>
-
+              <div className="flex flex-col items-center justify-center">
+                <div className="relative w-14 h-14 mb-8">
+                  <CustomHalfCircle percentage={100} size={size} />
                 </div>
+                <p className="text-[#3D1562] text-[15px] font-semibold opacity-55">
+                  Assessment score
+                </p>
               </div>
             </div>
 
-            {/* Content */}
-            <div
-              className={`${
-                isSaved ? "bg-white/70" : "bg-[#fcf9f9]"
-              } backdrop-blur-sm  border-[2px] border-[#ffffff] rounded-lg p-3`}
-            >
-              <div className="grid grid-cols-2 gap-3">
-                <div className="space-y-3">
-                  <div>
-                    <p className="text-[#3D1562] text-[13px] mb-0.5 opacity-50">Experience</p>
-                    <p className="text-base opacity-90 font-bold text-[#3D1562]">5 yrs</p>
-                  </div>
-                  <div>
-                    <p className="text-[#3D1562] text-[13px] mb-0.5 opacity-50">Location</p>
-                    <p className="text-base opacity-90 font-bold text-[#3D1562]">Pune, MH</p>
-                  </div>
-                </div>
-                <div className="flex flex-col items-center justify-center">
-                  <div className="relative w-14 h-14 mb-8">
-                    <CustomHalfCircle percentage={100} size={size} />
-                  </div>
-                  <p className="text-[#3D1562] text-[15px] font-semibold opacity-55">Assessment score</p>
-                </div>
-              </div>
-
-              {/* Save / Saved Button */}
-              <div className="mt-3 flex justify-center">
-                <button
-                  onClick={() => setIsSaved(!isSaved)}
-                  className={`w-full max-w-[380px] rounded-xl text-sm font-bold px-3 py-1.5 transition-all duration-300 ease-in-out
-                    text-transparent bg-clip-text bg-gradient-to-r from-[#3F1562] to-[#DF6789]
-                    ${isSaved
+            {/* Save / Saved Button */}
+            <div className="mt-3 flex justify-center">
+              <button
+                onClick={() => setIsSaved(!isSaved)}
+                className={`w-full max-w-[380px] rounded-xl text-sm font-bold px-3 py-1.5 transition-all duration-300 ease-in-out
+                  text-transparent bg-clip-text bg-gradient-to-r from-[#3F1562] to-[#DF6789]
+                  ${
+                    isSaved
                       ? "border-[2px] border-[#eddddd] hover:opacity-80"
                       : "border-[2px] border-[#ffffff] hover:bg-purple-50 hover:border-purple-100"
-                    }`}
-                >
-                  {isSaved ? "Saved" : "Save"}
-                </button>
-              </div>
-
+                  }`}
+              >
+                {isSaved ? "Saved" : "Save"}
+              </button>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
 
+import { motion, AnimatePresence } from "framer-motion";
+
+interface CommonModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  children: React.ReactNode;
+  size?: "sm" | "md" | "lg" | "full" | "xl";
+}
+
+const sizeClasses: Record<string, string> = {
+  sm: "max-w-sm",
+  md: "max-w-md",
+  lg: "max-w-lg",
+  xl: "max-w-2xl",
+  "2xl": "max-w-4xl", // wider
+  full: "max-w-[80vw]", // take 90% of screen width
+};
+
+const CommonModal: React.FC<CommonModalProps> = ({
+  isOpen,
+  onClose,
+  children,
+  size = "md",
+}) => {
+  useEffect(() => {
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onClose();
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener("keydown", handleEsc);
+    } else {
+      document.removeEventListener("keydown", handleEsc);
+    }
+
+    return () => {
+      document.removeEventListener("keydown", handleEsc);
+    };
+  }, [isOpen, onClose]);
+
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <motion.div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-r from-[#D4B062]/20 to-[#3F1562]/20 bg-transparent backdrop-blur-sm px-2 sm:px-4"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+        >
+          <motion.div
+            className={`relative w-full ${sizeClasses[size]} bg-white/80 rounded-2xl border-[2px] border-[#3d156236] p-4 sm:p-6 md:p-8 max-h-[90vh] overflow-y-auto`}
+            initial={{ opacity: 0, scale: 0.9, y: 30 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.9, y: 30 }}
+            transition={{ duration: 0.25, ease: "easeInOut" }}
+          >
+            {/* Close Button */}
+            <button
+              onClick={onClose}
+              className="absolute top-3 right-3 sm:top-4 sm:right-4 text-gray-400 hover:text-gray-600"
+            >
+              ✕
+            </button>
+
+            {children}
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+};
+
+interface PricingModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+type Plan = {
+  name: string;
+  price: string;
+  oldPrice?: string;
+  discount?: string;
+  credits: string;
+  profiles: string;
+  features: string[];
+  popular?: boolean;
+};
+
+const plans: Plan[] = [
+  {
+    name: "Lorem",
+    price: "₹0",
+    credits: "450",
+    profiles: "450",
+    features: [
+      "Lorem Ipsum is simply",
+      "Lorem Ipsum is simply",
+      "Reachout Score (Fit / Not Fit indicator)",
+    ],
+  },
+  {
+    name: "Standard",
+    price: "₹2,249",
+    oldPrice: "₹3000",
+    discount: "25% OFF",
+    credits: "450",
+    profiles: "450",
+    features: [
+      "All Free features",
+      "Unlimited saved search history",
+      "Filters on saved searches",
+      "Reachout Score (Fit / Not Fit indicator)",
+      "HeadScore AI match via natural language prompts",
+      "Flexible credit allocation (5 or 10 per prompt)",
+    ],
+    popular: true,
+  },
+  {
+    name: "Pro",
+    price: "₹5,499",
+    credits: "1000",
+    profiles: "1000",
+    features: [
+      "All Standard features",
+      "Dedicated support (2-hour SLA)",
+      "AI-generated LinkedIn message templates",
+      "Priority profile delivery",
+      "Early access to upcoming AI features",
+    ],
+  },
+];
+
+function PricingModal({ isOpen, onClose }: PricingModalProps) {
+  return (
+    <CommonModal isOpen={isOpen} onClose={onClose} size="full">
+      {/* Header */}
+      <div className="text-center pt-2 sm:pt-4 pb-2 sm:pb-4 mb-2 sm:mb-4 px-2 sm:px-4">
+        <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-[#3F1562] mb-1 sm:mb-2">
+          Upgrade Your Plan
+        </h2>
+        <p className="text-[#3D1562]/50 text-xs sm:text-sm md:text-base">
+          Choose the perfect plan for your recruiting needs
+        </p>
+      </div>
+
+      {/* Pricing Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3 md:gap-4 lg:gap-6 px-2 sm:px-3 md:px-4 lg:px-6 pb-3 sm:pb-4 md:pb-6">
+        {plans.map((plan, idx) => (
+          <div
+            key={plan.name}
+            className={`
+              relative rounded-lg md:rounded-xl p-3 sm:p-4 lg:p-5 transition-all
+              ${
+                plan.popular
+                  ? "bg-gradient-to-br from-purple-50 to-pink-50 border-2 border-[#3F1562]/50 shadow-lg sm:scale-105"
+                  : "bg-white border border-gray-200 hover:shadow-lg"
+              }
+            `}
+          >
+            {/* Most Popular Badge */}
+            <div className="h-[85%] sm:h-[90%] flex items-center flex-col justify-center">
+              {plan.popular && (
+                <div className="absolute -top-2 left-1/2 transform -translate-x-1/2">
+                  <span className="bg-[#3F1562] text-white px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-semibold">
+                    MOST POPULAR
+                  </span>
+                </div>
+              )}
+
+              {/* Price */}
+              <div className="mb-2 sm:mb-3 mt-1 sm:mt-2">
+                <div className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-[#3F1562]">
+                  {plan.price}{" "}
+                  <span className="text-[10px] sm:text-xs md:text-sm lg:text-base font-normal text-[#3D1562]/40">
+                    /month
+                  </span>
+                </div>
+                {plan.oldPrice && plan.discount && (
+                  <div className="flex items-center justify-center gap-1 sm:gap-2 mt-1">
+                    <span className="text-[#3D1562]/40 line-through text-xs sm:text-sm">
+                      {plan.oldPrice}
+                    </span>
+                    <span className="bg-gradient-to-r from-[#FFDFA9]/60 to-[#BF9CF9]/80 rounded-2xl text-white px-1.5 sm:px-2 py-0.5 text-[10px] sm:text-xs font-semibold">
+                      {plan.discount}
+                    </span>
+                  </div>
+                )}
+              </div>
+
+              {/* Title & Credits */}
+              <h3 className="text-sm sm:text-base md:text-lg lg:text-xl font-bold text-[#3F1562] mb-0.5 sm:mb-1">
+                {plan.name}
+              </h3>
+              <p className="text-[#3D1562]/50 mb-3 sm:mb-4 text-[10px] sm:text-xs md:text-sm">
+                {plan.credits} credits → {plan.profiles} profiles
+              </p>
+
+              {/* Features */}
+              <div className="space-y-1.5 sm:space-y-2 mb-4 sm:mb-6">
+                {plan.features.map((feature) => (
+                  <div key={feature} className="flex items-start">
+                    <span className="mr-1.5 sm:mr-2 mt-1 flex-shrink-0 text-sm">
+                      <svg
+                        width="11"
+                        height="8"
+                        viewBox="0 0 13 10"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="sm:w-[13px] sm:h-[10px]"
+                      >
+                        <path
+                          d="M11.9391 1.43858L5.96981 9.64444C5.82745 9.83578 5.61517 9.96115 5.38066 9.99238C5.14616 1.0236 4.9091 9.95808 4.72276 9.81052L0.460123 6.35821C0.0839729 6.05328 0.023065 5.4972 0.324082 5.11616C0.625098 4.73512 1.17405 4.67342 1.5502 4.97835L5.10472 7.8591L10.5351 0.393523C10.7131 0.122841 11.0236 -0.0268124 11.3433 0.00397824C11.663 0.0347689 11.9401 0.241022 12.0646 0.540849C12.1891 0.840676 12.1409 1.18556 11.9391 1.43858Z"
+                          fill="#C55A83"
+                        />
+                      </svg>
+                    </span>
+                    <span className="text-[#3D1562] font-semibold text-[10px] sm:text-xs md:text-sm">
+                      {feature}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* CTA Button */}
+            <div>
+              <button className="w-full px-4 sm:px-6 py-2 sm:py-2 rounded-lg font-medium text-xs sm:text-sm bg-gradient-to-r from-yellow-800 via-purple-800 to-pink-500 bg-clip-text text-transparent border-[2px] border-[#3d156236] transition duration-300 ease-in-out hover:shadow-[0_0_15px_rgba(236,72,153,0.6)] hover:border-purple-50">
+                Choose plan
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </CommonModal>
+  );
+}
+
+interface CheckoutModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
+  const planItems = [
+    {
+      title: "Standard Plan (1 Month)",
+      description: "• 450 Credits → Access 450 Profiles",
+      price: "₹3,000",
+    },
+    {
+      title: "Plan Discount (13%)",
+      price: "-₹750.99",
+    },
+    {
+      title: "Sub Total",
+      price: "₹2,249",
+    },
+    {
+      title: "GST (18%)",
+      price: "₹404.82",
+    },
+    {
+      title: (
+        <>
+          Total{" "}
+          <span className="text-sm font-normal text-[#231D4F]/60">
+            (Inc Tax)
+          </span>
+        </>
+      ),
+      price: "₹2,653",
+      highlight: true,
+    },
+  ];
+
+  return (
+    <CommonModal isOpen={isOpen} onClose={onClose} size="md">
+      <div className="flex items-center mb-6">
+        <button
+          onClick={onClose}
+          className="mr-3 text-gray-600 hover:text-gray-800"
+        >
+          <svg
+            className="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M15 19l-7-7 7-7"
+            />
+          </svg>
+        </button>
+        <h2 className="text-xl font-bold text-[#3F1562]">Checkout</h2>
+      </div>
+
+      <div className="bg-gradient-to-r from-[#3F1562]/3 to-[#DF6789]/5 p-4 rounded-2xl border-[2px] border-[#3d156236]">
+        <div className="bg-transparent rounded-lg p-4 mb-6">
+          <h3 className="text-lg font-semibold text-[#231D4F] mb-4">
+            Purchase summary
+          </h3>
+
+          <div className="space-y-3">
+            {planItems.map((item, index) => (
+              <div key={index}>
+                {index === 0 ? (
+                  // Plan block (with description)
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <div className="font-medium text-[#231D4F]">
+                        {item.title}
+                      </div>
+                      <div className="text-sm text-[#3D1562]">
+                        {item.description}
+                      </div>
+                    </div>
+                    <div className="font-medium text-[#231D4F]">
+                      {item.price}
+                    </div>
+                  </div>
+                ) : item.highlight ? (
+                  // Total block
+                  <>
+                    <hr className="my-3 border-gray-300" />
+                    <div className="flex justify-between items-center">
+                      <span className="text-xl font-bold text-[#231D4F]">
+                        {item.title}
+                      </span>
+                      <span className="text-xl font-bold text-[#231D4F]">
+                        {item.price}
+                      </span>
+                    </div>
+                  </>
+                ) : (
+                  // Normal row
+                  <>
+                    {item.title.toString().includes("Sub Total") && (
+                      <hr className="my-3 border-gray-300" />
+                    )}
+                    <div className="flex justify-between">
+                      <span className="text-[#231D4F]">{item.title}</span>
+                      <span
+                        className={`${
+                          item.title.toString().includes("Sub Total")
+                            ? "font-semibold"
+                            : "font-medium"
+                        } text-[#231D4F]`}
+                      >
+                        {item.price}
+                      </span>
+                    </div>
+                    {item.title.toString().includes("GST") && (
+                      <hr className="my-3 border-gray-300" />
+                    )}
+                  </>
+                )}
+              </div>
+            ))}
+
+            <div className=" w-full flex items-center justify-center mt-3 p-3 bg-gradient-to-r from-[#BF9CF9]/30 to-[#FFDFA9]/30 rounded-md">
+              <span className="text-sm mr-2">✅</span>
+              <span className="text-[13px] font-semibold text-[#221D4F]">
+                Yay! You saved <strong>₹750</strong> on this plan.
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <button
+          className="w-full px-6 py-2 rounded-lg font-medium text-sm
+  bg-gradient-to-r from-yellow-800 via-purple-800 to-pink-500 
+  bg-clip-text text-transparent border-[2px] border-[#3d156236]
+  transition duration-300 ease-in-out hover:shadow-[0_0_15px_rgba(236,72,153,0.6)] hover:border-purple-50"
+        >
+          Proceed to Pay ₹2,653
+        </button>
+      </div>
+
+      <div className="text-center space-y-2 mt-2">
+        <p className="text-sm text-gray-500">
+          Need help? Reach out to our support team anytime.
+        </p>
+        <div className="flex items-center justify-center text-xs text-gray-800">
+          <svg className="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fillRule="evenodd"
+              d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
+              clipRule="evenodd"
+            />
+          </svg>
+          100% secure payment · No hidden charges
+        </div>
+      </div>
+    </CommonModal>
+  );
+}
+
+interface WelcomeModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+function WelcomeModal({ isOpen, onClose }: WelcomeModalProps) {
+  const features = [
+    {
+      title: "Smart Search",
+      description:
+        'Type what you\'re looking for (e.g., "Front-end developer with React and 2+ years experience"). Saral AI will do the rest, instantly.',
+      icon: (
+        <svg
+          width="24"
+          height="27"
+          viewBox="0 0 24 27"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M21.6878 21.3106L18.8642 18.4969C20.3949 16.6059 21.1416 14.1996 20.9504 11.7742C20.7591 9.34883 19.6445 7.0893 17.8363 5.46154C16.0281 3.83379 13.6643 2.96192 11.2322 3.02573C8.80014 3.08954 6.48527 4.08416 4.76494 5.80449C3.04461 7.52482 2.04999 9.83969 1.98618 12.2718C1.92237 14.7038 2.79424 17.0677 4.42199 18.8759C6.04975 20.684 8.30928 21.7987 10.7347 21.9899C13.16 22.1812 15.5664 21.4344 17.4574 19.9037L20.271 22.7273C20.3638 22.8208 20.4741 22.8951 20.5957 22.9457C20.7173 22.9964 20.8477 23.0225 20.9794 23.0225C21.1111 23.0225 21.2415 22.9964 21.3631 22.9457C21.4847 22.8951 21.595 22.8208 21.6878 22.7273C21.7813 22.6346 21.8555 22.5242 21.9062 22.4026C21.9568 22.2811 21.9829 22.1507 21.9829 22.0189C21.9829 21.8872 21.9568 21.7568 21.9062 21.6352C21.8555 21.5137 21.7813 21.4033 21.6878 21.3106ZM4.01793 12.5405C4.01793 11.0605 4.4568 9.61372 5.27904 8.38315C6.10128 7.15257 7.26997 6.19346 8.63731 5.62709C10.0046 5.06072 11.5092 4.91253 12.9608 5.20126C14.4123 5.49 15.7457 6.20268 16.7922 7.2492C17.8387 8.29571 18.5514 9.62906 18.8401 11.0806C19.1289 12.5322 18.9807 14.0368 18.4143 15.4041C17.8479 16.7714 16.8888 17.9401 15.6583 18.7624C14.4277 19.5846 12.9809 20.0235 11.5009 20.0235C9.51631 20.0235 7.61298 19.2351 6.20965 17.8318C4.80631 16.4284 4.01793 14.5251 4.01793 12.5405Z"
+            fill="#3D1562"
+          />
+        </svg>
+      ),
+    },
+    {
+      title: "Fast & Focused",
+      description:
+        "No filters, no forms. Just natural language. Get real profiles that match what you said.",
+      icon: (
+        <svg
+          width="24"
+          height="27"
+          viewBox="0 0 24 27"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <g clip-path="url(#clip0_158_297)">
+            <path
+              d="M11.983 18.0226C9.22597 18.0226 6.98291 15.7795 6.98291 13.0225C6.98291 10.2655 9.22597 8.02246 11.983 8.02246C14.74 8.02246 16.983 10.2655 16.983 13.0225C16.983 15.7795 14.74 18.0226 11.983 18.0226ZM11.983 9.52246C10.053 9.52246 8.48291 11.0926 8.48291 13.0225C8.48291 14.9525 10.053 16.5226 11.983 16.5226C13.9129 16.5226 15.483 14.9525 15.483 13.0225C15.483 11.0926 13.9129 9.52246 11.983 9.52246Z"
+              fill="#3D1562"
+            />
+            <path
+              d="M11.9828 23.0223C6.4688 23.0223 1.98291 18.5364 1.98291 13.0224C1.98291 7.5084 6.46885 3.02246 11.9828 3.02246C17.4968 3.02246 21.9828 7.5084 21.9828 13.0224C21.9828 18.5364 17.4968 23.0223 11.9828 23.0223ZM11.9828 4.52246C7.29591 4.52246 3.48291 8.33546 3.48291 13.0224C3.48291 17.7093 7.29591 21.5223 11.9828 21.5223C16.6698 21.5223 20.4828 17.7093 20.4828 13.0224C20.4828 8.33546 16.6698 4.52246 11.9828 4.52246Z"
+              fill="#3D1562"
+            />
+            <path
+              d="M11.9829 6.02252C11.5689 6.02252 11.2329 5.68652 11.2329 5.27252V1.77246C11.2329 1.35846 11.5689 1.02246 11.9829 1.02246C12.3969 1.02246 12.7329 1.35846 12.7329 1.77246V5.27252C12.7329 5.68652 12.3969 6.02252 11.9829 6.02252ZM11.9829 25.0225C11.5689 25.0225 11.2329 24.6865 11.2329 24.2725V20.7724C11.2329 20.3584 11.5689 20.0224 11.9829 20.0224C12.3969 20.0224 12.7329 20.3584 12.7329 20.7724V24.2725C12.7329 24.6865 12.3969 25.0225 11.9829 25.0225ZM4.23297 13.7725H0.73291C0.31891 13.7725 -0.0170898 13.4365 -0.0170898 13.0225C-0.0170898 12.6085 0.31891 12.2725 0.73291 12.2725H4.23297C4.64697 12.2725 4.98297 12.6085 4.98297 13.0225C4.98297 13.4365 4.64697 13.7725 4.23297 13.7725ZM23.2329 13.7725H19.7328C19.3188 13.7725 18.9828 13.4365 18.9828 13.0225C18.9828 12.6085 19.3188 12.2725 19.7328 12.2725H23.2329C23.6469 12.2725 23.9829 12.6085 23.9829 13.0225C23.9829 13.4365 23.6469 13.7725 23.2329 13.7725Z"
+              fill="#3D1562"
+            />
+          </g>
+          <defs>
+            <clipPath id="clip0_158_297">
+              <rect width="24" height="27" fill="white" />
+            </clipPath>
+          </defs>
+        </svg>
+      ),
+    },
+    {
+      title: "Private & Safe",
+      description:
+        "Your prompts are secure and only used to fetch results. Nothing is stored or shared.",
+      icon: (
+        <svg
+          width="24"
+          height="27"
+          viewBox="0 0 24 27"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M11.9829 24.0225C11.8846 24.0225 11.7863 24.0018 11.6948 23.9592L9.63579 23.0091C5.21516 20.9686 2.35791 16.5033 2.35791 11.6337V4.77246C2.35784 4.60353 2.41997 4.44048 2.53245 4.31444C2.64493 4.1884 2.79987 4.10818 2.96772 4.08909C4.33001 3.93326 5.68341 3.70769 7.0226 3.41327C8.62568 3.06 10.2055 2.60861 11.7533 2.06165C11.9018 2.0094 12.064 2.0094 12.2118 2.06165C13.7598 2.60863 15.3399 3.06002 16.9432 3.41327C18.2756 3.70684 19.6403 3.9344 20.9981 4.08909C21.1659 4.10818 21.3209 4.1884 21.4334 4.31444C21.5458 4.44048 21.608 4.60353 21.6079 4.77246V11.6344C21.6079 16.504 18.7513 20.9686 14.33 23.0091L12.271 23.9592C12.1806 24.0008 12.0824 24.0224 11.9829 24.0225ZM3.73291 5.38159V11.6344C3.73691 13.7639 4.34873 15.8481 5.49644 17.6419C6.64415 19.4356 8.28007 20.8645 10.2119 21.7606L11.9829 22.5766L13.7539 21.7592C15.6855 20.8633 17.3213 19.4346 18.469 17.6411C19.6167 15.8475 20.2286 13.7637 20.2329 11.6344V5.38159C17.4238 5.01737 14.6594 4.36634 11.9829 3.43871C9.30645 4.36614 6.54202 5.01762 3.73291 5.38159Z"
+            fill="#3D1562"
+          />
+          <path
+            d="M14.7329 17.835H9.23291C8.4746 17.835 7.85791 17.2183 7.85791 16.46V11.6475C7.85791 10.8891 8.4746 10.2725 9.23291 10.2725H14.7329C15.4912 10.2725 16.1079 10.8891 16.1079 11.6475V16.46C16.1079 17.2183 15.4912 17.835 14.7329 17.835ZM9.23291 11.6475V16.46H14.7343L14.7329 11.6475H9.23291Z"
+            fill="#3D1562"
+          />
+          <path
+            d="M14.0454 11.6475H9.92041C9.73807 11.6475 9.56321 11.575 9.43427 11.4461C9.30534 11.3172 9.23291 11.1423 9.23291 10.96V9.58496C9.23291 8.06834 10.4663 6.83496 11.9829 6.83496C13.4995 6.83496 14.7329 8.06834 14.7329 9.58496V10.96C14.7329 11.1423 14.6605 11.3172 14.5315 11.4461C14.4026 11.575 14.2277 11.6475 14.0454 11.6475ZM10.6079 10.2725H13.3579V9.58496C13.3579 8.82665 12.7412 8.20996 11.9829 8.20996C11.2246 8.20996 10.6079 8.82665 10.6079 9.58496V10.2725Z"
+            fill="#3D1562"
+          />
+        </svg>
+      ),
+    },
+    {
+      title: "Results may vary",
+      description:
+        "Saral AI can make mistakes. Please review results before taking action.",
+      icon: (
+        <svg
+          width="24"
+          height="27"
+          viewBox="0 0 24 27"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M5.10742 22.1875H18.8574C20.1518 22.1875 21.2012 21.1382 21.2012 19.8438C21.2012 19.4269 21.0924 19.0355 20.9016 18.6964L14.0266 6.19637C13.625 5.48234 12.86 5 11.9824 5C11.1048 5 10.3399 5.48234 9.93824 6.19637L3.06324 18.6964C2.8725 19.0355 2.76367 19.4269 2.76367 19.8438C2.76367 21.1382 3.81301 22.1875 5.10742 22.1875Z"
+            stroke="#3D1562"
+            stroke-width="1.5"
+            stroke-miterlimit="10"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M11.9824 10.4688V15.1562"
+            stroke="#3D1562"
+            stroke-width="1.5"
+            stroke-miterlimit="10"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M12.7637 18.2812C12.7637 18.7127 12.4139 19.0625 11.9824 19.0625C11.5509 19.0625 11.2012 18.7127 11.2012 18.2812C11.2012 17.8498 11.5509 17.5 11.9824 17.5C12.4139 17.5 12.7637 17.8498 12.7637 18.2812Z"
+            fill="#3D1562"
+          />
+        </svg>
+      ),
+    },
+  ];
+
+  return (
+    <CommonModal isOpen={isOpen} onClose={onClose} size="lg">
+      <h2 className="text-xl font-bold text-[#3D1562] mb-2">
+        Welcome to Saral AI
+      </h2>
+      <p className="text-sm text-[#3D1562] opacity-40 mb-6">
+        Get real candidate profiles in seconds—just type what you need.
+      </p>
+
+      <div className="space-y-5 mb-6">
+        {features.map((feature, index) => (
+          <div key={index} className="flex items-start space-x-3">
+            <div className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-1.5">
+              {feature.icon}
+            </div>
+            <div>
+              <h3 className="font-bold text-[#3D1562] opacity-95 text-lg mb-1">
+                {feature.title}
+              </h3>
+              <p className="text-xs text-[#3D1562] text-md opacity-70 leading-relaxed">
+                {feature.description}
+              </p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className="flex justify-end">
+        <button
+          className="px-6 py-2 rounded-lg font-medium text-sm
+  bg-gradient-to-r from-yellow-400 via-purple-400 to-pink-500
+  bg-clip-text text-transparent border-[2px] border-[#3d156236]
+  transition duration-300 ease-in-out hover:shadow-[0_0_15px_rgba(236,72,153,0.6)] hover:border-purple-50"
+        >
+          Continue
+        </button>
+      </div>
+    </CommonModal>
+  );
+}
+
+interface SupportModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+function SupportModal({ isOpen, onClose }: SupportModalProps) {
+  return (
+    <CommonModal isOpen={isOpen} onClose={onClose} size="xl">
+      <div className="text-center mb-6">
+        <h2 className="text-xl font-bold text-[#3D1562] mb-1">
+          Contact Support
+        </h2>
+        <p className="text-[#3D15623D1562] opacity-40 text-sm">
+          We're here to help you succeed
+        </p>
+      </div>
+
+      {/* Wrapper for both cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-white rounded-2xl p-4 shadow-md">
+        {/* Email Support */}
+        <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
+          <h4 className="font-semibold text-[#3D1562] mb-1">Email Support</h4>
+          <p className="text-[#3D1562] opacity-40 text-sm mb-4">
+            Get help via email within 24 hours
+          </p>
+          <div className="flex items-center gap-2 text-[#3D1562]">
+            {/* Email Icon */}
+            <svg
+              width="19"
+              height="16"
+              viewBox="0 0 19 16"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M15.1172 14.3281H4.14844C2.59513 14.3281 1.33594 13.0689 1.33594 11.5156V4.48438C1.33594 2.93107 2.59513 1.67188 4.14844 1.67188H15.1172C16.6705 1.67188 17.9297 2.93107 17.9297 4.48438V11.5156C17.9297 13.0689 16.6705 14.3281 15.1172 14.3281Z"
+                stroke="#3D1562"
+                stroke-width="1.40625"
+                stroke-miterlimit="10"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M4.14844 4.48438L8.63845 9.11502C9.18763 9.66419 10.078 9.66419 10.6272 9.11502L15.1172 4.48438M4.14844 11.5156L7.52344 8M11.7422 8L15.1172 11.5156"
+                stroke="#3D1562"
+                stroke-width="1.40625"
+                stroke-miterlimit="10"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+
+            <span className="text-sm text-[#3D1562] font-medium">
+              support@headsin.com
+            </span>
+          </div>
+        </div>
+
+        {/* Contact Number */}
+        <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
+          <h4 className="font-semibold text-[#3D1562] mb-1">Contact No.</h4>
+          <p className="text-[#3D1562] opacity-40 text-sm mb-4">
+            Chat with our support team
+          </p>
+          <div className="flex items-center gap-2 text-[#3D1562]">
+            {/* Mobile Icon */}
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 19 19"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M13.25 1.5H5.75C4.64543 1.5 3.75 2.39543 3.75 3.5V15.5C3.75 16.6046 4.64543 17.5 5.75 17.5H13.25C14.3546 17.5 15.25 16.6046 15.25 15.5V3.5C15.25 2.39543 14.3546 1.5 13.25 1.5Z"
+                stroke="#3D1562"
+                strokeWidth="1.3"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path
+                d="M7 14.25H12"
+                stroke="#3D1562"
+                strokeWidth="1.3"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+            <span className="text-sm text-[#3D1562] font-medium">
+              +91 97734-97763
+            </span>
+          </div>
+        </div>
+      </div>
+    </CommonModal>
+  );
+}
