@@ -4,7 +4,7 @@ import ConfirmationModal from "@/components/ui/modals/ConfirmationModal";
 import ResetPasswordModal from "@/components/ui/modals/ResetPasswordModal";
 import { logoutUser, resetPassword } from "@/helpers/apis/auth";
 import { showToast } from "@/helpers/helper";
-import { DASHBOARD, JOBS, LOGIN, MESSAGES, PROFILE, SUPPORT } from "@/routes";
+import { DASHBOARD, JOBS, LOGIN, MESSAGES, PROFILE, SARAL_AI, SUPPORT } from "@/routes";
 import { ResetPasswordField, resetPasswordSchema } from "@/types/auth.types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Divider } from "primereact/divider";
@@ -19,12 +19,14 @@ import MessageIcon from "./svgs/MessageIcon";
 import ProfileIcon from "./svgs/ProfileIcon";
 import ResetPasswordIcon from "./svgs/ResetPasswordIcon";
 import SupportIcon from "./svgs/SupportIcon";
+import SaralAiIcon from "./svgs/SaralAi";
 
 const SIDEBAR_ITEMS = [
     { title: "Dashboard", icon: <DashboardIcon />, to: DASHBOARD },
     { title: "Messages", icon: <MessageIcon />, to: MESSAGES },
     { title: "Jobs", icon: <JobsIcon />, to: JOBS },
     { title: "Profile", icon: <ProfileIcon />, to: PROFILE },
+    { title: "Saral Ai", icon: <SaralAiIcon />, to: SARAL_AI },
 ];
 
 const MainSidebar: React.FC<{

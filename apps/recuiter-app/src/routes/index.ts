@@ -19,6 +19,7 @@ export const EDIT_JOB = "/jobs/edit";
 export const PREVIEW_JOB = "/jobs/preview";
 export const PROFILE = "/profile";
 export const SUPPORT = "/support";
+export const SARAL_AI = "/saral-ai"
 
 
 // ==> Other routes

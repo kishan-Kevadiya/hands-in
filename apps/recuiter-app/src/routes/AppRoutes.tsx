@@ -32,6 +32,7 @@ import PreviewJob from "@/pages/jobs/PreviewJob";
 import PrivacyPolicy from "@/pages/privacy-policy/PrivacyPolicy";
 import TermsofService from "@/pages/terms-of-service/TermsofService";
 import CodeofConduct from "@/pages/code-of-conduct/CodeofConduct";
+import SaralPromptScreen from "@/pages/saral-ai/SaralAi";
 
 const AppRoutes: React.FC = () => {
     const rotues = createBrowserRouter([
@@ -254,6 +255,10 @@ const AppRoutes: React.FC = () => {
         {
             path: "*",
             element: <PageNotFound />,
+        },
+         {
+            path: "saral-ai",
+            element: <SaralPromptScreen />,
         },
     ]);
 
