@@ -13,9 +13,9 @@ import specificationThree from "@/assets/images/landing-page/SaralAiSpec3.png";
 const SaralAI = () => {
   return (
     <div>
-      {/* <HeroSection /> */}
+      <HeroSection />
       {/* <PromptScreen /> */}
-      <SaralPromptScreen />
+      {/* <SaralPromptScreen /> */}
       {/* <CandidateCard /> */}
       {/* <RichTextEditor  /> */}
       {/* <Specification />
@@ -51,9 +51,132 @@ function DemoModalCheck() {
   );
 }
 
+// function HeroSection() {
+//   const [pos, setPos] = useState({ x: 0, y: 0 });
+//   const [hover, setHover] = useState(false);
+
+//   return (
+//     <main
+//       className="
+//         relative z-10 flex flex-col items-center justify-center text-center px-4 sm:px-6 
+//         min-h-screen 
+//         bg-black bg-[url('src/assets/images/landing-page/Saral-ai-frame.png')] 
+//         bg-no-repeat bg-top bg-cover 
+//         lg:bg-contain
+//         overflow-y-auto
+//         pt-20 pb-12
+//       "
+//     >
+//       {/* Top tagline */}
+//       <div className="mt-4 mb-6 sm:mt-6 sm:mb-8">
+//         <p className="px-4 py-1 text-[10px] sm:text-xs font-medium tracking-wide rounded-full inline-block text-[#F1E4FB] bg-[#3F1562] border border-white/30 shadow-[0_0_0_1px_rgba(255,255,255,0.2)] backdrop-blur-md">
+//           the easiest way to recruit.
+//         </p>
+//       </div>
+
+//       {/* Main heading */}
+//       <div className="mb-10 sm:mb-12">
+//         <h1 className="text-7xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-bold mb-4 sm:mb-6 tracking-tight leading-tight">
+//           <span className="text-white">SARAL </span>
+//           <span className="text-[#E06689]">AI</span>
+//         </h1>
+
+//         <p className="text-gray-300 text-sm sm:text-base md:text-xl max-w-xl sm:max-w-3xl mx-auto leading-relaxed px-2">
+//           Saral is the fastest way to scout top Talent and send{" "}
+//           <br className="hidden sm:block" />
+//           AI-generated LinkedIn messages to connect instantly.
+//         </p>
+//       </div>
+
+//       {/* CTA Button */}
+//       <div className="mb-12 sm:mb-16">
+//         <button
+//           onMouseMove={(e) => {
+//             const rect = e.currentTarget.getBoundingClientRect();
+//             const x = e.clientX - rect.left;
+//             const y = e.clientY - rect.top;
+//             setPos({ x, y });
+//           }}
+//           onMouseEnter={() => setHover(true)}
+//           onMouseLeave={() => setHover(false)}
+//           className="relative px-6 sm:px-8 py-3 sm:py-4 rounded-full text-white text-sm sm:text-lg font-medium overflow-hidden bg-gradient-to-r from-[#4A2780] to-[#2B0F49] shadow-[0_0_10px_2px_rgba(255,255,255,0.05)] transition-all duration-300 ease-in-out"
+//           style={{
+//             backgroundImage: hover
+//               ? `radial-gradient(circle at ${pos.x}px ${pos.y}px, hsl(${
+//                   (pos.x + pos.y) % 360
+//                 }, 80%, 70%, 0.1) 0%, transparent 40%), linear-gradient(to right, #4A2780, #2B0F49)`
+//               : "linear-gradient(to right, #4A2780, #2B0F49)",
+//           }}
+//         >
+//           Start with 5 Free Credits
+//           {/* Subtle border glow */}
+//           {hover && (
+//             <span
+//               className="absolute inset-0 rounded-full pointer-events-none"
+//               style={{
+//                 boxShadow: `0 0 15px 2px hsl(${
+//                   (pos.x + pos.y) % 360
+//                 }, 80%, 60%, 0.1) inset`,
+//               }}
+//             />
+//           )}
+//         </button>
+//       </div>
+
+//       {/* Bottom text */}
+//       <div className="pb-6 sm:pb-0">
+//         <p className="text-gray-400 text-xs sm:text-sm">
+//           <span className="font-medium text-[#E06689]">98%</span>{" "}
+//           <span className="text-white">Candidate Acceptance Rate</span>
+//         </p>
+//       </div>
+//     </main>
+//   );
+// }
+
+
+
+//testttt
 function HeroSection() {
   const [pos, setPos] = useState({ x: 0, y: 0 });
   const [hover, setHover] = useState(false);
+  const [flip, setFlip] = useState(false);
+
+  // Animation variants
+  const containerVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.8 } },
+  };
+
+  const itemVariants : any = {
+    hidden: { opacity: 0, y: 20, scale: 0.95 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        duration: 0.5,
+        ease: 'easeOut',
+      },
+    },
+  };
+
+  const staggerContainer = {
+    hidden: {},
+    visible: {
+      transition: {
+        staggerChildren: 0.2,
+      },
+    },
+  };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setFlip((prev) => !prev);
+    }, flip ? 400 : 4000);
+
+    return () => clearInterval(interval);
+  }, [flip]);
 
   return (
     <main
@@ -67,72 +190,83 @@ function HeroSection() {
         pt-20 pb-12
       "
     >
-      {/* Top tagline */}
-      <div className="mt-4 mb-6 sm:mt-6 sm:mb-8">
-        <p className="px-4 py-1 text-[10px] sm:text-xs font-medium tracking-wide rounded-full inline-block text-[#F1E4FB] bg-[#3F1562] border border-white/30 shadow-[0_0_0_1px_rgba(255,255,255,0.2)] backdrop-blur-md">
-          the easiest way to recruit.
-        </p>
-      </div>
+      <motion.div
+        variants={staggerContainer}
+        initial="hidden"
+        animate="visible"
+        className="flex flex-col items-center"
+      >
+        {/* Top tagline */}
+        <motion.div variants={itemVariants} className="mt-4 mb-6 sm:mt-6 sm:mb-8">
+          <p className="px-4 py-1 text-[10px] sm:text-xs font-medium tracking-wide rounded-full inline-block text-[#F1E4FB] bg-[#3F1562] border border-white/30 shadow-[0_0_0_1px_rgba(255,255,255,0.2)] backdrop-blur-md">
+            the easiest way to recruit.
+          </p>
+        </motion.div>
 
-      {/* Main heading */}
-      <div className="mb-10 sm:mb-12">
-        <h1 className="text-7xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-bold mb-4 sm:mb-6 tracking-tight leading-tight">
-          <span className="text-white">SARAL </span>
-          <span className="text-[#E06689]">AI</span>
-        </h1>
-
-        <p className="text-gray-300 text-sm sm:text-base md:text-xl max-w-xl sm:max-w-3xl mx-auto leading-relaxed px-2">
-          Saral is the fastest way to scout top Talent and send{" "}
-          <br className="hidden sm:block" />
-          AI-generated LinkedIn messages to connect instantly.
-        </p>
-      </div>
-
-      {/* CTA Button */}
-      <div className="mb-12 sm:mb-16">
-        <button
-          onMouseMove={(e) => {
-            const rect = e.currentTarget.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            setPos({ x, y });
-          }}
-          onMouseEnter={() => setHover(true)}
-          onMouseLeave={() => setHover(false)}
-          className="relative px-6 sm:px-8 py-3 sm:py-4 rounded-full text-white text-sm sm:text-lg font-medium overflow-hidden bg-gradient-to-r from-[#4A2780] to-[#2B0F49] shadow-[0_0_10px_2px_rgba(255,255,255,0.05)] transition-all duration-300 ease-in-out"
-          style={{
-            backgroundImage: hover
-              ? `radial-gradient(circle at ${pos.x}px ${pos.y}px, hsl(${
-                  (pos.x + pos.y) % 360
-                }, 80%, 70%, 0.1) 0%, transparent 40%), linear-gradient(to right, #4A2780, #2B0F49)`
-              : "linear-gradient(to right, #4A2780, #2B0F49)",
-          }}
+        {/* Main heading with flip animation */}
+        <motion.div
+          variants={itemVariants}
+          animate={{ rotateY: flip ? 180 : 0 }} // Flip effect
+          transition={{ duration: 0.6 }} // Duration of the flip
         >
-          Start with 5 Free Credits
-          {/* Subtle border glow */}
-          {hover && (
-            <span
-              className="absolute inset-0 rounded-full pointer-events-none"
-              style={{
-                boxShadow: `0 0 15px 2px hsl(${
-                  (pos.x + pos.y) % 360
-                }, 80%, 60%, 0.1) inset`,
-              }}
-            />
-          )}
-        </button>
-      </div>
+          <h1 className="text-7xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-bold mb-4 sm:mb-6 tracking-tight leading-tight">
+            <span className="text-white">SARAL </span>
+            <span className="text-[#E06689]">AI</span>
+          </h1>
+        </motion.div>
+          <p className="text-gray-300 mb-10 text-sm sm:text-base md:text-xl max-w-xl sm:max-w-3xl mx-auto leading-relaxed px-2">
+            Saral is the fastest way to scout top Talent and send{" "}
+            <br className="hidden sm:block" />
+            AI-generated LinkedIn messages to connect instantly.
+          </p>
 
-      {/* Bottom text */}
-      <div className="pb-6 sm:pb-0">
-        <p className="text-gray-400 text-xs sm:text-sm">
-          <span className="font-medium text-[#E06689]">98%</span>{" "}
-          <span className="text-white">Candidate Acceptance Rate</span>
-        </p>
-      </div>
+        {/* CTA Button */}
+        <motion.div variants={itemVariants} className="mb-12 sm:mb-16">
+          <button
+            onMouseMove={(e) => {
+              const rect = e.currentTarget.getBoundingClientRect();
+              const x = e.clientX - rect.left;
+              const y = e.clientY - rect.top;
+              setPos({ x, y });
+            }}
+            onMouseEnter={() => setHover(true)}
+            onMouseLeave={() => setHover(false)}
+            className="relative px-6 sm:px-8 py-3 sm:py-4 rounded-full text-white text-sm sm:text-lg font-medium overflow-hidden bg-gradient-to-r from-[#4A2780] to-[#2B0F49] shadow-[0_0_10px_2px_rgba(255,255,255,0.05)] transition-all duration-300 ease-in-out"
+            style={{
+              backgroundImage: hover
+                ? `radial-gradient(circle at ${pos.x}px ${pos.y}px, hsl(${(pos.x + pos.y) % 360}, 80%, 70%, 0.1) 0%, transparent 40%), linear-gradient(to right, #4A2780, #2B0F49)`
+                : "linear-gradient(to right, #4A2780, #2B0F49)",
+            }}
+          >
+            Start with 5 Free Credits
+            {/* Subtle border glow */}
+            {hover && (
+              <span
+                className="absolute inset-0 rounded-full pointer-events-none"
+                style={{
+                  boxShadow: `0 0 15px 2px hsl(${(pos.x + pos.y) % 360}, 80%, 60%, 0.1) inset`,
+                }}
+              />
+            )}
+          </button>
+        </motion.div>
+
+        {/* Bottom text */}
+        <motion.div variants={itemVariants} className="pb-6 sm:pb-0">
+          <p className="text-gray-400 text-xs sm:text-sm">
+            <span className="font-medium text-[#E06689]">98%</span>{" "}
+            <span className="text-white">Candidate Acceptance Rate</span>
+          </p>
+        </motion.div>
+      </motion.div>
     </main>
   );
 }
+
+
+
+
+
 
 function Specification() {
   const SpecData = [

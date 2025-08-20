@@ -14,7 +14,7 @@ const LandingPage = () => {
   return (
     <ReactLenis root>
       <div className="font-manrope flex flex-col ">
-        {/* <Navbar /> */}
+        <Navbar />
         <Outlet />
         {/* <Footer /> */}
       </div>
