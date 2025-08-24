@@ -1,5 +1,7 @@
 import Homeicon from "@/components/layouts/main/svgs/Homeicon";
 import InfoIcon from "@/components/layouts/main/svgs/InfoIcon";
+import HeadScore from "@/components/ui/progressbar/HeadScore";
+import { SaralInfoModal } from "@/components/ui/saral-ai-popup/info-modal/InfoModal";
 import { DASHBOARD } from "@/routes";
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
@@ -14,11 +16,12 @@ export default function SaralPromptScreen({ query }: SaralPromptScreenProps) {
   const [expanded, setExpanded] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [results, setResults] = useState(true);
-  const [inpValue, setInpValue] = useState<string | null>(null)
-   const [moved, setMoved] = useState(false);
+  const [inpValue, setInpValue] = useState<string | null>(null);
+  const [moved, setMoved] = useState(false);
+  const [isInfoOpen, setIsInfoOpen] = useState(false);
 
-    const navigate = useNavigate();
-     const inputRef = useRef<HTMLInputElement>(null);
+  const navigate = useNavigate();
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const history = [
     { title: "Software Engineer", results: "234 results", time: "2h ago" },
@@ -38,9 +41,8 @@ export default function SaralPromptScreen({ query }: SaralPromptScreenProps) {
   };
 
   useEffect(() => {
-    setInpValue(query)
-  }, [])
-  
+    setInpValue(query);
+  }, []);
 
   // Handle resize
   useEffect(() => {
@@ -110,15 +112,20 @@ export default function SaralPromptScreen({ query }: SaralPromptScreenProps) {
       </defs>
     </svg>
   );
-  
-    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
-      
-      setMoved(true)
+
+      setMoved(true);
       setResults(true);
       inputRef.current?.blur();
     }
+  };
+
+  const handleNewChat = () => {
+    setResults(false);
+    setInpValue("");
   };
 
   return (
@@ -226,12 +233,16 @@ export default function SaralPromptScreen({ query }: SaralPromptScreenProps) {
           {/* New Chat Section */}
           <div className="mt-4">
             <button
-              className="flex items-center justify-center w-full bg-white/40 border border-[#a693c4] rounded-xl py-3 px-4
-               transition-all duration-300 ease-in-out group
-               hover:bg-purple-100 hover:shadow-lg hover:scale-[1]"
+              className="flex items-center justify-center w-full 
+             bg-white/40 border border-[#a693c4] rounded-xl 
+             py-3 px-4 transition-all duration-300 ease-in-out group
+             hover:bg-purple-100 hover:shadow-lg hover:scale-[1]
+             active:scale-95 active:bg-purple-200 active:shadow-inner"
+              onClick={handleNewChat}
             >
               <svg
-                className="w-5 h-5 text-[#6f47c7] group-hover:text-[#5a3a9f] transition-colors duration-300 ease-in-out"
+                className="w-5 h-5 text-[#6f47c7] group-hover:text-[#5a3a9f] 
+               transition-colors duration-300 ease-in-out"
                 fill="none"
                 stroke="currentColor"
                 strokeWidth="2"
@@ -255,8 +266,8 @@ export default function SaralPromptScreen({ query }: SaralPromptScreenProps) {
                 />
               </svg>
               <span
-                className="ml-2 text-[#2d1b4a] font-medium group-hover:text-[#1f1335]
-                 transition-colors duration-300 ease-in-out"
+                className="ml-2 text-[#2d1b4a] font-medium group-hover:text-[#1f1335] 
+               transition-colors duration-300 ease-in-out"
               >
                 New Chat
               </span>
@@ -446,12 +457,18 @@ export default function SaralPromptScreen({ query }: SaralPromptScreenProps) {
       >
         <div className="flex items-center justify-end p-4 sm:p-6 lg:px-8 pt-6 lg:pt-6">
           {/* Info Icon */}
-          <button className="group flex items-center justify-center mx-4 w-[33px] h-[33px] bg-white hover:bg-purple-200 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95">
+          <button
+            className="group flex items-center justify-center mx-4 w-[33px] h-[33px] bg-white hover:bg-purple-200 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => setIsInfoOpen(true)}
+          >
             <InfoIcon />
           </button>
 
           {/* Home Section */}
-          <button onClick={() => navigate(DASHBOARD)} className="group flex items-center space-x-2 sm:space-x-3 px-3 sm:px-4 py-2 bg-purple-50 hover:bg-purple-100 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95">
+          <button
+            onClick={() => navigate(DASHBOARD)}
+            className="group flex items-center space-x-2 sm:space-x-3 px-3 sm:px-4 py-2 bg-purple-50 hover:bg-purple-100 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+          >
             <Homeicon />
             <span className="text-purple-700 font-medium group-hover:text-purple-800 text-sm sm:text-base">
               Home
@@ -475,68 +492,69 @@ export default function SaralPromptScreen({ query }: SaralPromptScreenProps) {
 
           <div className="w-full max-w-2xl flex flex-col items-center gap-3 sm:gap-4">
             {/* Prompt Input */}
-                <motion.div
-      initial={{ y: 0 }}
-      animate={{ y: moved ? -15 : 0 }} 
-      transition={{ duration: 0.5, ease: "easeInOut" }}
-      className="w-full"
-    >
-            <div className="w-full sm:w-[780px] flex flex-col sm:flex-row items-stretch sm:items-center bg-white/80 border border-[#f3cde9] rounded-2xl p-3 sm:p-4 shadow-sm gap-2 sm:gap-0">
-      <input
-        className="flex-1 min-w-0 bg-transparent outline-none text-base sm:text-lg placeholder-[#A6A6A6] truncate"
-        placeholder="when an unknown printer took a galley of type and scrambled."
-        autoFocus
-                ref={inputRef}
-        onKeyDown={handleKeyDown}
-        value={inpValue ?? ''}
-      />
-    
-              <div className="flex items-center gap-2 justify-end">
-                <button className="rounded-xl text-[#3D1562] opacity-70 px-3 sm:px-4 py-2 font-semibold hover:bg-[#ead1f7] transition text-xs sm:text-sm flex items-center gap-2">
-                  <svg
-                    width="26"
-                    className="opacity-60"
-                    height="26"
-                    viewBox="0 0 26 26"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M10.7549 6.41619L11.4074 8.22807C11.7654 9.22136 12.3381 10.1234 13.0847 10.87C13.8313 11.6166 14.7333 12.1893 15.7266 12.5473L17.5385 13.1998C17.5743 13.2129 17.6052 13.2367 17.627 13.2679C17.6488 13.2991 17.6605 13.3363 17.6605 13.3744C17.6605 13.4125 17.6488 13.4497 17.627 13.481C17.6052 13.5122 17.5743 13.536 17.5385 13.5491L15.7266 14.2016C14.7333 14.5596 13.8313 15.1323 13.0847 15.8789C12.3381 16.6254 11.7654 17.5275 11.4074 18.5208L10.7549 20.3327C10.7418 20.3685 10.718 20.3994 10.6868 20.4212C10.6555 20.443 10.6184 20.4547 10.5803 20.4547C10.5421 20.4547 10.505 20.443 10.4737 20.4212C10.4425 20.3994 10.4187 20.3685 10.4056 20.3327L9.75313 18.5208C9.39513 17.5275 8.82243 16.6254 8.07584 15.8789C7.32926 15.1323 6.42717 14.5596 5.43388 14.2016L3.622 13.5491C3.58623 13.536 3.55534 13.5122 3.53352 13.481C3.5117 13.4497 3.5 13.4125 3.5 13.3744C3.5 13.3363 3.5117 13.2991 3.53352 13.2679C3.55534 13.2367 3.58623 13.2129 3.622 13.1998L5.43388 12.5473C6.42717 12.1893 7.32926 11.6166 8.07584 10.87C8.82243 10.1234 9.39513 9.22136 9.75313 8.22807L10.4056 6.41619C10.4183 6.38005 10.442 6.34876 10.4733 6.32662C10.5045 6.30449 10.5419 6.2926 10.5803 6.2926C10.6186 6.2926 10.656 6.30449 10.6872 6.32662C10.7185 6.34876 10.7422 6.38005 10.7549 6.41619ZM18.9108 2.062L19.2415 2.97932C19.4229 3.48223 19.713 3.93897 20.0911 4.31702C20.4691 4.69507 20.9258 4.98513 21.4288 5.16657L22.3461 5.49725C22.3642 5.50387 22.3799 5.51592 22.391 5.53176C22.4021 5.54761 22.4081 5.56648 22.4081 5.58582C22.4081 5.60516 22.4021 5.62403 22.391 5.63987C22.3799 5.65572 22.3642 5.66776 22.3461 5.67438L21.4288 6.00507C20.9258 6.1865 20.4691 6.47657 20.0911 6.85462C19.713 7.23267 19.4229 7.6894 19.2415 8.19232L18.9108 9.10963C18.9042 9.1278 18.8922 9.1435 18.8763 9.15459C18.8605 9.16569 18.8416 9.17164 18.8223 9.17164C18.8029 9.17164 18.784 9.16569 18.7682 9.15459C18.7524 9.1435 18.7403 9.1278 18.7337 9.10963L18.403 8.19232C18.2216 7.6894 17.9315 7.23267 17.5535 6.85462C17.1754 6.47657 16.7187 6.1865 16.2158 6.00507L15.2984 5.67438C15.2803 5.66776 15.2646 5.65572 15.2535 5.63987C15.2424 5.62403 15.2364 5.60516 15.2364 5.58582C15.2364 5.56648 15.2424 5.54761 15.2535 5.53176C15.2646 5.51592 15.2803 5.50387 15.2984 5.49725L16.2158 5.16657C16.7187 4.98513 17.1754 4.69507 17.5535 4.31702C17.9315 3.93897 18.2216 3.48223 18.403 2.97932L18.7337 2.062C18.7403 2.04383 18.7524 2.02813 18.7682 2.01704C18.784 2.00595 18.8029 2 18.8223 2C18.8416 2 18.8605 2.00595 18.8763 2.01704C18.8922 2.02813 18.9042 2.04383 18.9108 2.062ZM18.9108 17.6401L19.2415 18.5574C19.4229 19.0603 19.713 19.517 20.0911 19.8951C20.4691 20.2731 20.9258 20.5632 21.4288 20.7446L22.3461 21.0753C22.3642 21.0819 22.3799 21.094 22.391 21.1098C22.4021 21.1257 22.4081 21.1445 22.4081 21.1639C22.4081 21.1832 22.4021 21.2021 22.391 21.2179C22.3799 21.2338 22.3642 21.2458 22.3461 21.2524L21.4288 21.5831C20.9258 21.7646 20.4691 22.0546 20.0911 22.4327C19.713 22.8107 19.4229 23.2675 19.2415 23.7704L18.9108 24.6877C18.9042 24.7059 18.8922 24.7216 18.8763 24.7327C18.8605 24.7437 18.8416 24.7497 18.8223 24.7497C18.8029 24.7497 18.784 24.7437 18.7682 24.7327C18.7524 24.7216 18.7403 24.7059 18.7337 24.6877L18.403 23.7704C18.2216 23.2675 17.9315 22.8107 17.5535 22.4327C17.1754 22.0546 16.7187 21.7646 16.2158 21.5831L15.2984 21.2524C15.2803 21.2458 15.2646 21.2338 15.2535 21.2179C15.2424 21.2021 15.2364 21.1832 15.2364 21.1639C15.2364 21.1445 15.2424 21.1257 15.2535 21.1098C15.2646 21.094 15.2803 21.0819 15.2984 21.0753L16.2158 20.7446C16.7187 20.5632 17.1754 20.2731 17.5535 19.8951C17.9315 19.517 18.2216 19.0603 18.403 18.5574L18.7337 17.6401C18.7638 17.5572 18.8816 17.5572 18.9108 17.6401Z"
-                      fill="#3D1562"
-                    />
-                  </svg>
-                  Rephrase
-                </button>
-                <button className="rounded-2xl p-2.5 sm:p-3 from-[#de7fdf] to-[#a881fa] hover:scale-105 transition shadow-md">
-                  <svg
-                    width="26"
-                    height="26"
-                    viewBox="0 0 26 26"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M22.1023 11.4108C21.8241 10.9327 21.4227 10.5367 20.8664 10.2268L5.59358 3.24083C4.81429 2.83311 3.92014 2.94945 3.26262 3.54149C2.54595 4.18583 2.3064 5.23691 2.68724 6.20291L5.57551 12.5856C5.68797 12.8618 5.68797 13.1664 5.59065 13.4074L2.68724 19.8253C2.6804 19.8404 2.67355 19.8561 2.66769 19.8722C2.30151 20.8045 2.54791 21.8566 3.2812 22.4896C3.67574 22.8304 4.14945 23 4.61385 23C4.93942 23 5.26112 22.9164 5.54758 22.7502L20.9431 15.7026C21.4237 15.4308 21.8241 15.0343 22.1023 14.5577C22.381 14.0801 22.5279 13.537 22.528 12.984C22.528 12.4312 22.381 11.8882 22.1023 11.4108ZM20.3726 13.5492C20.2724 13.7208 20.1287 13.8625 20.0333 13.9212L4.71458 20.9296C4.68673 20.9424 4.63783 20.9736 4.61142 20.9883C4.59773 20.9834 4.55815 20.9521 4.5303 20.8901C4.50436 20.8329 4.48335 20.7405 4.5249 20.6212L7.43026 14.1974C7.45507 14.1357 7.47795 14.0733 7.49887 14.0101H12.9506V12.0077H7.49273C7.46918 11.9362 7.4433 11.8654 7.41512 11.7956L4.53123 5.42463C4.476 5.28334 4.50679 5.17432 4.54246 5.10786C4.57962 5.03745 4.62754 5.00862 4.71454 5.03894L19.9575 12.0088C20.1291 12.1056 20.2724 12.2478 20.3726 12.4194C20.4728 12.591 20.5256 12.7861 20.5256 12.9841C20.5256 13.1821 20.4728 13.3771 20.3726 13.5492Z"
-                      fill="url(#paint0_linear_55_542)"
-                    />
-                    <defs>
-                      <linearGradient
-                        id="paint0_linear_55_542"
-                        x1="0.15484"
-                        y1="1.63636"
-                        x2="22.3621"
-                        y2="20.3867"
-                        gradientUnits="userSpaceOnUse"
-                      >
-                        <stop stop-color="#3F1562" />
-                        <stop offset="1" stop-color="#DF6789" />
-                      </linearGradient>
-                    </defs>
-                  </svg>
-                </button>
+            <motion.div
+              initial={{ y: 0 }}
+              animate={{ y: moved ? -15 : 0 }}
+              transition={{ duration: 0.5, ease: "easeInOut" }}
+              className="w-full"
+            >
+              <div className="w-full sm:w-[780px] flex flex-col sm:flex-row items-stretch sm:items-center bg-white/80 border border-[#f3cde9] rounded-2xl p-3 sm:p-4 shadow-sm gap-2 sm:gap-0">
+                <input
+                  className="flex-1 min-w-0 bg-transparent outline-none text-base sm:text-lg placeholder-[#A6A6A6] truncate"
+                  placeholder="when an unknown printer took a galley of type and scrambled."
+                  autoFocus
+                  ref={inputRef}
+                  onKeyDown={handleKeyDown}
+                  onChange={(e) => setInpValue(e.target.value)}
+                  value={inpValue ?? ""}
+                />
+
+                <div className="flex items-center gap-2 justify-end">
+                  <button className="rounded-xl text-[#3D1562] opacity-70 px-3 sm:px-4 py-2 font-semibold hover:bg-[#ead1f7] transition text-xs sm:text-sm flex items-center gap-2">
+                    <svg
+                      width="26"
+                      className="opacity-60"
+                      height="26"
+                      viewBox="0 0 26 26"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M10.7549 6.41619L11.4074 8.22807C11.7654 9.22136 12.3381 10.1234 13.0847 10.87C13.8313 11.6166 14.7333 12.1893 15.7266 12.5473L17.5385 13.1998C17.5743 13.2129 17.6052 13.2367 17.627 13.2679C17.6488 13.2991 17.6605 13.3363 17.6605 13.3744C17.6605 13.4125 17.6488 13.4497 17.627 13.481C17.6052 13.5122 17.5743 13.536 17.5385 13.5491L15.7266 14.2016C14.7333 14.5596 13.8313 15.1323 13.0847 15.8789C12.3381 16.6254 11.7654 17.5275 11.4074 18.5208L10.7549 20.3327C10.7418 20.3685 10.718 20.3994 10.6868 20.4212C10.6555 20.443 10.6184 20.4547 10.5803 20.4547C10.5421 20.4547 10.505 20.443 10.4737 20.4212C10.4425 20.3994 10.4187 20.3685 10.4056 20.3327L9.75313 18.5208C9.39513 17.5275 8.82243 16.6254 8.07584 15.8789C7.32926 15.1323 6.42717 14.5596 5.43388 14.2016L3.622 13.5491C3.58623 13.536 3.55534 13.5122 3.53352 13.481C3.5117 13.4497 3.5 13.4125 3.5 13.3744C3.5 13.3363 3.5117 13.2991 3.53352 13.2679C3.55534 13.2367 3.58623 13.2129 3.622 13.1998L5.43388 12.5473C6.42717 12.1893 7.32926 11.6166 8.07584 10.87C8.82243 10.1234 9.39513 9.22136 9.75313 8.22807L10.4056 6.41619C10.4183 6.38005 10.442 6.34876 10.4733 6.32662C10.5045 6.30449 10.5419 6.2926 10.5803 6.2926C10.6186 6.2926 10.656 6.30449 10.6872 6.32662C10.7185 6.34876 10.7422 6.38005 10.7549 6.41619ZM18.9108 2.062L19.2415 2.97932C19.4229 3.48223 19.713 3.93897 20.0911 4.31702C20.4691 4.69507 20.9258 4.98513 21.4288 5.16657L22.3461 5.49725C22.3642 5.50387 22.3799 5.51592 22.391 5.53176C22.4021 5.54761 22.4081 5.56648 22.4081 5.58582C22.4081 5.60516 22.4021 5.62403 22.391 5.63987C22.3799 5.65572 22.3642 5.66776 22.3461 5.67438L21.4288 6.00507C20.9258 6.1865 20.4691 6.47657 20.0911 6.85462C19.713 7.23267 19.4229 7.6894 19.2415 8.19232L18.9108 9.10963C18.9042 9.1278 18.8922 9.1435 18.8763 9.15459C18.8605 9.16569 18.8416 9.17164 18.8223 9.17164C18.8029 9.17164 18.784 9.16569 18.7682 9.15459C18.7524 9.1435 18.7403 9.1278 18.7337 9.10963L18.403 8.19232C18.2216 7.6894 17.9315 7.23267 17.5535 6.85462C17.1754 6.47657 16.7187 6.1865 16.2158 6.00507L15.2984 5.67438C15.2803 5.66776 15.2646 5.65572 15.2535 5.63987C15.2424 5.62403 15.2364 5.60516 15.2364 5.58582C15.2364 5.56648 15.2424 5.54761 15.2535 5.53176C15.2646 5.51592 15.2803 5.50387 15.2984 5.49725L16.2158 5.16657C16.7187 4.98513 17.1754 4.69507 17.5535 4.31702C17.9315 3.93897 18.2216 3.48223 18.403 2.97932L18.7337 2.062C18.7403 2.04383 18.7524 2.02813 18.7682 2.01704C18.784 2.00595 18.8029 2 18.8223 2C18.8416 2 18.8605 2.00595 18.8763 2.01704C18.8922 2.02813 18.9042 2.04383 18.9108 2.062ZM18.9108 17.6401L19.2415 18.5574C19.4229 19.0603 19.713 19.517 20.0911 19.8951C20.4691 20.2731 20.9258 20.5632 21.4288 20.7446L22.3461 21.0753C22.3642 21.0819 22.3799 21.094 22.391 21.1098C22.4021 21.1257 22.4081 21.1445 22.4081 21.1639C22.4081 21.1832 22.4021 21.2021 22.391 21.2179C22.3799 21.2338 22.3642 21.2458 22.3461 21.2524L21.4288 21.5831C20.9258 21.7646 20.4691 22.0546 20.0911 22.4327C19.713 22.8107 19.4229 23.2675 19.2415 23.7704L18.9108 24.6877C18.9042 24.7059 18.8922 24.7216 18.8763 24.7327C18.8605 24.7437 18.8416 24.7497 18.8223 24.7497C18.8029 24.7497 18.784 24.7437 18.7682 24.7327C18.7524 24.7216 18.7403 24.7059 18.7337 24.6877L18.403 23.7704C18.2216 23.2675 17.9315 22.8107 17.5535 22.4327C17.1754 22.0546 16.7187 21.7646 16.2158 21.5831L15.2984 21.2524C15.2803 21.2458 15.2646 21.2338 15.2535 21.2179C15.2424 21.2021 15.2364 21.1832 15.2364 21.1639C15.2364 21.1445 15.2424 21.1257 15.2535 21.1098C15.2646 21.094 15.2803 21.0819 15.2984 21.0753L16.2158 20.7446C16.7187 20.5632 17.1754 20.2731 17.5535 19.8951C17.9315 19.517 18.2216 19.0603 18.403 18.5574L18.7337 17.6401C18.7638 17.5572 18.8816 17.5572 18.9108 17.6401Z"
+                        fill="#3D1562"
+                      />
+                    </svg>
+                    Rephrase
+                  </button>
+                  <button className="rounded-2xl p-2.5 sm:p-3 from-[#de7fdf] to-[#a881fa] hover:scale-105 transition shadow-md">
+                    <svg
+                      width="26"
+                      height="26"
+                      viewBox="0 0 26 26"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M22.1023 11.4108C21.8241 10.9327 21.4227 10.5367 20.8664 10.2268L5.59358 3.24083C4.81429 2.83311 3.92014 2.94945 3.26262 3.54149C2.54595 4.18583 2.3064 5.23691 2.68724 6.20291L5.57551 12.5856C5.68797 12.8618 5.68797 13.1664 5.59065 13.4074L2.68724 19.8253C2.6804 19.8404 2.67355 19.8561 2.66769 19.8722C2.30151 20.8045 2.54791 21.8566 3.2812 22.4896C3.67574 22.8304 4.14945 23 4.61385 23C4.93942 23 5.26112 22.9164 5.54758 22.7502L20.9431 15.7026C21.4237 15.4308 21.8241 15.0343 22.1023 14.5577C22.381 14.0801 22.5279 13.537 22.528 12.984C22.528 12.4312 22.381 11.8882 22.1023 11.4108ZM20.3726 13.5492C20.2724 13.7208 20.1287 13.8625 20.0333 13.9212L4.71458 20.9296C4.68673 20.9424 4.63783 20.9736 4.61142 20.9883C4.59773 20.9834 4.55815 20.9521 4.5303 20.8901C4.50436 20.8329 4.48335 20.7405 4.5249 20.6212L7.43026 14.1974C7.45507 14.1357 7.47795 14.0733 7.49887 14.0101H12.9506V12.0077H7.49273C7.46918 11.9362 7.4433 11.8654 7.41512 11.7956L4.53123 5.42463C4.476 5.28334 4.50679 5.17432 4.54246 5.10786C4.57962 5.03745 4.62754 5.00862 4.71454 5.03894L19.9575 12.0088C20.1291 12.1056 20.2724 12.2478 20.3726 12.4194C20.4728 12.591 20.5256 12.7861 20.5256 12.9841C20.5256 13.1821 20.4728 13.3771 20.3726 13.5492Z"
+                        fill="url(#paint0_linear_55_542)"
+                      />
+                      <defs>
+                        <linearGradient
+                          id="paint0_linear_55_542"
+                          x1="0.15484"
+                          y1="1.63636"
+                          x2="22.3621"
+                          y2="20.3867"
+                          gradientUnits="userSpaceOnUse"
+                        >
+                          <stop stop-color="#3F1562" />
+                          <stop offset="1" stop-color="#DF6789" />
+                        </linearGradient>
+                      </defs>
+                    </svg>
+                  </button>
+                </div>
               </div>
-            </div>
             </motion.div>
           </div>
           {results && (
@@ -556,6 +574,11 @@ export default function SaralPromptScreen({ query }: SaralPromptScreenProps) {
           Saral AI simplifies sourcing, but human judgment is still key
         </footer>
       </main>
+      <SaralInfoModal
+        isOpen={isInfoOpen}
+        onClose={() => setIsInfoOpen(false)}
+        content="Hello there, this is an information popup modal!"
+      />
     </div>
   );
 }
@@ -563,7 +586,7 @@ export default function SaralPromptScreen({ query }: SaralPromptScreenProps) {
 function CandidateCard() {
   const [isSaved, setIsSaved] = useState(false);
   const [size, setSize] = useState(150);
-console.log('size', size)
+  console.log("size", size);
   useEffect(() => {
     const updateSize = () => {
       if (window.innerWidth < 640) {
@@ -662,7 +685,7 @@ console.log('size', size)
               </div>
               <div className="flex flex-col items-center justify-center">
                 <div className="relative w-14 h-14 mb-8">
-                  {/* <CustomHalfCircle percentage={100} size={size} /> */}
+                  <HeadScore value={Math.floor(Math.random() * 100)} />
                 </div>
                 <p className="text-[#3D1562] text-[15px] font-semibold opacity-55">
                   Assessment score
