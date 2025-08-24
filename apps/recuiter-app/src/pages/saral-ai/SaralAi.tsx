@@ -5,11 +5,16 @@ import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 
-export default function SaralPromptScreen() {
+type SaralPromptScreenProps = {
+  query: string;
+};
+
+export default function SaralPromptScreen({ query }: SaralPromptScreenProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  const [results, setResults] = useState(false);
+  const [results, setResults] = useState(true);
+  const [inpValue, setInpValue] = useState<string | null>(null)
    const [moved, setMoved] = useState(false);
 
     const navigate = useNavigate();
@@ -32,6 +37,10 @@ export default function SaralPromptScreen() {
     }
   };
 
+  useEffect(() => {
+    setInpValue(query)
+  }, [])
+  
 
   // Handle resize
   useEffect(() => {
@@ -479,6 +488,7 @@ export default function SaralPromptScreen() {
         autoFocus
                 ref={inputRef}
         onKeyDown={handleKeyDown}
+        value={inpValue ?? ''}
       />
     
               <div className="flex items-center gap-2 justify-end">
@@ -553,7 +563,7 @@ export default function SaralPromptScreen() {
 function CandidateCard() {
   const [isSaved, setIsSaved] = useState(false);
   const [size, setSize] = useState(150);
-
+console.log('size', size)
   useEffect(() => {
     const updateSize = () => {
       if (window.innerWidth < 640) {
