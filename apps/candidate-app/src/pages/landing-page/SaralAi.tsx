@@ -24,7 +24,7 @@ const SaralAI = () => {
       <FoundersSection />
       <FAQSection />
       <TryNowSection /> */}
-      {/* <DemoModalCheck /> */}
+      <DemoModalCheck />
     </div>
   );
 };
