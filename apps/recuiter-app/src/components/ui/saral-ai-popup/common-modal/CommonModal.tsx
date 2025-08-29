@@ -14,7 +14,7 @@ const sizeClasses: Record<string, string> = {
   lg: "max-w-lg",
   xl: "max-w-2xl",
   "2xl": "max-w-4xl", // wider
-  full: "max-w-[80vw]", // take 90% of screen width
+  full: "sm:max-w-[80] xl:max-w-[70vw] lg:max-w-[90vw]", // take 90% of screen width
 };
 
 export const CommonModal: React.FC<CommonModalProps> = ({
@@ -51,7 +51,7 @@ export const CommonModal: React.FC<CommonModalProps> = ({
           exit={{ opacity: 0 }}
         >
           <motion.div
-            className={`relative w-full ${sizeClasses[size]} bg-white/80 rounded-2xl border-[2px] border-[#3d156236] p-4 sm:p-6 md:p-8 max-h-[90vh] overflow-y-auto`}
+            className={`relative w-full ${sizeClasses[size]} flex flex-col items-center bg-white/80 rounded-2xl border-[2px] border-[#3d156236] p-4 sm:p-6 md:p-8 max-h-[90vh] overflow-y-auto`}
             initial={{ opacity: 0, scale: 0.9, y: 30 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 30 }}

@@ -141,7 +141,7 @@ export default function SaralPromptScreen({ query }: SaralPromptScreenProps) {
       {!isOpen && (
         <button
           onClick={handleToggleSidebar}
-          className="lg:hidden fixed top-5.5 left-4 z-50 text-[#3F1462] rounded-xl w-10 h-10 flex items-center justify-center cursor-pointer hover:bg-white/30 transition-all duration-200"
+          className="lg:hidden fixed top-5.5 left-4 z-50 text-[deepViolet] rounded-xl w-10 h-10 flex items-center justify-center cursor-pointer hover:bg-white/30 transition-all duration-200"
         >
           <ToggleSVG />
         </button>
@@ -151,7 +151,7 @@ export default function SaralPromptScreen({ query }: SaralPromptScreenProps) {
       {sidebarCollapsed && (
         <button
           onClick={handleToggleSidebar}
-          className="hidden lg:block fixed top-4 left-4 z-50 text-[#3F1462] rounded-xl w-10 h-10 flex items-center justify-center cursor-pointer hover:bg-white/30 transition-all duration-200"
+          className="hidden lg:block fixed top-4 left-4 z-50 text-[deepViolet] rounded-xl w-10 h-10 flex items-center justify-center cursor-pointer hover:bg-white/30 transition-all duration-200"
         >
           <ToggleSVG />
         </button>
@@ -204,7 +204,7 @@ export default function SaralPromptScreen({ query }: SaralPromptScreenProps) {
 
             {/* Right: Toggle SVG Icon - Only show on desktop when sidebar is open */}
             <div
-              className="text-[#3F1462] rounded-xl w-10 h-10 flex items-center justify-center cursor-pointer hover:bg-white/30 transition-all duration-200 lg:block hidden"
+              className="text-[deepViolet] rounded-xl w-10 h-10 flex items-center justify-center cursor-pointer hover:bg-white/30 transition-all duration-200 lg:block hidden"
               onClick={handleToggleSidebar}
             >
               <ToggleSVG />
@@ -212,7 +212,7 @@ export default function SaralPromptScreen({ query }: SaralPromptScreenProps) {
 
             {/* Mobile: Toggle button on right side when sidebar is open */}
             <div
-              className="text-[#3F1462] rounded-xl w-10 h-10 flex items-center justify-center cursor-pointer hover:bg-white/30 transition-all duration-200 lg:hidden block"
+              className="text-[deepViolet] rounded-xl w-10 h-10 flex items-center justify-center cursor-pointer hover:bg-white/30 transition-all duration-200 lg:hidden block"
               onClick={handleToggleSidebar}
             >
               <ToggleSVG />
@@ -222,11 +222,11 @@ export default function SaralPromptScreen({ query }: SaralPromptScreenProps) {
           {/* Search bar */}
           <div className="relative">
             <input
-              className="rounded-xl pl-10 pr-4 py-2 bg-white/50 focus:bg-white w-full placeholder:text-[#3F1462] placeholder:font-medium border border-[#a693c4] text-[#4a3d5e] outline-none"
+              className="rounded-xl pl-10 pr-4 py-2 bg-white/50 focus:bg-white w-full placeholder:text-[deepViolet] placeholder:font-medium border border-[#a693c4] text-[#4a3d5e] outline-none"
               placeholder="Search"
             />
             <svg
-              className="absolute left-3 top-1/2 -translate-y-1/2 w-6 h-6 text-[#3F1462]"
+              className="absolute left-3 top-1/2 -translate-y-1/2 w-6 h-6 text-[deepViolet]"
               fill="none"
               stroke="currentColor"
               strokeWidth="2"
@@ -302,7 +302,7 @@ export default function SaralPromptScreen({ query }: SaralPromptScreenProps) {
               <span>Saved Profiles</span>
               <span
                 className="ml-auto text-xs bg-[#dcd4e0] h-6x  text-base
- px-2 py-0.5 rounded-sm text-[#3F1462] font-medium"
+ px-2 py-0.5 rounded-sm text-[deepViolet] font-medium"
               >
                 3
               </span>
@@ -493,28 +493,28 @@ export default function SaralPromptScreen({ query }: SaralPromptScreenProps) {
           </div>
 
           {/* Centered content area */}
-          <div className="flex-1 flex flex-col w-[100%] items-center justify-center px-4 sm:px-6 lg:px-8">
-            {!results && (
-              <div className="text-center mb-6 sm:mb-8 max-w-3xl w-full">
-                <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-[#3F1462] mb-3 sm:mb-4 tracking-tight leading-tight">
-                  What Can I Help You With?
-                </h1>
-                <p className="text-[#1F2937] opacity-40 font-medium text-sm sm:text-base lg:text-lg tracking-wide px-4">
-                  Describe your ideal candidate and let AI find the perfect
-                  matches
-                </p>
-              </div>
-            )}
+          <div className="flex-1 flex flex-col w-full items-center justify-center px-4 sm:px-6 lg:px-8">
+            <div className="w-full max-w-3xl text-center mb-6 sm:mb-8">
+              {!results && (
+                <>
+                  <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-[deepViolet] mb-3 sm:mb-4 tracking-tight leading-tight">
+                    What Can I Help You With?
+                  </h1>
+                  <p className="text-[#1F2937] opacity-40 font-medium text-sm sm:text-base lg:text-lg tracking-wide px-4">
+                    Describe your ideal candidate and let AI find the perfect matches
+                  </p>
+                </>
+              )}
+            </div>
 
-            <div className="w-full max-w-2xl flex flex-col items-center gap-3 sm:gap-4">
-              {/* Prompt Input */}
+            <div className="w-full max-w-3xl flex flex-col items-center gap-3 sm:gap-4">
               <motion.div
                 initial={{ y: 0 }}
                 animate={{ y: moved ? -15 : 0 }}
                 transition={{ duration: 0.5, ease: "easeInOut" }}
                 className="w-full"
               >
-                <div className="w-full sm:w-[780px] flex flex-col sm:flex-row items-stretch sm:items-center bg-white/80 border border-[#f3cde9] rounded-2xl p-3 sm:p-4 shadow-sm gap-2 sm:gap-0">
+                <div className="w-full flex flex-col sm:flex-row items-stretch sm:items-center bg-white/80 border border-[#f3cde9] rounded-2xl p-3 sm:p-4 shadow-sm gap-2 sm:gap-0">
                   <input
                     className="flex-1 min-w-0 bg-transparent outline-none text-base sm:text-lg placeholder-[#A6A6A6] truncate"
                     placeholder="when an unknown printer took a galley of type and scrambled."
@@ -586,7 +586,7 @@ export default function SaralPromptScreen({ query }: SaralPromptScreenProps) {
           </div>
 
           {/* Footer */}
-          <footer className="text-center p-4 sm:p-6 text-xs sm:text-[13px] text-[#3D1562] opacity-50 px-4">
+          <footer className="text-center p-4 sm:p-6 text-xs sm:text-[13px] text-[royalPurple] opacity-50 px-4">
             Saral AI simplifies sourcing, but human judgment is still key
           </footer>
         </main>
@@ -595,7 +595,7 @@ export default function SaralPromptScreen({ query }: SaralPromptScreenProps) {
     {isTextEditor && (
   <div>
     <motion.h3
-      className="text-[#3D1562] font-semibold my-8 mx-14"
+      className="text-[royalPurple] font-semibold my-8 mx-14"
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
@@ -676,10 +676,10 @@ function CandidateCard() {
                 <span className="text-2xl font-bold text-purple-800">L</span>
               </div>
               <div className="ml-2">
-                <h1 className="text-base font-bold text-[#3D1562] mb-0.5">
+                <h1 className="text-base font-bold text-[royalPurple] mb-0.5">
                   Leslie A.
                 </h1>
-                <p className="text-xs text-[#3D1562] opacity-50">
+                <p className="text-xs text-[royalPurple] opacity-50">
                   Frontend Designer
                 </p>
               </div>
@@ -714,18 +714,18 @@ function CandidateCard() {
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-3">
                 <div>
-                  <p className="text-[#3D1562] text-[13px] mb-0.5 opacity-50">
+                  <p className="text-[royalPurple] text-[13px] mb-0.5 opacity-50">
                     Experience
                   </p>
-                  <p className="text-base opacity-90 font-bold text-[#3D1562]">
+                  <p className="text-base opacity-90 font-bold text-[royalPurple]">
                     5 yrs
                   </p>
                 </div>
                 <div>
-                  <p className="text-[#3D1562] text-[13px] mb-0.5 opacity-50">
+                  <p className="text-[royalPurple] text-[13px] mb-0.5 opacity-50">
                     Location
                   </p>
-                  <p className="text-base opacity-90 font-bold text-[#3D1562]">
+                  <p className="text-base opacity-90 font-bold text-[royalPurple]">
                     Pune, MH
                   </p>
                 </div>
@@ -734,7 +734,7 @@ function CandidateCard() {
                 <div className="relative w-14 h-14 mb-8">
                   <HeadScore value={Math.floor(Math.random() * 100)} />
                 </div>
-                <p className="text-[#3D1562] text-[15px] font-semibold opacity-55">
+                <p className="text-[royalPurple] text-[15px] font-semibold opacity-55">
                   Assessment score
                 </p>
               </div>

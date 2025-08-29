@@ -126,10 +126,10 @@ export function SaralInfoModal({ isOpen, onClose }: SaralInfoModalProps) {
 
   return (
     <CommonModal isOpen={isOpen} onClose={onClose} size="lg">
-      <h2 className="text-xl font-bold text-[#3D1562] mb-2">
+      <h2 className="text-xl font-bold text-[royalPurple] mb-2">
         Welcome to Saral AI
       </h2>
-      <p className="text-sm text-[#3D1562] opacity-40 mb-6">
+      <p className="text-sm text-[royalPurple] opacity-40 mb-6">
         Get real candidate profiles in seconds—just type what you need.
       </p>
 
@@ -140,10 +140,10 @@ export function SaralInfoModal({ isOpen, onClose }: SaralInfoModalProps) {
               {feature.icon}
             </div>
             <div>
-              <h3 className="font-bold text-[#3D1562] opacity-95 text-lg mb-1">
+              <h3 className="font-bold text-[royalPurple] opacity-95 text-lg mb-1">
                 {feature.title}
               </h3>
-              <p className="text-xs text-[#3D1562] text-md opacity-70 leading-relaxed">
+              <p className="text-xs text-[royalPurple] text-md opacity-70 leading-relaxed">
                 {feature.description}
               </p>
             </div>

@@ -49,7 +49,7 @@ export function PromptScreen() {
                   onKeyDown={handleKeyDown}
                 />
 
-                <button className="flex gap-1 items-center text-[#3D1562] opacity-80 font-semibold px-3 py-2 hover:scale-105 transition text-sm sm:text-base shrink-0">
+                <button className="flex gap-1 items-center text-[royalPurple] opacity-80 font-semibold px-3 py-2 hover:scale-105 transition text-sm sm:text-base shrink-0">
                   <Star className="w-4 h-4 sm:w-5 sm:h-5" />
                   Rephrase
                 </button>

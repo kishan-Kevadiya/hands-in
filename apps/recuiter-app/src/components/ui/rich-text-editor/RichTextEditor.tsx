@@ -393,7 +393,7 @@ const RichTextEditor = () => {
 
       {/* Footer */}
       <div className="flex items-center justify-end space-x-3 px-6 py-4 rounded-b-xl border-t border-gray-100 mx-8 mb-8  bg-[#7517cc1f]">
-        <button className="px-6 py-2 text-sm text-[#3D1562] bg-[#fafafa]  border-[2px] border-[#3d15623b] hover:bg-purple-100 transition-colors duration-150 rounded-lg hover:border-gray-300">
+        <button className="px-6 py-2 text-sm text-[royalPurple] bg-[#fafafa]  border-[2px] border-[#3d15623b] hover:bg-purple-100 transition-colors duration-150 rounded-lg hover:border-gray-300">
           Cancel
         </button>
         <button className="px-6 py-2 bg-[#fafafa] border-[2px] border-[#3d15623b] text-sm rounded-lg hover:bg-purple-100 transition-colors duration-150 font-medium">
