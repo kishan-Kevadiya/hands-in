@@ -8,25 +8,36 @@ import { SupportModal } from "@/components/ui/saral-ai-popup/support-modal/Suppo
 import { DASHBOARD } from "@/routes";
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-import { Outlet, useNavigate } from "react-router";
+import { Navigate, Outlet, useLocation, useNavigate } from "react-router";
+import ColoredLogo from "/src/assets/svg/saral-ai/logo/LogoColor.png";
 
 type SaralPromptScreenProps = {
   query: string;
 };
 
-export default function SaralPromptScreen({ query }: SaralPromptScreenProps) {
+export default function SaralPromptScreen() {
   const [isOpen, setIsOpen] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  const [results, setResults] = useState(true);
+  const [results, setResults] = useState(false);
   const [inpValue, setInpValue] = useState<string | null>(null);
-  const [moved, setMoved] = useState(false);
+  const [moved, setMoved] = useState(true);
   const [isInfoOpen, setIsInfoOpen] = useState(false);
   const [isPricingOpen, setIsPricingOpen] = useState(false);
   const [isSupportModal, setIsSupportModal] = useState(false);
   const [isTextEditor, setIsTextEditor] = useState(false);
 
+  const location = useLocation();
   const navigate = useNavigate();
+  const query = location.state?.query;
+  console.log("No query found. Redirecting...", location);
+
+  useEffect(() => {
+    if (!query) {
+      navigate(location.pathname);
+    }
+  }, [query, navigate]);
+
   const inputRef = useRef<HTMLInputElement>(null);
 
   const history = [
@@ -132,7 +143,10 @@ export default function SaralPromptScreen({ query }: SaralPromptScreenProps) {
   const handleNewChat = () => {
     setResults(false);
     setInpValue("");
-    setIsTextEditor(false)
+    setIsTextEditor(false);
+    if(isTextEditor){
+      return <Navigate to="/saral-ai" replace />; 
+    }
   };
 
   return (
@@ -160,7 +174,7 @@ export default function SaralPromptScreen({ query }: SaralPromptScreenProps) {
       {/* Overlay for mobile */}
       {isOpen && (
         <div
-          className="lg:hidden fixed inset-0 z-30 bg-white bg-opacity-10"
+          className="lg:hidden fixed inset-0 z-30 bg-[#00000080] bg-opacity-10"
           onClick={() => setIsOpen(false)}
         />
       )}
@@ -194,13 +208,9 @@ export default function SaralPromptScreen({ query }: SaralPromptScreenProps) {
         >
           <div className="flex items-center justify-between mb-8">
             {/* Left: Image */}
-            <div className="bg-[#6f47c7] rounded-xl w-10 h-10 flex items-center justify-center">
-              <img
-                src="src\assets\images\main\saral-ai\icons\userIcon.png"
-                alt="userIcon"
-                className="h-full w-auto"
-              />
-            </div>
+            <button className="p-2 rounded-xl w-[40px] h-[40px] bg-white/80 hover:bg-pink-50 border border-pink-200 flex items-center justify-center shrink-0">
+              <img src={ColoredLogo} alt="coloredLogo" className="aspect-square w-full" />
+            </button>
 
             {/* Right: Toggle SVG Icon - Only show on desktop when sidebar is open */}
             <div
@@ -310,7 +320,7 @@ export default function SaralPromptScreen({ query }: SaralPromptScreenProps) {
 
             <button
               className="flex items-center text-[#2d1b4a] gap-2 py-2 px-2 hover:bg-white/60 rounded-lg transition font-medium"
-              onClick={() => setIsTextEditor(true)}
+              onClick={() => navigate('/linkdin-campaign')}
             >
               {/* LinkedIn Campaign icon */}
               <svg
@@ -465,55 +475,59 @@ export default function SaralPromptScreen({ query }: SaralPromptScreenProps) {
         </div>
       </aside>
 
-        <main
-          className={`flex-1 min-h-screen flex flex-col transition-all duration-300 ease-in-out ${
-            sidebarCollapsed ? "lg:ml-0" : ""
-          }`}
-        >
-          <div className="flex items-center justify-end p-4 sm:p-6 lg:px-8 pt-6 lg:pt-6">
-            {/* Info Icon */}
-            <button
-              className="group flex outline-none items-center justify-center mx-4 w-[33px] h-[33px] bg-white hover:bg-purple-200 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
-              onClick={() => setIsInfoOpen(true)}
-            >
-              <InfoIcon />
-            </button>
+      <main
+        className={`flex-1 min-h-screen flex flex-col transition-all duration-300 ease-in-out ${
+          sidebarCollapsed ? "lg:ml-0" : ""
+        }`}
+      >
+        <div className="flex items-center justify-end p-4 sm:p-6 lg:px-8 pt-6 lg:pt-6">
+          {/* Info Icon */}
+          <button
+            className="group flex outline-none items-center justify-center mx-4 w-[33px] h-[33px] bg-white hover:bg-purple-200 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => setIsInfoOpen(true)}
+          >
+            <InfoIcon />
+          </button>
 
-            {/* Home Section */}
-            <button
-              onClick={() => navigate(DASHBOARD)}
-              className="group flex items-center space-x-2 sm:space-x-3 px-3 sm:px-4 py-2 bg-purple-50 hover:bg-purple-100 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
-            >
-              <Homeicon />
-              <span className="text-purple-700 font-medium group-hover:text-purple-800 text-sm sm:text-base">
-                Home
-              </span>
-            </button>
-          </div>
+          {/* Home Section */}
+          <button
+            onClick={() => navigate(DASHBOARD)}
+            className="group flex items-center space-x-2 sm:space-x-3 px-3 sm:px-4 py-2 bg-purple-50 hover:bg-purple-100 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+          >
+            <Homeicon />
+            <span className="text-purple-700 font-medium group-hover:text-purple-800 text-sm sm:text-base">
+              Home
+            </span>
+          </button>
+        </div>
 
-          {/* Centered content area */}
+        {/* Centered content area */}
+        {!isTextEditor && (
           <div className="flex-1 flex flex-col w-full items-center justify-center px-4 sm:px-6 lg:px-8">
             <div className="w-full max-w-3xl text-center mb-6 sm:mb-8">
               {!results && (
                 <>
-                  <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-[deepViolet] mb-3 sm:mb-4 tracking-tight leading-tight">
+                <div className="mb-8">
+                    <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-[deepViolet] mb-3 sm:mb-4 tracking-tight leading-tight">
                     What Can I Help You With?
                   </h1>
-                  <p className="text-[#1F2937] opacity-40 font-medium text-sm sm:text-base lg:text-lg tracking-wide px-4">
-                    Describe your ideal candidate and let AI find the perfect matches
+                  <p className="text-[#1F2937] opacity-40 font-medium text-sm sm:text-base lg:text-md tracking-wide px-4">
+                    Describe your ideal candidate and let AI find the perfect
+                    matches
                   </p>
+                </div>
                 </>
               )}
             </div>
 
-            <div className="w-full max-w-3xl flex flex-col items-center gap-3 sm:gap-4">
+            <div className={`w-full ${results ? 'max-w-7xl' : 'max-w-3xl'} flex flex-col items-center gap-3 sm:gap-4`}>
               <motion.div
                 initial={{ y: 0 }}
-                animate={{ y: moved ? -15 : 0 }}
+                animate={{ y: moved ? -30 : 0 }}
                 transition={{ duration: 0.5, ease: "easeInOut" }}
                 className="w-full"
               >
-                <div className="w-full flex flex-col sm:flex-row items-stretch sm:items-center bg-white/80 border border-[#f3cde9] rounded-2xl p-3 sm:p-4 shadow-sm gap-2 sm:gap-0">
+                <div className="w-[full] flex flex-col sm:flex-row items-stretch sm:items-center bg-white/80 border border-[#f3cde9] rounded-2xl p-3 sm:p-4 shadow-sm gap-2 sm:gap-0">
                   <input
                     className="flex-1 min-w-0 bg-transparent outline-none text-base sm:text-lg placeholder-[#A6A6A6] truncate"
                     placeholder="when an unknown printer took a galley of type and scrambled."
@@ -570,37 +584,73 @@ export default function SaralPromptScreen({ query }: SaralPromptScreenProps) {
                     </button>
                   </div>
                 </div>
+                {/* <div className="pt-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center">
+                    <CandidateCard />
+                    <CandidateCard />
+                    <CandidateCard />
+                    <CandidateCard />
+                    <CandidateCard />
+                  </div>
+                </div> */}
               </motion.div>
             </div>
-           
           </div>
+        )}
+        {isTextEditor && (
+          // <div className=" w-full items-center justify-start px-4 sm:px-6 lg:px-8">
+          //   <motion.h3
+          //     className="text-[royalPurple] font-semibold my-8 mx-14"
+          //     initial={{ opacity: 0, y: -20 }}
+          //     animate={{ opacity: 1, y: 0 }}
+          //     transition={{ duration: 0.5 }}
+          //   >
+          //     AI message generator
+          //   </motion.h3>
 
-          {/* Footer */}
-          <footer className="text-center p-4 sm:p-6 text-xs sm:text-[13px] text-[royalPurple] opacity-50 px-4">
-            Saral AI simplifies sourcing, but human judgment is still key
-          </footer>
-        </main>
-    {/* {isTextEditor && (
-  <div>
-    <motion.h3
-      className="text-[royalPurple] font-semibold my-8 mx-14"
-      initial={{ opacity: 0, y: -20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-    >
-      AI message generator
-    </motion.h3>
+          //   <motion.div
+          //     className="lg:m-6 sm:w-full sm:flex sm:justify-center sm:items-center"
+          //     initial={{ opacity: 0, scale: 0.95 }}
+          //     animate={{ opacity: 1, scale: 1 }}
+          //     transition={{ duration: 0.6, ease: "easeOut" }}
+          //   >
+          //     <RichTextEditor />
+          //   </motion.div>
+          // </div>
+          <div className="flex-1">
+            <div className="flex justify-between items-center lg:px-4" style={{paddingRight:"35px"}}>
+              <motion.h3
+                className="text-[royalPurple] font-semibold my-8 mx-14"
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+              >
+                AI message generator
+              </motion.h3>
 
-    <motion.div
-      className="lg:m-6 sm:w-full sm:flex sm:justify-center sm:items-center"
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
-    >
-      <RichTextEditor />
-    </motion.div>
-  </div>
-)} */}
+              <span className="text-sm text-purple-800">
+                2 Candidates Selected
+              </span>
+            </div>
+
+            {/* Editor */}
+            <motion.div
+              className="lg:m-6 sm:w-full sm:flex sm:justify-start sm:items-center"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+            >
+              <div className="w-full max-w-2xl">
+                <RichTextEditor />
+              </div>
+            </motion.div>
+          </div>
+        )}
+        {/* Footer */}
+        <footer className="text-center p-4 sm:p-6 text-xs sm:text-[13px] text-[royalPurple] opacity-50 px-4">
+          Saral AI simplifies sourcing, but human judgment is still key
+        </footer>
+      </main>
 
       <SaralInfoModal
         isOpen={isInfoOpen}

@@ -248,23 +248,25 @@ const AppRoutes: React.FC = () => {
       path: "*",
       element: <PageNotFound />,
     },
-    {
+ {
       path: "saral-ai",
-      element: <Outlet />, // parent placeholder
+      element: <Outlet />,
       children: [
         {
-          index: true, // /saral-ai
+          index: true,
           element: <PromptScreen />,
         },
         {
-          path: "result", // /saral-ai/result
-          element: <SaralPromptScreen query="" />, // wrapper with sidebar
-          children: [
-            {
-              path: "linkdin-campaign", // /saral-ai/result/linkdin-campaign
-              element: <RichTextEditor />,
-            },
-          ],
+          path: "result",
+          element: <SaralPromptScreen />,
+        },
+         {
+          path: "new",
+          element: <SaralPromptScreen />,
+        },
+        {
+          path: "linkdin-campaign",
+          element: <RichTextEditor />,
         },
       ],
     },

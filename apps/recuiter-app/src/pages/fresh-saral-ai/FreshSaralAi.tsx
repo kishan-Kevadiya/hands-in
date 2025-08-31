@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Star from "@/assets/svg/saral-ai/Star";
@@ -11,13 +12,11 @@ export function PromptScreen() {
 
   const handleSearch = async () => {
     if (inputValue !== "") {
-      const response = await searchProfiles(inputValue);
-      if (response.success) {
-
-        navigate("/saral-ai/result", { state: { query: response } });
-      }
-      console.log(response);
-    }
+    console.log("call--inputValue", inputValue);
+    navigate("/saral-ai/result", {
+      state: { query: inputValue },
+    });
+  }
   };
 
   return (
@@ -45,17 +44,19 @@ export function PromptScreen() {
         {/* Prompt Bar */}
         <div className="w-[calc(100%-2rem)] md:w-[calc(100%-2rem)] lg:w-[904px] mx-4 md:mx-4 lg:mx-auto relative p-[2px] rounded-full bg-gradient-to-r from-[#EC83BB] to-[#B664DB] shadow-md">
           <div className="flex items-center w-full bg-white rounded-full px-4 py-3 gap-2 sm:gap-4 overflow-hidden">
-           <input
-  className="w-full sm:w-3/4 bg-transparent outline-none text-base h-[55px] sm:text-lg placeholder-[#A6A6A6] truncate"
-  placeholder="Type what you need. We’ll deliver who you need."
-  value={inputValue}
-  onChange={(e) => setInputValue(e.target.value)}
-  onKeyDown={(e) => {
-    if (e.key === "Enter") {
-      handleSearch(); // 👈 Enter press par bhi chalega
-    }
-  }}
-/>
+            <input
+              className="w-full sm:w-3/4 bg-transparent outline-none text-base h-[55px] sm:text-lg placeholder-[#A6A6A6] truncate"
+              placeholder="Type what you need. We’ll deliver who you need."
+              value={inputValue}
+              onChange={(e) => {
+                setInputValue(e.target.value);
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  handleSearch();
+                }
+              }}
+            />
 
             <button
               className="flex gap-1 items-center text-[royalPurple] opacity-80 font-semibold px-3 py-2 hover:scale-105 transition text-sm sm:text-base shrink-0"
@@ -66,11 +67,7 @@ export function PromptScreen() {
             </button>
 
             <button className="p-2 rounded-xl w-[40px] h-[40px] bg-white/80 hover:bg-pink-50 border border-pink-200 flex items-center justify-center shrink-0">
-              <img
-                src={ColoredLogo}
-                alt="coloredLogo"
-                className="aspect-square w-full"
-              />
+              <img src={ColoredLogo} alt="coloredLogo" className="aspect-square w-full" />
             </button>
           </div>
         </div>
@@ -86,3 +83,4 @@ export function PromptScreen() {
     </motion.div>
   );
 }
+	
