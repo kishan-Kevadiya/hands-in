@@ -8,7 +8,7 @@ import { SupportModal } from "@/components/ui/saral-ai-popup/support-modal/Suppo
 import { DASHBOARD } from "@/routes";
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router";
+import { Outlet, useNavigate } from "react-router";
 
 type SaralPromptScreenProps = {
   query: string;
@@ -465,7 +465,6 @@ export default function SaralPromptScreen({ query }: SaralPromptScreenProps) {
         </div>
       </aside>
 
-      {!isTextEditor && (
         <main
           className={`flex-1 min-h-screen flex flex-col transition-all duration-300 ease-in-out ${
             sidebarCollapsed ? "lg:ml-0" : ""
@@ -573,16 +572,7 @@ export default function SaralPromptScreen({ query }: SaralPromptScreenProps) {
                 </div>
               </motion.div>
             </div>
-            {results && (
-              <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
-                <CandidateCard />
-                <CandidateCard />
-                <CandidateCard />
-                <CandidateCard />
-                <CandidateCard />
-                <CandidateCard />
-              </div>
-            )}
+           
           </div>
 
           {/* Footer */}
@@ -590,9 +580,7 @@ export default function SaralPromptScreen({ query }: SaralPromptScreenProps) {
             Saral AI simplifies sourcing, but human judgment is still key
           </footer>
         </main>
-      )}
-
-    {isTextEditor && (
+    {/* {isTextEditor && (
   <div>
     <motion.h3
       className="text-[royalPurple] font-semibold my-8 mx-14"
@@ -612,7 +600,7 @@ export default function SaralPromptScreen({ query }: SaralPromptScreenProps) {
       <RichTextEditor />
     </motion.div>
   </div>
-)}
+)} */}
 
       <SaralInfoModal
         isOpen={isInfoOpen}
