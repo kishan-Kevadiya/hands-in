@@ -266,7 +266,7 @@ const AppRoutes: React.FC = () => {
         },
         {
           path: "linkdin-campaign",
-          element: <RichTextEditor />,
+          element: <SaralPromptScreen />,
         },
       ],
     },

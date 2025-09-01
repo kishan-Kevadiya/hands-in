@@ -19,10 +19,15 @@ export const EDIT_JOB = "/jobs/edit";
 export const PREVIEW_JOB = "/jobs/preview";
 export const PROFILE = "/profile";
 export const SUPPORT = "/support";
-export const SARAL_AI = "/saral-ai"
 
 
 // ==> Other routes
 export const CODE_OF_CONDUCT = "/code-of-conduct";
 export const TERMS_AND_CONDITIONS = "/terms-and-conditions";
 export const PRIVACY_POLICY = "/privacy-policy";
+
+// ==> Saral AI routes
+export const SARAL_AI = "/saral-ai";
+export const SARAL_AI_RESULT = "/saral-ai/result";
+export const SARAL_AI_NEW_CHAT = "/saral-ai/new";
+export const SARAL_AI_LINKEDIN_CAMPAIGN = "/saral-ai/linkedin-campaign";

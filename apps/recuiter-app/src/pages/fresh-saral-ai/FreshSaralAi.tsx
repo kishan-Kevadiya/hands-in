@@ -3,7 +3,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Star from "@/assets/svg/saral-ai/Star";
 import ColoredLogo from "/src/assets/svg/saral-ai/logo/LogoColor.png";
-import { searchProfiles } from "@/helpers/apis/saral-ai";
+import { enhancePrompt, searchProfiles } from "@/helpers/apis/saral-ai";
 import { useNavigate } from "react-router";
 
 export function PromptScreen() {
@@ -12,11 +12,24 @@ export function PromptScreen() {
 
   const handleSearch = async () => {
     if (inputValue !== "") {
-    console.log("call--inputValue", inputValue);
-    navigate("/saral-ai/result", {
-      state: { query: inputValue },
-    });
-  }
+      console.log("call--inputValue", inputValue);
+      navigate("/saral-ai/result", {
+        state: { query: inputValue },
+      });
+    }
+  };
+
+  const handleEnhanceSearch = async () => {
+    if (inputValue !== '' && inputValue) {
+      try {
+        const response = await enhancePrompt(inputValue);
+        if (response.success) {
+          setInputValue(response.enhanced_query);
+        }
+      } catch (error) {
+        console.error("Error enhancing search:", error);
+      }
+    }
   };
 
   return (
@@ -59,8 +72,9 @@ export function PromptScreen() {
             />
 
             <button
-              className="flex gap-1 items-center text-[royalPurple] opacity-80 font-semibold px-3 py-2 hover:scale-105 transition text-sm sm:text-base shrink-0"
-              onClick={handleSearch}
+              className="flex gap-1 items-center text-[royalPurple] opacity-80 font-semibold px-3 py-2 hover:scale-105 transition text-sm sm:text-base shrink-0 disabled:opacity-50 disabled:!cursor-not-allowed"
+              onClick={handleEnhanceSearch}
+              disabled={!inputValue || inputValue.trim() === ""}
             >
               <Star className="w-4 h-4 sm:w-5 sm:h-5" />
               Rephrase
@@ -83,4 +97,3 @@ export function PromptScreen() {
     </motion.div>
   );
 }
-	
