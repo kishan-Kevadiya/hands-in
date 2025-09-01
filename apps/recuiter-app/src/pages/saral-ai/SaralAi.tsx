@@ -36,6 +36,9 @@ export default function SaralPromptScreen() {
   const [isResult, setIsResult] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [hasNext, setHasNext] = useState(false);
+  const [hasPrev, setHasPrev] = useState(false);
+  const [totalResults, setTotalResults] = useState(0);
 
   type Candidate = {
     id: string;
@@ -89,11 +92,11 @@ export default function SaralPromptScreen() {
   };
 
   useEffect(() => {
-  if (query) {
-    setInpValue(query);
-    fetchProfiles(query, 1);
-  }
-}, [query]);
+    if (query) {
+      setInpValue(query);
+      fetchProfiles(query, 1);
+    }
+  }, [query]);
 
   // Handle resize
   useEffect(() => {
@@ -164,16 +167,16 @@ export default function SaralPromptScreen() {
     </svg>
   );
 
-   const handleEnhanceSearch = async () => {
+  const handleEnhanceSearch = async () => {
     if (inpValue !== '' && inpValue) {
       try {
-      const response = await enhancePrompt(inpValue);
-      if (response.success) {
-        setInpValue(response.enhanced_query);
+        const response = await enhancePrompt(inpValue);
+        if (response.success) {
+          setInpValue(response.enhanced_query);
+        }
+      } catch (error) {
+        console.error("Error enhancing search:", error);
       }
-    } catch (error) {
-      console.error("Error enhancing search:", error);
-    }
     }
   };
 
@@ -193,14 +196,22 @@ export default function SaralPromptScreen() {
 
   const fetchProfiles = async (query: string, page: number = 1) => {
     try {
-      const response = await searchProfiles(query, page);
+      const response: SearchProfilesResponse = await searchProfiles(query, page);
+
       if (response.success) {
         navigate(SARAL_AI_RESULT);
         setMoved(true);
-        inputRef.current?.blur()
+        inputRef.current?.blur();
+
+        // Set profiles result
         setResults(response);
-        setTotalPages(response.total_pages || 1); // API me agar total_pages aata hai
-        setCurrentPage(page);
+
+        // Pagination states
+        setCurrentPage(response.current_page);
+        setTotalPages(response.total_pages);
+        setHasNext(response.has_next);
+        setHasPrev(response.has_prev);
+        setTotalResults(response.total_results);
       }
     } catch (error) {
       console.error("Error searching profiles:", error);
@@ -495,8 +506,8 @@ export default function SaralPromptScreen() {
 
                   <div className="flex items-center gap-2 justify-end">
                     <button className="rounded-xl text-[#3D1562] opacity-70 px-3 sm:px-4 py-2 font-semibold hover:bg-[#ead1f7] transition text-xs sm:text-sm flex items-center gap-2 disabled:opacity-50 disabled:!cursor-not-allowed"
-                    onClick={handleEnhanceSearch}
-                    disabled={!inpValue || inpValue.trim() === ""}
+                      onClick={handleEnhanceSearch}
+                      disabled={!inpValue || inpValue.trim() === ""}
                     >
                       {/* Rephrase button icon */}
                       <Rephrase />
@@ -515,12 +526,15 @@ export default function SaralPromptScreen() {
 
                   </div>
                 </div>
-                {isResult && results?.matched_profiles && (
+
+                {/* Set result */}
+                {isResult && results?.matched_profiles.length !== 0 && results?.matched_profiles && (
                   <div className="pt-3">
+                    {/* Candidate Grid */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center">
                       {results.matched_profiles.map((profile, index) => {
                         const candidate: Candidate = {
-                          id: String(index),
+                          id: String(index + (currentPage - 1) * (results?.matched_profiles.length || 1)), // unique across pages
                           name: profile.name,
                           initials: profile.name
                             .split(" ")
@@ -533,34 +547,44 @@ export default function SaralPromptScreen() {
                           assessmentScore: profile.score ?? 0,
                         };
 
-                        return <CandidateCard key={index} candidate={candidate} />;
+                        return <CandidateCard key={candidate.id} candidate={candidate} />;
                       })}
                     </div>
 
                     {/* Pagination Controls */}
                     <div className="flex justify-center items-center gap-3 mt-6">
                       <button
-                        onClick={() => fetchProfiles(inpValue ?? '', currentPage - 1)}
-                        disabled={currentPage === 1}
-                        className="px-3 py-1 border rounded disabled:opacity-50"
+                        onClick={() => {
+                          if (hasPrev) {
+                            fetchProfiles(inpValue ?? "", currentPage - 1);
+                          }
+                        }}
+                        disabled={!hasPrev}
+                        className="px-3 py-1 border rounded disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         Prev
                       </button>
 
                       <span className="font-semibold">
-                        Page {currentPage} of {totalPages}
+                        Page {currentPage} of {totalPages} ({totalResults} results)
                       </span>
 
                       <button
-                        onClick={() => fetchProfiles(inpValue ?? '', currentPage + 1)}
-                        disabled={currentPage === totalPages}
-                        className="px-3 py-1 border rounded disabled:opacity-50"
+                        onClick={() => {
+                          if (hasNext) {
+                            fetchProfiles(inpValue ?? "", currentPage + 1);
+                          }
+                        }}
+                        disabled={!hasNext}
+                        className="px-3 py-1 border rounded disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         Next
                       </button>
                     </div>
                   </div>
                 )}
+
+
 
               </motion.div>
             </div>

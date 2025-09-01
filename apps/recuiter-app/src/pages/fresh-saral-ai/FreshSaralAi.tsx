@@ -72,7 +72,7 @@ export function PromptScreen() {
             />
 
             <button
-              className="flex gap-1 items-center text-[royalPurple] opacity-80 font-semibold px-3 py-2 hover:scale-105 transition text-sm sm:text-base shrink-0 disabled:opacity-50 disabled:!cursor-not-allowed"
+              className="flex gap-1 outline-none items-center text-[royalPurple] opacity-80 font-semibold px-3 py-2 hover:scale-100 transition text-sm sm:text-base shrink-0 disabled:opacity-50 disabled:!cursor-not-allowed"
               onClick={handleEnhanceSearch}
               disabled={!inputValue || inputValue.trim() === ""}
             >
