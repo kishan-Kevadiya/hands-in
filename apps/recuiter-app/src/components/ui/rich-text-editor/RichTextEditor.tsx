@@ -463,14 +463,12 @@
 
 
 import React, { useRef, useState, useCallback } from "react";
-import { useNavigate } from "react-router";
 
 const RichTextEditor = () => {
   const editorRef = useRef<HTMLDivElement>(null);
   const [history, setHistory] = useState<string[]>([]);
   const [historyIndex, setHistoryIndex] = useState(-1);
   const [copied, setCopied] = useState(false);
-  const navigate=useNavigate();
   const initialContent = `<p>Hi Sarah Chen,</p><p><br></p><p>I came across your profile and was impressed by your 6 years of experience as a Senior Frontend Developer at TechCorp.</p><p><br></p><p>We're currently looking for a Senior React Developer. Would you be open to a brief conversation about this opportunity?</p><p><br></p><p>Best regards,<br>Leslie A.</p>`;
 
   const saveToHistory = useCallback(() => {

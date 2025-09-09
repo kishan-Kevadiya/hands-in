@@ -7,7 +7,7 @@ import { SupportModal } from "@/components/ui/saral-ai-popup/support-modal/Suppo
 import { DASHBOARD, SARAL_AI_LINKEDIN_CAMPAIGN, SARAL_AI_NEW_CHAT, SARAL_AI_RESULT } from "@/routes";
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-import { Navigate, useLocation, useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import ColoredLogo from "/src/assets/svg/saral-ai/logo/LogoColor.png";
 import LinkdinCampaign from "@/assets/svg/saral-ai/linkdin-campaign/LinkdinCampaign";
 import SavedProfiles from "@/assets/svg/saral-ai/saved-profiles.tsx/SavedProfiles";
@@ -17,7 +17,7 @@ import RecentSearch from "@/assets/svg/saral-ai/recent-search/RecentSearch";
 import SendPrompt from "@/assets/svg/saral-ai/send-prompt/SendPrompt";
 import Rephrase from "@/assets/svg/saral-ai/rephrase/Rephrase";
 import Support from "@/assets/svg/saral-ai/support/Support";
-import CandidateCard, { CandidateCardDemo } from "@/components/ui/candidate-card/CandidateCard";
+import CandidateCard from "@/components/ui/candidate-card/CandidateCard";
 import { enhancePrompt, searchProfiles, SearchProfilesResponse } from "@/helpers/apis/saral-ai";
 
 
@@ -219,13 +219,13 @@ export default function SaralPromptScreen() {
   };
 
 
-  const handleNewChat = () => {
-    setInpValue("");
-    setIsLinkedinCampaign(false);
-    if (isLinkedinCampaign) {
-      return <Navigate to="/saral-ai" replace />;
-    }
-  };
+  // const handleNewChat = () => {
+  //   setInpValue("");
+  //   setIsLinkedinCampaign(false);
+  //   if (isLinkedinCampaign) {
+  //     return <Navigate to="/saral-ai" replace />;
+  //   }
+  // };
 
   return (
     <div className="min-h-screen flex bg-gradient-to-b from-[#ede6fb] to-[#fff1e2]">

@@ -34,7 +34,6 @@ import TermsofService from "@/pages/terms-of-service/TermsofService";
 import CodeofConduct from "@/pages/code-of-conduct/CodeofConduct";
 import { PromptScreen } from "@/pages/fresh-saral-ai/FreshSaralAi";
 import SaralPromptScreen from "@/pages/saral-ai/SaralAi";
-import RichTextEditor from "@/components/ui/rich-text-editor/RichTextEditor";
 
 const AppRoutes: React.FC = () => {
   const rotues = createBrowserRouter([

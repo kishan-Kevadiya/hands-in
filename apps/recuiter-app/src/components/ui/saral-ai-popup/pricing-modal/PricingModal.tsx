@@ -189,7 +189,7 @@ export function PricingModal({ isOpen, onClose }: PricingModalProps) {
 
       {/* Pricing Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3 md:gap-4 lg:gap-6 px-2 sm:px-3 md:px-4 lg:px-6 pb-3 sm:pb-4 md:pb-6">
-        {plans.map((plan, idx) => (
+        {plans.map((plan) => (
           <div
             key={plan.name}
             className={`

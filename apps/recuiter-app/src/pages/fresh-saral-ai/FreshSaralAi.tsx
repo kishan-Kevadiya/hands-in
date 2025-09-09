@@ -1,9 +1,9 @@
 
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import Star from "@/assets/svg/saral-ai/Star";
 import ColoredLogo from "/src/assets/svg/saral-ai/logo/LogoColor.png";
-import { enhancePrompt, searchProfiles } from "@/helpers/apis/saral-ai";
+import { enhancePrompt } from "@/helpers/apis/saral-ai";
 import { useNavigate } from "react-router";
 
 export function PromptScreen() {

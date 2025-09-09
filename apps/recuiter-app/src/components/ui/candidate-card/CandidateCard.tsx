@@ -181,6 +181,7 @@ const CandidateCard: React.FC<CandidateCardProps> = ({
 export function CandidateCardDemo() {
   const [isSaved, setIsSaved] = useState(false);
   const [size, setSize] = useState(150);
+  console.log('size', size)
   useEffect(() => {
     const updateSize = () => {
       if (window.innerWidth < 640) {
