@@ -267,6 +267,10 @@ const AppRoutes: React.FC = () => {
           path: "linkdin-campaign",
           element: <SaralPromptScreen />,
         },
+         {
+          path: "saved-campaigns",
+          element: <SaralPromptScreen />,
+        },
       ],
     },
   ]);

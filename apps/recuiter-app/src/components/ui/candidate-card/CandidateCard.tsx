@@ -200,37 +200,50 @@ export function CandidateCardDemo() {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: 0.2 }}
-      className="w-full max-w-[400px] mx-auto"
+      transition={{ duration: 0.5, delay: 1 }}
+      className="w-full mx-auto"
+      style={{ maxWidth: `${380}px` }}
     >
       <div
-        className={`p-[1.5px] rounded-lg transition-all duration-300 ${isSaved
-          ? "bg-gradient-to-r from-[#D8B4FE] to-[#FBCFE8]"
-          : "bg-gradient-to-r from-[#F3E8FF] to-[#FDECF5]"
-          }`}
+        className={`p-[1.5px] rounded-lg transition-all duration-300 ${
+          isSaved
+            ? "bg-gradient-to-r from-[#D8B4FE] to-[#FBCFE8]"
+            : "bg-gradient-to-r from-[#F3E8FF] to-[#FDECF5]"
+        }`}
       >
         <div
-          className={`rounded-lg p-3 relative transition-all duration-300 ${isSaved
-            ? "bg-white/50 backdrop-blur-sm"
-            : "bg-gradient-to-br from-[#FFFFFF] to-[#F9EEEE]"
-            }`}
+          className={`rounded-lg p-3 relative transition-all duration-300 ${
+            isSaved
+              ? "bg-white/50 backdrop-blur-sm"
+              : "bg-gradient-to-br from-[#FFFFFF] to-[#F9EEEE]"
+          }`}
         >
           {/* Header */}
           <div className="flex items-start justify-between mb-4">
             <div className="flex items-center space-x-2">
               <div className="w-12 h-12 bg-[#F1DFFF] rounded-full flex items-center justify-center border border-purple-300">
-                <span className="text-2xl font-bold text-purple-800">L</span>
+                <span className="text-2xl font-bold text-purple-800">
+                  {'12'}
+                </span>
               </div>
               <div className="ml-2">
                 <h1 className="text-base font-bold text-[royalPurple] mb-0.5">
-                  Leslie A.
+                  {'kishan kevadiya'}
                 </h1>
                 <p className="text-xs text-[royalPurple] opacity-50">
-                  Frontend Designer
+                  {'backend dev'}
                 </p>
               </div>
             </div>
-            <div className="bg-transparent border-[2px] border-[#ffffff] rounded-md px-2 py-1">
+            <button
+              // onClick={handleViewProfile}
+              // disabled={!candidate.profileUrl}
+              className={`bg-transparent border-[2px] border-[#ffffff] rounded-md px-2 py-1 transition-opacity ${
+                true 
+                  ? 'cursor-pointer hover:opacity-80' 
+                  : 'cursor-not-allowed opacity-50'
+              }`}
+            >
               <div className="flex items-center space-x-1">
                 <span className="text-[#0077B4] text-[15px] font-medium">
                   View on
@@ -238,13 +251,14 @@ export function CandidateCardDemo() {
                 {/* Linkdin icon */}
                <Linkdin />
               </div>
-            </div>
+            </button>
           </div>
 
           {/* Content */}
           <div
-            className={`${isSaved ? "bg-white/70" : "bg-[#fcf9f9]"
-              } backdrop-blur-sm border-[2px] border-[#ffffff] rounded-lg p-3`}
+            className={`${
+              isSaved ? "bg-white/70" : "bg-[#fcf9f9]"
+            } backdrop-blur-sm border-[2px] border-[#ffffff] rounded-lg p-3`}
           >
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-3">
@@ -253,7 +267,7 @@ export function CandidateCardDemo() {
                     Experience
                   </p>
                   <p className="text-base opacity-90 font-bold text-[royalPurple]">
-                    5 yrs
+                    {'5+ year'}
                   </p>
                 </div>
                 <div>
@@ -261,13 +275,13 @@ export function CandidateCardDemo() {
                     Location
                   </p>
                   <p className="text-base opacity-90 font-bold text-[royalPurple]">
-                    Pune, MH
+                    {'surat'}
                   </p>
                 </div>
               </div>
               <div className="flex flex-col items-center justify-center">
                 <div className="relative w-14 h-14 mb-8">
-                  <HeadScore value={Math.floor(Math.random() * 100)} />
+                  <HeadScore value={ 0} />
                 </div>
                 <p className="text-[royalPurple] text-[15px] font-semibold opacity-55">
                   Assessment score
@@ -278,12 +292,13 @@ export function CandidateCardDemo() {
             {/* Save / Saved Button */}
             <div className="mt-3 flex justify-center">
               <button
-                onClick={() => setIsSaved(!isSaved)}
+                // onClick={handleSaveToggle}
                 className={`w-full max-w-[380px] rounded-xl text-sm font-bold px-3 py-1.5 transition-all duration-300 ease-in-out
                   text-transparent bg-clip-text bg-gradient-to-r from-[#3F1562] to-[#DF6789]
-                  ${isSaved
-                    ? "border-[2px] border-[#eddddd] hover:opacity-80"
-                    : "border-[2px] border-[#ffffff] hover:bg-purple-50 hover:border-purple-100"
+                  ${
+                    isSaved
+                      ? "border-[2px] border-[#eddddd] hover:opacity-80"
+                      : "border-[2px] border-[#ffffff] hover:bg-purple-50 hover:border-purple-100"
                   }`}
               >
                 {isSaved ? "Saved" : "Save"}

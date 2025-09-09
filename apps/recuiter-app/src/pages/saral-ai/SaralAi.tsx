@@ -4,7 +4,7 @@ import RichTextEditor from "@/components/ui/rich-text-editor/RichTextEditor";
 import { SaralInfoModal } from "@/components/ui/saral-ai-popup/info-modal/InfoModal";
 import { PricingModal } from "@/components/ui/saral-ai-popup/pricing-modal/PricingModal";
 import { SupportModal } from "@/components/ui/saral-ai-popup/support-modal/SupportModal";
-import { DASHBOARD, SARAL_AI_LINKEDIN_CAMPAIGN, SARAL_AI_NEW_CHAT, SARAL_AI_RESULT } from "@/routes";
+import { DASHBOARD, LOGIN, SARAL_AI_LINKEDIN_CAMPAIGN, SARAL_AI_NEW_CHAT, SARAL_AI_RESULT, SARAL_AI_SAVED_CAMPAIGNS } from "@/routes";
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router";
@@ -19,6 +19,8 @@ import Rephrase from "@/assets/svg/saral-ai/rephrase/Rephrase";
 import Support from "@/assets/svg/saral-ai/support/Support";
 import CandidateCard from "@/components/ui/candidate-card/CandidateCard";
 import { enhancePrompt, searchProfiles, SearchProfilesResponse } from "@/helpers/apis/saral-ai";
+import RecentSearchTab from "@/components/ui/recent-search/RecentSearch";
+import SavedProfilesTab from "@/components/ui/saved-profiles/SavedProfiles";
 
 
 export default function SaralPromptScreen() {
@@ -34,6 +36,7 @@ export default function SaralPromptScreen() {
   const [isLinkedinCampaign, setIsLinkedinCampaign] = useState(false);
   const [isNewChat, setIsNewChat] = useState(false);
   const [isResult, setIsResult] = useState(false);
+  const [isSaved, setIsSaved] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [hasNext, setHasNext] = useState(false);
@@ -56,7 +59,6 @@ export default function SaralPromptScreen() {
   const location = useLocation();
   const navigate = useNavigate();
   const query = location.state?.query;
-  console.log("No query found. Redirecting...", location);
 
   useEffect(() => {
     const lastPath = location.pathname.split("/").filter(Boolean).pop();
@@ -64,6 +66,7 @@ export default function SaralPromptScreen() {
     setIsLinkedinCampaign(lastPath === "linkdin-campaign");
     setIsNewChat(lastPath === "new");
     setIsResult(lastPath === "result");
+    setIsSaved(lastPath === "saved-campaigns");
   }, [location]);
 
   useEffect(() => {
@@ -73,15 +76,6 @@ export default function SaralPromptScreen() {
   }, [query, navigate]);
 
   const inputRef = useRef<HTMLInputElement>(null);
-
-  const history = [
-    { title: "Software Engineer", results: "234 results", time: "2h ago" },
-    { title: "Data Scientist", results: "156 results", time: "4h ago" },
-    { title: "Product Manager", results: "89 results", time: "1d ago" },
-    { title: "UX Designer", results: "167 results", time: "2d ago" },
-    { title: "DevOps Engineer", results: "203 results", time: "3d ago" },
-    { title: "Frontend Developer", results: "178 results", time: "5d ago" },
-  ];
 
   const handleToggleSidebar = () => {
     if (window.innerWidth < 1024) {
@@ -218,15 +212,6 @@ export default function SaralPromptScreen() {
     }
   };
 
-
-  // const handleNewChat = () => {
-  //   setInpValue("");
-  //   setIsLinkedinCampaign(false);
-  //   if (isLinkedinCampaign) {
-  //     return <Navigate to="/saral-ai" replace />;
-  //   }
-  // };
-
   return (
     <div className="min-h-screen flex bg-gradient-to-b from-[#ede6fb] to-[#fff1e2]">
       {/* Mobile Menu Button - Always show on mobile */}
@@ -337,7 +322,9 @@ export default function SaralPromptScreen() {
 
           {/* Menu */}
           <div className="mt-6 flex flex-col gap-1">
-            <button className="flex items-center text-[#2d1b4a] gap-2 py-2 px-2 hover:bg-white/60 rounded-lg transition font-medium">
+            <button className="flex items-center text-[#2d1b4a] gap-2 py-2 px-2 hover:bg-white/60 rounded-lg transition font-medium"
+            onClick={() => navigate(SARAL_AI_SAVED_CAMPAIGNS)}
+            >
               {/* Saved Profiles icon */}
               <SavedProfiles />
               <span>Saved Profiles</span>
@@ -361,57 +348,7 @@ export default function SaralPromptScreen() {
           </div>
 
           {/* Recent Searches */}
-          <div className="bg-white/50 rounded-2xl border-[3px] border-[#ffffff] p-3 w-full mt-[15px] max-w-xs">
-            {/* Header */}
-            <h3 className="text-[#6b54a3] tracking-wide font-semibold mb-2 flex items-center gap-2">
-              {/* Recent search icon */}
-              <RecentSearch />
-              Recent Search
-            </h3>
-
-            {/* Divider */}
-            <div className="border-t border-[#e9e4f3] mb-3"></div>
-
-            <div
-              className={`overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-[#e1d6f2] scrollbar-track-transparent transition-all duration-300 ease-in-out`}
-              style={{
-                maxHeight: expanded ? "16rem" : "8rem",
-                overflowX: "hidden",
-                WebkitOverflowScrolling: "touch",
-              }}
-            >
-              {history.map((item, i) => (
-                <div
-                  key={i}
-                  className="flex justify-between items-center bg-white rounded-xl px-3 py-2 mb-2 shadow-sm border border-[#f0ebf8]"
-                >
-                  <div className="flex flex-col">
-                    <span className="text-sm font-medium text-[#2d1b4a] truncate max-w-[130px]">
-                      {item.title}
-                    </span>
-                    <span className="text-xs text-[#7965a8]">
-                      {item.results} results
-                    </span>
-                  </div>
-                  <span className="text-xs text-[#7965a8] whitespace-nowrap">
-                    {item.time}
-                  </span>
-                </div>
-              ))}
-            </div>
-
-            {/* View More / Less */}
-            {history.length > 4 && (
-              <div className="text-center mt-2">
-                <button
-                  onClick={() => setExpanded(!expanded)}
-                  className="text-l outline-none font-medium px-5 py-2 rounded-full bg-clip-text text-transparent bg-gradient-to-r from-[#3F1562] to-[#DF6789] border border-transparent hover:border-[#DF6789] transition-all duration-300"
-                >
-                  {expanded ? "View Less" : "View More"}
-                </button>
-              </div>
-            )}
-          </div>
+          <RecentSearchTab />
         </div>
 
         {/* Plan/Credits */}
@@ -423,7 +360,7 @@ export default function SaralPromptScreen() {
 
           <div className="w-full rounded-xl p-[1.5px] bg-gradient-to-r from-[#BF9CF9] to-[#FFDFA9]">
             <button
-              className="w-full rounded-xl bg-white py-2 font-semibold hover:bg-white/90 transition"
+              className="w-full rounded-xl outline-none bg-white py-2 font-semibold hover:bg-white/90 transition"
               onClick={() => setIsPricingOpen(true)}
             >
               <span className="bg-gradient-to-r from-[#FFDFA9] to-[#BF9CF9] bg-clip-text text-transparent">
@@ -468,7 +405,7 @@ export default function SaralPromptScreen() {
         </div>
 
         {/* Centered content area */}
-        {!isLinkedinCampaign && (
+        {!isLinkedinCampaign && !isSaved && (
           <div className="flex-1 flex flex-col w-full items-center justify-center px-4 sm:px-6 lg:px-8">
             <div className="w-full max-w-3xl text-center mb-6 sm:mb-8">
               {isNewChat && !results && (
@@ -624,6 +561,11 @@ export default function SaralPromptScreen() {
             </motion.div>
           </div>
 
+        )}
+        { isSaved && (
+         <div className="flex-1">
+           <SavedProfilesTab />
+         </div>
         )}
         {/* Footer */}
         <footer className="text-center p-4 sm:p-6 text-xs sm:text-[13px] text-[royalPurple] opacity-50 px-4">
