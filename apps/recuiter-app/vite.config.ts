@@ -12,8 +12,8 @@ export default defineConfig({
       "/api": {
         target: "https://saral-ai-api.headsin.co",
         changeOrigin: true,
-        secure: true, // set false if SSL cert issue
-        rewrite: (path) => path.replace(/^\/api/, "/api"),
+        secure: true,
+        //  rewrite: (path) => path.replace(/^\/api/, "/api")
       },
     },
   },

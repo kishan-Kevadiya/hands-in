@@ -44,7 +44,7 @@ export default function SaralPromptScreen() {
   const [totalResults, setTotalResults] = useState(0);
 
   type Candidate = {
-    id: string;
+    id: number;
     name: string;
     initials: string;
     position: string;
@@ -74,6 +74,7 @@ export default function SaralPromptScreen() {
       navigate(location.pathname);
     }
   }, [query, navigate]);
+  
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -188,16 +189,20 @@ export default function SaralPromptScreen() {
     }
   };
 
+useEffect(() => {
+    console.log('results', results)
+}, [results])
+
+
   const fetchProfiles = async (query: string, page: number = 1) => {
     try {
       const response: SearchProfilesResponse = await searchProfiles(query, page);
 
+      console.log('response', response)
       if (response.success) {
         navigate(SARAL_AI_RESULT);
         setMoved(true);
         inputRef.current?.blur();
-
-        // Set profiles result
         setResults(response);
 
         // Pagination states
@@ -471,16 +476,13 @@ export default function SaralPromptScreen() {
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center">
                       {results.matched_profiles.map((profile, index) => {
                         const candidate: Candidate = {
-                          id: String(index + (currentPage - 1) * (results?.matched_profiles.length || 1)), // unique across pages
-                          name: profile.name,
-                          initials: profile.name
-                            .split(" ")
-                            .map((n) => n[0])
-                            .join(""),
+                          id: profile.id, // unique across pages
+                          name: profile.fullName,
+                          initials: profile.fullName.split("")[0],
                           position: profile.headline,
-                          experience: profile.experience,
-                          location: profile.location,
-                          profileUrl: profile.linkedin_url,
+                          experience: profile.experiences[0].caption,
+                          location: profile.addressWithCountry,
+                          profileUrl: profile.linkedinUrl,
                           assessmentScore: profile.score ?? 0,
                         };
 

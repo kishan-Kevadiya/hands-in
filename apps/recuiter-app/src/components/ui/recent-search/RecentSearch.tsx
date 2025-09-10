@@ -100,16 +100,18 @@ const RecentSearchTab = () => {
               className="flex justify-between items-center bg-white rounded-xl px-3 py-2 mb-2 shadow-sm border border-[#f0ebf8]"
             >
               <div className="flex flex-col">
-                <span className="text-sm font-medium text-[#2d1b4a] truncate max-w-[130px]">
+                <span className="text-sm font-medium text-[#2d1b4a] truncate max-w-[150px]">
                   {item.query_text}
                 </span>
                 <span className="text-xs text-[#7965a8]">
                   {item.total_results} results
                 </span>
               </div>
-              <span className="text-xs text-[#7965a8] whitespace-nowrap">
-                {date} {time}
-              </span>
+             <span className="text-xs text-[#7965a8] flex flex-col sm:flex-col sm:gap-1">
+  <span>{date}</span>
+  <span>{time}</span>
+</span>
+
             </div>
           );
         })}

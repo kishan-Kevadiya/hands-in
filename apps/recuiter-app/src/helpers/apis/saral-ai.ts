@@ -1,16 +1,8 @@
-import { LOGIN } from "@/routes";
 import axios from "axios"
-import { useNavigate } from "react-router";
-//  const navigate = useNavigate();
-// const BASE_URL = 'https://saral-ai-api.headsin.co/api/v1'
-const BASE_URL = '/api/v1'; // <- proxy will forward this to https://saral-ai-api.headsin.co/api/v1
+const BASE_URL = '/api/v1'; 
 
 // const BASE_URL = import.meta.env.VITE_API_BASE_URL
 const USER_ID = localStorage.getItem("user_id") ?? ' 5733c87a-3bef-49b7-a248-4b4c54c7b781';
-
-// if (!USER_ID) {
-//  navigate(LOGIN)
-// }
 
 export interface HealthCheckResponse {
   status: string;
@@ -21,17 +13,9 @@ export interface EnhancePromptResponse {
   success: boolean;
   enhanced_query: string;
 }
-
 export interface SearchProfilesResponse {
   success: boolean;
-  matched_profiles: {
-    name: string;
-    headline: string;
-    experience: string;
-    location: string;
-    linkedin_url: string;
-    score: number;
-  }[];
+  matched_profiles: MatchedProfile[];
   unmatched_profiles: any[];
   matched_count: number;
   unmatched_count: number;
@@ -41,6 +25,46 @@ export interface SearchProfilesResponse {
   parsed_data: Record<string, any>;
   has_next: boolean;
   has_prev: boolean;
+}
+
+export interface MatchedProfile {
+  id: number;
+  fullName: string;
+  headline: string;
+  about: string;
+  addressWithCountry: string;
+  linkedinUrl: string;
+  profilePic: string;
+  email: string;
+  score: number;
+  score_breakdown: ScoreBreakdown;
+  skills: string[];
+  experiences: Experience[];
+  is_complete: boolean;
+  created_at: string;
+}
+
+export interface ScoreBreakdown {
+  about_match: number;
+  headline_match: number;
+  skills_match: number;
+}
+
+export interface Experience {
+  breakdown: boolean;
+  caption: string;
+  companyId?: string;
+  companyLink1: string;
+  companyUrn?: string;
+  logo?: string;
+  metadata?: string;
+  subComponents: SubComponent[];
+  subtitle: string;
+  title: string;
+}
+
+export interface SubComponent {
+  description: string[];
 }
 
 export const healthCheck = async (): Promise<HealthCheckResponse> => {
@@ -67,7 +91,7 @@ export const searchProfiles = async (
   query: string,
   page: number = 0
 ): Promise<SearchProfilesResponse> => {
-  const response = await axios.post<SearchProfilesResponse>(`${BASE_URL}/search`, {
+  const response = await axios.post<SearchProfilesResponse>(`${BASE_URL}/ai-query/search-profiles`, {
     query,
     page,
   },
@@ -78,7 +102,9 @@ export const searchProfiles = async (
       },
     });
 
-  return response.data;
+    console.log('response', response)
+// @ts-ignore
+  return response.data.data[0];
 };
 
 export interface SearchHistoryItem {
@@ -144,7 +170,6 @@ export interface DeleteSavedProfileResponse {
 
 
 export const deleteSavedProfile = async (
-  profileId: number,
   id: number
 ): Promise<DeleteSavedProfileResponse> => {
   try {
@@ -155,7 +180,7 @@ export const deleteSavedProfile = async (
           "X-User-ID": USER_ID,
           "Content-Type": "application/json",
         },
-        data: { profile_id: profileId },
+        data: { profile_id: id },
       }
     );
 

@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import  { CandidateCardDemo } from "../candidate-card/CandidateCard";
 import Loader from "../loader/Loader";
 
 const SavedProfilesTab = () => {
@@ -23,7 +22,7 @@ const SavedProfilesTab = () => {
           <Loader isVisible={loading} />
         </div>
       ) : profiles.length > 0 ? (
-        profiles.map((_, i) => <CandidateCardDemo key={i} />)
+        profiles.map((_, i) => null)
       ) : (
         <p className="w-full text-center text-gray-500 py-10">No profiles found</p>
       )}
