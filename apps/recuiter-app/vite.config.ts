@@ -1,14 +1,21 @@
 import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react-swc';
-import tailwindcss from '@tailwindcss/vite';
+import react from '@vitejs/plugin-react-swc'
+import tailwindcss from '@tailwindcss/vite'
 import path from 'path'
-
 
 // https://vite.dev/config/
 export default defineConfig({
   server: {
-    port: 1515,
-    host: "0.0.0.0"
+    port: 3000,
+    host: "0.0.0.0",
+    proxy: {
+      "/api": {
+        target: "https://saral-ai-api.headsin.co",
+        changeOrigin: true,
+        secure: true, // set false if SSL cert issue
+        rewrite: (path) => path.replace(/^\/api/, "/api"),
+      },
+    },
   },
   plugins: [
     react(),
@@ -17,6 +24,7 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
-    }
-  }
+    },
+  },
 })
+

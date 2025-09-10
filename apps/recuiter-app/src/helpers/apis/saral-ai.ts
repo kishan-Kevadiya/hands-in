@@ -2,16 +2,18 @@ import { LOGIN } from "@/routes";
 import axios from "axios"
 import { useNavigate } from "react-router";
 //  const navigate = useNavigate();
-const BASE_URL = 'https://saral-ai-api.headsin.co/api/v1/api/v1'
+// const BASE_URL = 'https://saral-ai-api.headsin.co/api/v1'
+const BASE_URL = '/api/v1'; // <- proxy will forward this to https://saral-ai-api.headsin.co/api/v1
+
 // const BASE_URL = import.meta.env.VITE_API_BASE_URL
-const USER_ID = localStorage.getItem("user_id") ?? ' 5733c87a-3bef-49b7-a248-4b4c54c7b781'; 
+const USER_ID = localStorage.getItem("user_id") ?? ' 5733c87a-3bef-49b7-a248-4b4c54c7b781';
 
 // if (!USER_ID) {
 //  navigate(LOGIN)
 // }
 
 export interface HealthCheckResponse {
-  status: string;   
+  status: string;
   message: string;
 }
 
@@ -50,7 +52,7 @@ export const enhancePrompt = async (query: string): Promise<EnhancePromptRespons
 
   const response = await axios.post(
     `${BASE_URL}/ai-query/enhance`,
-    { prompt: query }, 
+    { prompt: query },
     {
       headers: {
         "X-User-ID": USER_ID,
@@ -58,8 +60,7 @@ export const enhancePrompt = async (query: string): Promise<EnhancePromptRespons
       },
     }
   );
-
-  return response.data;
+  return response.data.data;
 };
 
 export const searchProfiles = async (
@@ -69,7 +70,13 @@ export const searchProfiles = async (
   const response = await axios.post<SearchProfilesResponse>(`${BASE_URL}/search`, {
     query,
     page,
-  });
+  },
+    {
+      headers: {
+        "X-User-ID": USER_ID,
+        "Content-Type": "application/json",
+      },
+    });
 
   return response.data;
 };
@@ -103,7 +110,7 @@ export const getSearchHistory = async (
     params: {
       page,
       limit,
-      profile_id: profileId, 
+      profile_id: profileId,
     },
   });
 
@@ -186,7 +193,7 @@ export type CreateSavedProfileResponse =
   | CreateSavedProfileError;
 
 
-  export const createSavedProfile = async (
+export const createSavedProfile = async (
   profileId: number
 ): Promise<CreateSavedProfileResponse> => {
   try {
@@ -232,8 +239,8 @@ export interface SavedProfile {
   name: string;
   email: string;
   location: string;
-  skills: string; 
-  experience: string; 
+  skills: string;
+  experience: string;
   profile_pic: string;
   linkedin_url: string;
   is_complete: boolean;
