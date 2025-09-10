@@ -1,14 +1,14 @@
 import { LOGIN } from "@/routes";
 import axios from "axios"
 import { useNavigate } from "react-router";
- const navigate = useNavigate();
+//  const navigate = useNavigate();
 const BASE_URL = 'https://saral-ai-api.headsin.co/api/v1/api/v1'
 // const BASE_URL = import.meta.env.VITE_API_BASE_URL
 const USER_ID = localStorage.getItem("user_id") ?? ' 5733c87a-3bef-49b7-a248-4b4c54c7b781'; 
 
-if (!USER_ID) {
- navigate(LOGIN)
-}
+// if (!USER_ID) {
+//  navigate(LOGIN)
+// }
 
 export interface HealthCheckResponse {
   status: string;   

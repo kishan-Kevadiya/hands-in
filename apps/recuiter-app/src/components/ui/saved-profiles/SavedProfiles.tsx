@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
-import CandidateCard, { CandidateCardDemo } from "../candidate-card/CandidateCard";
-import SectionLoader from "../loader/SectionLoader";
+import { useEffect, useState } from "react";
+import  { CandidateCardDemo } from "../candidate-card/CandidateCard";
 import Loader from "../loader/Loader";
 
 const SavedProfilesTab = () => {
