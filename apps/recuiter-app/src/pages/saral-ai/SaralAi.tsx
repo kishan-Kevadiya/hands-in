@@ -532,7 +532,7 @@ export default function SaralPromptScreen() {
                       <PaginationHelper
                         totalItems={totalPages}
                         itemsPerPage={results?.matched_profiles.length || 10}
-                        currentPage={currentPage}
+                        currentPage={results.current_page}
                         onPageChange={(page) => {
                           fetchProfiles(inpValue ?? "", page);
                         }}
