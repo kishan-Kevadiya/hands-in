@@ -124,21 +124,38 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Star from "@/assets/svg/saral-ai/Star";
 import ColoredLogo from "/src/assets/svg/saral-ai/logo/LogoColor.png";
-import { enhancePrompt } from "@/helpers/apis/saral-ai";
+import { enhancePrompt, searchProfiles, SearchProfilesResponse } from "@/helpers/apis/saral-ai";
 import { useNavigate } from "react-router";
+import { SARAL_AI_RESULT } from "@/routes";
+import ButtonLoader from "@/components/ui/loader/ButtonLoader";
 
 export function PromptScreen() {
   const [inputValue, setInputValue] = useState("");
   const [loading, setLoading] = useState(false);
+  const [resultLoading, setResultLoading] = useState(false);
   const [animatingText, setAnimatingText] = useState(false);
   const navigate = useNavigate();
 
-  const handleSearch = async () => {
-    if (inputValue.trim() !== "") {
-      navigate("/saral-ai/result", {
-        state: { query: inputValue },
-      });
+
+  const fetchProfiles = async (query: string, page: number = 1) => {
+    try {
+      setResultLoading(true);
+      const response: SearchProfilesResponse = await searchProfiles(query, page);
+
+      if (response.success) {
+        navigate(SARAL_AI_RESULT, {
+          state: { query: inputValue, data: response },
+        });
+      }
+    } catch (error) {
+      console.error("Error searching profiles:", error);
+    } finally {
+      setResultLoading(false);
     }
+  };
+
+  const handleSearch = async () => {
+      fetchProfiles(inputValue);
   };
 
   const handleEnhanceSearch = async () => {
@@ -207,7 +224,7 @@ export function PromptScreen() {
             {/* Rephrase Button */}
             <motion.button
               whileTap={{ scale: 0.9 }}
-              className="flex gap-1 outline-none items-center text-[royalPurple] opacity-80 font-semibold px-3 py-2 hover:scale-105 transition text-sm sm:text-base shrink-0 disabled:opacity-50 disabled:!cursor-not-allowed"
+              className="flex gap-1 outline-none items-center text-[#3D1562] opacity-80 font-semibold px-3 py-2 hover:scale-105 transition text-sm sm:text-base shrink-0 disabled:opacity-50 disabled:!cursor-not-allowed"
               onClick={handleEnhanceSearch}
               disabled={!inputValue.trim() || loading}
             >
@@ -235,11 +252,13 @@ export function PromptScreen() {
               onClick={handleSearch}
               className="p-2 rounded-xl w-[40px] h-[40px] bg-white/80 hover:bg-pink-50 border border-pink-200 flex items-center justify-center shrink-0"
             >
-              <img
+
+              {resultLoading ? <span className="text-[#3D1562]"><ButtonLoader isVisible={resultLoading} /> </span>:  <img
                 src={ColoredLogo}
                 alt="coloredLogo"
                 className="aspect-square w-full"
-              />
+              />}
+             
             </motion.button>
           </div>
         </div>

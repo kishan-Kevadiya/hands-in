@@ -6,7 +6,7 @@ import { PricingModal } from "@/components/ui/saral-ai-popup/pricing-modal/Prici
 import { SupportModal } from "@/components/ui/saral-ai-popup/support-modal/SupportModal";
 import { DASHBOARD, LOGIN, SARAL_AI_LINKEDIN_CAMPAIGN, SARAL_AI_NEW_CHAT, SARAL_AI_RESULT, SARAL_AI_SAVED_CAMPAIGNS } from "@/routes";
 import { motion } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+import { use, useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router";
 import ColoredLogo from "/src/assets/svg/saral-ai/logo/LogoColor.png";
 import LinkdinCampaign from "@/assets/svg/saral-ai/linkdin-campaign/LinkdinCampaign";
@@ -21,6 +21,8 @@ import CandidateCard from "@/components/ui/candidate-card/CandidateCard";
 import { enhancePrompt, searchProfiles, SearchProfilesResponse } from "@/helpers/apis/saral-ai";
 import RecentSearchTab from "@/components/ui/recent-search/RecentSearch";
 import SavedProfilesTab from "@/components/ui/saved-profiles/SavedProfiles";
+import PaginationHelper from "@/components/ui/pagination-helper/PaginationHelper";
+import { set } from "zod";
 
 
 export default function SaralPromptScreen() {
@@ -54,14 +56,22 @@ export default function SaralPromptScreen() {
     assessmentScore?: number;
   };
 
-
-
   const location = useLocation();
   const navigate = useNavigate();
   const query = location.state?.query;
-
+  const data = location.state?.data;
+  console.log('data', data)
   useEffect(() => {
-    const lastPath = location.pathname.split("/").filter(Boolean).pop();
+    if (data) {
+      setResults(data);
+    }
+  }, [data]);
+
+  const lastPath = location.pathname.split("/").filter(Boolean).pop();
+
+
+  
+  useEffect(() => {
 
     setIsLinkedinCampaign(lastPath === "linkdin-campaign");
     setIsNewChat(lastPath === "new");
@@ -69,12 +79,29 @@ export default function SaralPromptScreen() {
     setIsSaved(lastPath === "saved-campaigns");
   }, [location]);
 
+    useEffect(() => {
+    if (lastPath === "new") {
+      setIsNewChat(true);
+      setIsLinkedinCampaign(false);
+      setIsSaved(false);
+      setIsResult(false);
+      setResults(null);
+      setInpValue(null);
+      setMoved(false);
+    }
+  }, [lastPath])
+
   useEffect(() => {
     if (!query) {
       navigate(location.pathname);
     }
   }, [query, navigate]);
-  
+
+  useEffect(() => {
+    if (!results && lastPath === "result") {
+      navigate(SARAL_AI_NEW_CHAT);
+    }
+  },[])
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -189,9 +216,9 @@ export default function SaralPromptScreen() {
     }
   };
 
-useEffect(() => {
+  useEffect(() => {
     console.log('results', results)
-}, [results])
+  }, [results])
 
 
   const fetchProfiles = async (query: string, page: number = 1) => {
@@ -328,7 +355,7 @@ useEffect(() => {
           {/* Menu */}
           <div className="mt-6 flex flex-col gap-1">
             <button className="flex items-center text-[#2d1b4a] gap-2 py-2 px-2 hover:bg-white/60 rounded-lg transition font-medium"
-            onClick={() => navigate(SARAL_AI_SAVED_CAMPAIGNS)}
+              onClick={() => navigate(SARAL_AI_SAVED_CAMPAIGNS)}
             >
               {/* Saved Profiles icon */}
               <SavedProfiles />
@@ -486,43 +513,35 @@ useEffect(() => {
                           assessmentScore: profile.score ?? 0,
                         };
 
-                        return <CandidateCard key={candidate.id} candidate={candidate} />;
+                        return (
+                          <motion.div
+                            key={candidate.id}
+                            initial={{ opacity: 0, y: 30, scale: 0.9 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            transition={{ delay: index * 0.15, duration: 0.5, ease: "easeOut" }}
+                            className="w-full flex justify-center"
+                          >
+                            <CandidateCard candidate={candidate} />
+                          </motion.div>
+                        );
                       })}
                     </div>
 
                     {/* Pagination Controls */}
-                    <div className="flex justify-center items-center gap-3 mt-6">
-                      <button
-                        onClick={() => {
-                          if (hasPrev) {
-                            fetchProfiles(inpValue ?? "", currentPage - 1);
-                          }
+                    <div className="mt-6">
+                      <PaginationHelper
+                        totalItems={totalPages}
+                        itemsPerPage={results?.matched_profiles.length || 10}
+                        currentPage={currentPage}
+                        onPageChange={(page) => {
+                          fetchProfiles(inpValue ?? "", page);
                         }}
-                        disabled={!hasPrev}
-                        className="px-3 py-1 border rounded disabled:opacity-50 disabled:cursor-not-allowed"
-                      >
-                        Prev
-                      </button>
-
-                      <span className="font-semibold">
-                        Page {currentPage} of {totalPages} ({totalResults} results)
-                      </span>
-
-                      <button
-                        onClick={() => {
-                          if (hasNext) {
-                            fetchProfiles(inpValue ?? "", currentPage + 1);
-                          }
-                        }}
-                        disabled={!hasNext}
-                        className="px-3 py-1 border rounded disabled:opacity-50 disabled:cursor-not-allowed"
-                      >
-                        Next
-                      </button>
+                        hasNextPage={results.has_next}
+                        hasPrevPage={results.has_prev}
+                      />
                     </div>
                   </div>
                 )}
-
 
 
               </motion.div>
@@ -564,10 +583,10 @@ useEffect(() => {
           </div>
 
         )}
-        { isSaved && (
-         <div className="flex-1">
-           <SavedProfilesTab />
-         </div>
+        {isSaved && (
+          <div className="flex-1">
+            <SavedProfilesTab />
+          </div>
         )}
         {/* Footer */}
         <footer className="text-center p-4 sm:p-6 text-xs sm:text-[13px] text-[royalPurple] opacity-50 px-4">
