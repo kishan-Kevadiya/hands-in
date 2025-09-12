@@ -186,7 +186,7 @@ export const getSearchHistoryResults = async (
     }
   );
 
-  return response.data.data;
+  return response.data;
 };
 
 
@@ -322,6 +322,25 @@ export const getSavedProfiles = async (
 ): Promise<SavedProfilesResponse> => {
   const response = await axios.get<SavedProfilesResponse>(
     `${BASE_URL}/saved-profile?page=${page}&limit=${limit}`,
+    {
+      headers: {
+        "X-User-ID": USER_ID,
+      },
+    }
+  );
+
+  return response.data;
+};
+
+export interface SavedProfileCountResponse {
+  total: number;
+}
+
+
+export const getSavedProfilesCount = async (
+): Promise<SavedProfileCountResponse> => {
+  const response = await axios.get<SavedProfileCountResponse>(
+    `${BASE_URL}/saved-profile/count`,
     {
       headers: {
         "X-User-ID": USER_ID,

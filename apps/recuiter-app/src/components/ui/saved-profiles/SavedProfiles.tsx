@@ -156,8 +156,14 @@ import {
   SavedProfilesResponse,
 } from "@/helpers/apis/saral-ai";
 import PaginationHelper from "../pagination-helper/PaginationHelper";
+import NoCandidatesShortlisted from "../no-candidate-shortlisted/NoCandidateShortListed";
+import { calculateExperience } from "@/helpers/apis/experience-counter";
 
-const SavedProfilesTab = () => {
+interface SavedProfilesTabProps {
+  onSavedNotify: () => void; // 👈 define the prop here
+}
+
+const SavedProfilesTab:  React.FC<SavedProfilesTabProps>   = ( {onSavedNotify} ) => {
   const [loading, setLoading] = useState(true);
   const [profiles, setProfiles] = useState<SavedProfile[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -185,6 +191,7 @@ const SavedProfilesTab = () => {
     try {
       const res = await deleteSavedProfile(id);
       setRefreshFlag(!refreshFlag);
+      onSavedNotify
       console.log("Delete response:", res.message);
     } catch (err: any) {
       console.error("Error deleting profile:", err);
@@ -201,7 +208,7 @@ const SavedProfilesTab = () => {
     <div className="flex flex-col h-full">
       {/* Profiles Grid */}
       <div
-        className="flex flex-wrap content-start overflow-y-auto justify-center gap-3 w-full flex-grow"
+        className="flex flex-wrap mt-30 content-start overflow-y-auto justify-center gap-3 w-full flex-grow"
         style={{ maxHeight: "700px" }}
       >
         {loading ? (
@@ -210,30 +217,10 @@ const SavedProfilesTab = () => {
           </div>
         ) : profiles.length > 0 ? (
           profiles.map((profile, i) => {
+
             const experienceData = JSON.parse(profile.experience || "[]");
+           const overallExperience = calculateExperience(experienceData);
 
-            function parseCaption(caption?: string) {
-              if (!caption || typeof caption !== "string") {
-                return { years: 0, months: 0 };
-              }
-              const yearMatch = caption.match(/(\d+)\s*yrs?/);
-              const monthMatch = caption.match(/(\d+)\s*mos?/);
-
-              return {
-                years: yearMatch ? parseInt(yearMatch[1], 10) : 0,
-                months: monthMatch ? parseInt(monthMatch[1], 10) : 0,
-              };
-            }
-
-            let totalMonths = 0;
-            experienceData.forEach((item: any) => {
-              const { years, months } = parseCaption(item?.caption);
-              totalMonths += years * 12 + months;
-            });
-
-            const totalYears = Math.floor(totalMonths / 12);
-            const remainingMonths = totalMonths % 12;
-            const overallExperience = `${totalYears} yrs ${remainingMonths} mos`;
 
             const candidate = {
               id: profile.id,
@@ -243,7 +230,7 @@ const SavedProfilesTab = () => {
                 .map((n) => n[0])
                 .join(""),
               position: profile.headline ?? "N/A",
-              experience: overallExperience,
+              experience: overallExperience.formatted,
               location: profile.location ?? "Unknown",
               assessmentScore: profile.score,
               profileUrl: profile.linkedin_url ?? "",
@@ -263,7 +250,7 @@ const SavedProfilesTab = () => {
           })
         ) : (
           <p className="w-full text-center text-gray-500 py-10">
-            No profiles found
+            <NoCandidatesShortlisted />
           </p>
         )}
       </div>

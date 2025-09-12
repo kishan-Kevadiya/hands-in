@@ -4,8 +4,15 @@ import RichTextEditor from "@/components/ui/rich-text-editor/RichTextEditor";
 import { SaralInfoModal } from "@/components/ui/saral-ai-popup/info-modal/InfoModal";
 import { PricingModal } from "@/components/ui/saral-ai-popup/pricing-modal/PricingModal";
 import { SupportModal } from "@/components/ui/saral-ai-popup/support-modal/SupportModal";
-import { DASHBOARD, LOGIN, SARAL_AI_LINKEDIN_CAMPAIGN, SARAL_AI_NEW_CHAT, SARAL_AI_RESULT, SARAL_AI_SAVED_CAMPAIGNS } from "@/routes";
-import { motion } from "framer-motion";
+import {
+  DASHBOARD,
+  LOGIN,
+  SARAL_AI_LINKEDIN_CAMPAIGN,
+  SARAL_AI_NEW_CHAT,
+  SARAL_AI_RESULT,
+  SARAL_AI_SAVED_CAMPAIGNS,
+} from "@/routes";
+import { AnimatePresence, motion } from "framer-motion";
 import { use, useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router";
 import ColoredLogo from "/src/assets/svg/saral-ai/logo/LogoColor.png";
@@ -18,12 +25,22 @@ import SendPrompt from "@/assets/svg/saral-ai/send-prompt/SendPrompt";
 import Rephrase from "@/assets/svg/saral-ai/rephrase/Rephrase";
 import Support from "@/assets/svg/saral-ai/support/Support";
 import CandidateCard from "@/components/ui/candidate-card/CandidateCard";
-import { enhancePrompt, getSearchHistoryResults, SearchHistoryByIdResponse, searchProfiles, SearchProfilesResponse } from "@/helpers/apis/saral-ai";
+import {
+  enhancePrompt,
+  getSavedProfilesCount,
+  getSearchHistoryResults,
+  SavedProfileCountResponse,
+  SearchHistoryByIdResponse,
+  searchProfiles,
+  SearchProfilesResponse,
+} from "@/helpers/apis/saral-ai";
 import RecentSearchTab from "@/components/ui/recent-search/RecentSearch";
 import SavedProfilesTab from "@/components/ui/saved-profiles/SavedProfiles";
 import PaginationHelper from "@/components/ui/pagination-helper/PaginationHelper";
 import { set } from "zod";
-
+import ToggleSVG from "@/assets/svg/saral-ai/toggle/Toggle";
+import { calculateExperience } from "@/helpers/apis/experience-counter";
+import SkeletonCard from "@/components/ui/skeleton/Skeleton";
 
 export default function SaralPromptScreen() {
   const [isOpen, setIsOpen] = useState(false);
@@ -44,7 +61,14 @@ export default function SaralPromptScreen() {
   const [hasNext, setHasNext] = useState(false);
   const [hasPrev, setHasPrev] = useState(false);
   const [totalResults, setTotalResults] = useState(0);
+  const [isHandleError, setIsHandleError] = useState(false);
+  const [savedProfileCount, setSavedProfileCount] = useState<number>(0);
+  const [savedNotify, setSavedNotify] = useState(false);
+  const [SkeletonLoading, setSkeletonLoading] = useState(false);
 
+  const onSavedNotify = () => setSavedNotify(!savedNotify);
+
+  console.log("isHandleError", isHandleError);
   const { id: recentSearchId } = useParams();
 
   type ResultData =
@@ -56,18 +80,20 @@ export default function SaralPromptScreen() {
 
   const fetchHistoryData = async (recentSearchId: string) => {
     try {
-      const data: SearchHistoryByIdResponse = await getSearchHistoryResults(recentSearchId);
-      console.log('data', data)
+      setSkeletonLoading(true);
+      const data: SearchHistoryByIdResponse = await getSearchHistoryResults(
+        recentSearchId
+      );
       setResults({ type: "history", data });
-      setInpValue(data.data[0].query_text)
+      setInpValue(data.data?.[0]?.query_text);
     } catch (error) {
       console.error("Error fetching search history results:", error);
+    } finally {
+      setSkeletonLoading(false);
     }
   };
 
   useEffect(() => {
-
-
     if (recentSearchId) {
       fetchHistoryData(recentSearchId);
     }
@@ -88,7 +114,6 @@ export default function SaralPromptScreen() {
   const navigate = useNavigate();
   const query = location.state?.query;
   const data = location.state?.data;
-  console.log('data', data)
   useEffect(() => {
     if (data) {
       setResults(data);
@@ -97,14 +122,14 @@ export default function SaralPromptScreen() {
 
   const lastPath = location.pathname.split("/").filter(Boolean).pop();
 
-
-
   useEffect(() => {
-
     setIsLinkedinCampaign(lastPath === "linkdin-campaign");
     setIsNewChat(lastPath === "new");
     setIsResult(lastPath === "result");
     setIsSaved(lastPath === "saved-campaigns");
+    if (lastPath === "new") {
+      setIsHandleError(false);
+    }
   }, [location]);
 
   useEffect(() => {
@@ -117,7 +142,7 @@ export default function SaralPromptScreen() {
       setInpValue(null);
       setMoved(false);
     }
-  }, [lastPath])
+  }, [lastPath]);
 
   useEffect(() => {
     if (!query) {
@@ -129,7 +154,7 @@ export default function SaralPromptScreen() {
     if (!results && lastPath === "result") {
       navigate(SARAL_AI_NEW_CHAT);
     }
-  }, [])
+  }, []);
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -160,69 +185,13 @@ export default function SaralPromptScreen() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const ToggleSVG = () => (
-    <svg
-      width="27"
-      height="28"
-      className="h-full w-auto mt-[7px] opacity-70 hover:opacity-90 transition"
-      viewBox="0 0 27 28"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <g filter="url(#filter0_d_55_448)">
-        <path
-          d="M10.3684 1H8C6.34315 1 5 2.34315 5 4V16C5 17.6569 6.34314 19 8 19H10.3684M10.3684 1H19C20.6569 1 22 2.34315 22 4V16C22 17.6569 20.6569 19 19 19H10.3684M10.3684 1V19"
-          stroke="#3F1462"
-          strokeWidth="1.6"
-          shapeRendering="crispEdges"
-        />
-      </g>
-      <defs>
-        <filter
-          id="filter0_d_55_448"
-          x="0.200195"
-          y="0.199951"
-          width="26.5996"
-          height="27.6001"
-          filterUnits="userSpaceOnUse"
-          colorInterpolationFilters="sRGB"
-        >
-          <feFlood floodOpacity="0" result="BackgroundImageFix" />
-          <feColorMatrix
-            in="SourceAlpha"
-            type="matrix"
-            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-            result="hardAlpha"
-          />
-          <feOffset dy="4" />
-          <feGaussianBlur stdDeviation="2" />
-          <feComposite in2="hardAlpha" operator="out" />
-          <feColorMatrix
-            type="matrix"
-            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"
-          />
-          <feBlend
-            mode="normal"
-            in2="BackgroundImageFix"
-            result="effect1_dropShadow_55_448"
-          />
-          <feBlend
-            mode="normal"
-            in="SourceGraphic"
-            in2="effect1_dropShadow_55_448"
-            result="shape"
-          />
-        </filter>
-      </defs>
-    </svg>
-  );
-
   const handleEnhanceSearch = async () => {
-    if (inpValue !== '' && inpValue) {
+    if (inpValue !== "" && inpValue) {
       try {
         const response = await enhancePrompt(inpValue);
         if (response.success) {
           setInpValue(response.enhanced_query);
+        } else {
         }
       } catch (error) {
         console.error("Error enhancing search:", error);
@@ -230,30 +199,41 @@ export default function SaralPromptScreen() {
     }
   };
 
-  const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter" && inpValue !== '' && inpValue) {
-      e.preventDefault();
-
-      fetchProfiles(inpValue, 1); // page 1 se start
-    }
-  };
-
-  const handleOnClick = async () => {
-    if (inpValue !== '' && inpValue) {
-      fetchProfiles(inpValue, 1);
+  const SavedProfileCount = async () => {
+    try {
+      const response: SavedProfileCountResponse = await getSavedProfilesCount();
+      setSavedProfileCount(response.total);
+    } catch (error) {
+      console.error("Error enhancing search:", error);
     }
   };
 
   useEffect(() => {
-    console.log('results', results)
-  }, [results])
+    SavedProfileCount();
+  }, [savedNotify]);
 
+  const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && inpValue !== "" && inpValue) {
+      e.preventDefault();
+
+      fetchProfiles(inpValue, 1);
+    }
+  };
+
+  const handleOnClick = async () => {
+    if (inpValue !== "" && inpValue) {
+      fetchProfiles(inpValue, 1);
+    }
+  };
 
   const fetchProfiles = async (query: string, page: number = 1) => {
     try {
-      const response: SearchProfilesResponse = await searchProfiles(query, page);
+      setIsHandleError(false);
+      const response: SearchProfilesResponse = await searchProfiles(
+        query,
+        page
+      );
 
-      console.log('response', response)
       if (response.success) {
         navigate(SARAL_AI_RESULT);
         setMoved(true);
@@ -267,9 +247,13 @@ export default function SaralPromptScreen() {
         setHasPrev(response.has_prev);
         setTotalResults(response.total_results);
       }
+      if (response.matched_profiles.length === 0) {
+        setIsHandleError(true);
+      }
     } catch (error) {
+      setIsHandleError(true);
       console.error("Error searching profiles:", error);
-    }
+    } 
   };
 
   return (
@@ -288,7 +272,7 @@ export default function SaralPromptScreen() {
       {sidebarCollapsed && (
         <button
           onClick={handleToggleSidebar}
-          className="hidden lg:block fixed top-4 left-4 z-50 text-[deepViolet] rounded-xl w-10 h-10 flex items-center justify-center cursor-pointer hover:bg-white/30 transition-all duration-200"
+          className="hidden lg:block fixed top-4 left-4 z-[9999] text-[deepViolet] rounded-xl w-10 h-10 flex items-center justify-center cursor-pointer hover:bg-white/30 transition-all duration-200"
         >
           <ToggleSVG />
         </button>
@@ -310,28 +294,33 @@ export default function SaralPromptScreen() {
           flex flex-col justify-between h-screen z-40 
           transition-all duration-300 ease-in-out
           ${
-          // Mobile behavior
-          isOpen
-            ? "fixed top-0 left-0 translate-x-0 w-80"
-            : "fixed top-0 -translate-x-full w-80"
+            // Mobile behavior
+            isOpen
+              ? "fixed top-0 left-0 translate-x-0 w-80"
+              : "fixed top-0 -translate-x-full w-80"
           }
           ${
-          // Desktop behavior - key changes here
-          sidebarCollapsed
-            ? "lg:sticky lg:top-0 lg:left-0 lg:translate-x-0 lg:w-0 lg:min-w-0 lg:overflow-hidden lg:p-0 lg:border-0"
-            : "lg:sticky lg:top-0 lg:left-0 lg:translate-x-0 lg:w-[320px] lg:min-w-[320px]"
+            // Desktop behavior - key changes here
+            sidebarCollapsed
+              ? "lg:sticky lg:top-0 lg:left-0 lg:translate-x-0 lg:w-0 lg:min-w-0 lg:overflow-hidden lg:p-0 lg:border-0"
+              : "lg:sticky lg:top-0 lg:left-0 lg:translate-x-0 lg:w-[320px] lg:min-w-[320px]"
           }
         `}
       >
         {/* Only show content when not collapsed on desktop */}
         <div
-          className={`${sidebarCollapsed ? "lg:hidden" : ""
-            } flex-1 overflow-hidden`}
+          className={`${
+            sidebarCollapsed ? "lg:hidden" : ""
+          } flex-1 overflow-hidden`}
         >
           <div className="flex items-center justify-between mb-8">
             {/* Left: Image */}
             <button className="p-2 rounded-xl w-[40px] h-[40px] bg-white/80 hover:bg-pink-50 border border-pink-200 flex items-center justify-center shrink-0">
-              <img src={ColoredLogo} alt="coloredLogo" className="aspect-square w-full" />
+              <img
+                src={ColoredLogo}
+                alt="coloredLogo"
+                className="aspect-square w-full"
+              />
             </button>
 
             {/* Right: Toggle SVG Icon - Only show on desktop when sidebar is open */}
@@ -368,7 +357,12 @@ export default function SaralPromptScreen() {
              py-3 px-4 transition-all duration-300 ease-in-out group
              hover:bg-purple-100 hover:shadow-lg hover:scale-[1]
              active:scale-95 active:bg-purple-200 active:shadow-inner"
-              onClick={() => navigate(SARAL_AI_NEW_CHAT)}
+              onClick={() => {
+                navigate(SARAL_AI_NEW_CHAT);
+                setIsHandleError(false);
+                setResults(null);
+                setInpValue(null);
+              }}
             >
               <NewChat />
               <span
@@ -382,7 +376,8 @@ export default function SaralPromptScreen() {
 
           {/* Menu */}
           <div className="mt-6 flex flex-col gap-1">
-            <button className="flex items-center text-[#2d1b4a] gap-2 py-2 px-2 hover:bg-white/60 rounded-lg transition font-medium"
+            <button
+              className="flex items-center text-[#2d1b4a] gap-2 py-2 px-2 hover:bg-white/60 rounded-lg transition font-medium"
               onClick={() => navigate(SARAL_AI_SAVED_CAMPAIGNS)}
             >
               {/* Saved Profiles icon */}
@@ -392,7 +387,7 @@ export default function SaralPromptScreen() {
                 className="ml-auto text-xs bg-[#dcd4e0] h-6x  text-base
  px-2 py-0.5 rounded-sm text-[deepViolet] font-medium"
               >
-                3
+                {savedProfileCount}
               </span>
             </button>
 
@@ -440,13 +435,14 @@ export default function SaralPromptScreen() {
       </aside>
 
       <main
-        className={`flex-1 min-h-screen flex flex-col transition-all duration-300 ease-in-out ${sidebarCollapsed ? "lg:ml-0" : ""
-          }`}
+        className={`flex-1 min-h-screen flex flex-col transition-all duration-300 ease-in-out ${
+          sidebarCollapsed ? "lg:ml-0" : ""
+        }`}
       >
-        <div className="flex items-center justify-end p-4 sm:p-6 lg:px-8 pt-6 lg:pt-6">
+        <div className="sticky top-0 z-50 flex items-center justify-end p-4 sm:p-6 lg:px-8 pt-6 lg:pt-6">
           {/* Info Icon */}
           <button
-            className="group flex outline-none items-center justify-center mx-4 w-[33px] h-[33px] bg-white hover:bg-purple-200 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            className="group flex outline-none items-center bg-purple-50 justify-center mx-4 w-[33px] h-[33px] hover:bg-purple-100 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
             onClick={() => setIsInfoOpen(true)}
           >
             <InfoIcon />
@@ -483,7 +479,11 @@ export default function SaralPromptScreen() {
               )}
             </div>
 
-            <div className={`w-full ${results || isResult ? 'max-w-7xl' : 'max-w-3xl'} flex flex-col items-center gap-3 sm:gap-4`}>
+            <div
+              className={`w-full ${
+                results || isResult || SkeletonLoading ? "max-w-7xl" : "max-w-3xl"
+              } flex flex-col items-center gap-3 sm:gap-4`}
+            >
               <motion.div
                 initial={{ y: 0 }}
                 animate={{ y: moved ? -30 : 0 }}
@@ -502,7 +502,8 @@ export default function SaralPromptScreen() {
                   />
 
                   <div className="flex items-center gap-2 justify-end">
-                    <button className="rounded-xl text-[#3D1562] opacity-70 px-3 sm:px-4 py-2 font-semibold hover:bg-[#ead1f7] transition text-xs sm:text-sm flex items-center gap-2 disabled:opacity-50 disabled:!cursor-not-allowed"
+                    <button
+                      className="rounded-xl text-[#3D1562] opacity-70 px-3 sm:px-4 py-2 font-semibold hover:bg-[#ead1f7] transition text-xs sm:text-sm flex items-center gap-2 disabled:opacity-50 disabled:!cursor-not-allowed"
                       onClick={handleEnhanceSearch}
                       disabled={!inpValue || inpValue.trim() === ""}
                     >
@@ -519,113 +520,95 @@ export default function SaralPromptScreen() {
                       {/* Send prompt button icon */}
                       <SendPrompt />
                     </button>
-
-
                   </div>
                 </div>
 
                 {/* Set result */}
-                {isResult && results?.type === "profiles" && results?.data?.matched_profiles.length !== 0 && results?.data?.matched_profiles && (
-                  <div className="pt-3">
-                    {/* Candidate Grid */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center">
-                      {
-                        !recentSearchId ?
-                          results.data.matched_profiles.map((profile, index) => {
-                            const candidate: Candidate = {
-                              id: profile.id, // unique across pages
-                              name: profile.fullName,
-                              initials: profile.fullName.split("")[0],
-                              position: profile.headline,
-                              experience: profile.experiences[0].caption,
-                              location: profile.addressWithCountry,
-                              profileUrl: profile.linkedinUrl,
-                              assessmentScore: profile.score ?? 0,
-                            };
+                <div className="grid grid-cols-1 sm:grid-cols-2 mt-4 lg:grid-cols-3 gap-6 justify-items-center">
+                  {SkeletonLoading
+                    ? Array.from({ length: 6 }).map((_, index) => (
+                        <div
+                          key={`skeleton-${index}`}
+                          className="w-full flex justify-center"
+                          style={{ animationDelay: `${index * 0.1}s` }}
+                        >
+                          <SkeletonCard />
+                        </div>
+                      ))
+                    : results?.data &&
+                      (results.type === "history"
+                        ? results.data.data
+                        : results.data.matched_profiles
+                      )?.map((profile: any, index: number) => {
+                        const experienceData = JSON.parse(
+                          profile.experience || "[]"
+                        );
+                        const overallExperience =
+                          calculateExperience(experienceData);
+                        const candidate: Candidate = {
+                          id: profile.id,
+                          name:
+                            results.type === "history"
+                              ? profile.name
+                              : profile.fullName,
+                          initials:
+                            (results.type === "history"
+                              ? profile.name
+                              : profile.fullName)?.[0] ?? "",
+                          position: profile.headline,
+                          experience: overallExperience.formatted,
+                          location:
+                            results.type === "history"
+                              ? profile.location
+                              : profile.addressWithCountry,
+                          profileUrl:
+                            results.type === "history"
+                              ? profile.linkedin_url
+                              : profile.linkedinUrl,
+                          assessmentScore: profile.score ?? 0,
+                        };
 
-                            return (
-                              <motion.div
-                                key={candidate.id}
-                                initial={{ opacity: 0, y: 30, scale: 0.9 }}
-                                animate={{ opacity: 1, y: 0, scale: 1 }}
-                                transition={{ delay: index * 0.15, duration: 0.5, ease: "easeOut" }}
-                                className="w-full flex justify-center"
-                              >
-                                <CandidateCard candidate={candidate} />
-                              </motion.div>
-                            );
-                          }) : 
-
-                          results.data.map((profile, index) => {
-                          const candidate: Candidate = {
-                            id: profile.id, // unique across pages
-                            name: profile.fullName,
-                            initials: profile.fullName.split("")[0],
-                            position: profile.headline,
-                            experience: profile.experiences[0].caption,
-                            location: profile.addressWithCountry,
-                            profileUrl: profile.linkedinUrl,
-                            assessmentScore: profile.score ?? 0,
-                          };
-
-                          return (
-                            <motion.div
-                              key={candidate.id}
-                              initial={{ opacity: 0, y: 30, scale: 0.9 }}
-                              animate={{ opacity: 1, y: 0, scale: 1 }}
-                              transition={{ delay: index * 0.15, duration: 0.5, ease: "easeOut" }}
-                              className="w-full flex justify-center"
-                            >
-                              <CandidateCard candidate={candidate} />
-                            </motion.div>
-                          );
-                        })
-
-                      }
-                    </div>
-
-                    {/* Pagination Controls */}
-                    {/* <div className="mt-6">
-                      // @ts-ignore
-                      <PaginationHelper
-                      // @ts-ignore
-                        totalItems={results?.type === "profiles" ? results.data.total_results : results?.data.total}
-                        itemsPerPage={results?.type === "profiles" ? results.data.matched_profiles.length || 10 : 0}
-                        currentPage={results?.type === "profiles" ? results.data.current_page : 0}
-                        onPageChange={(page: number) => {
-                          if (results?.type === "profiles") {
-                            fetchProfiles(inpValue ?? "", page);
-                            // @ts-ignore
-                          } else if (results?.type === "history") {
-                            fetchHistoryData(recentSearchId ?? "");
-                          }
-                        }}
-                        hasNextPage={
-                          results?.type === "profiles"
-                            ? results.data.has_next
-                            // @ts-ignore
-                            : results?.type === "history"
-                            // @ts-ignore
-                              ? results.data.page < results.data.total_pages
-                              : false
-                        }
-                        hasPrevPage={
-                          results?.type === "profiles"
-                            ? results.data.has_prev
-                            // @ts-ignore
-                            : results?.type === "history"
-                            // @ts-ignore
-                              ? results.data.page > 1
-                              : false
-                        }
-                      />
-
-                    </div> */}
-                  </div>
-                )}
-
-
+                        return (
+                          <motion.div
+                            key={candidate.id}
+                            initial={{ opacity: 0, y: 30, scale: 0.9 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            transition={{
+                              delay: index * 0.15,
+                              duration: 0.5,
+                              ease: "easeOut",
+                            }}
+                            className="w-full flex justify-center"
+                          >
+                            <CandidateCard
+                              candidate={candidate}
+                              onSavedNotify={() => onSavedNotify()}
+                            />
+                          </motion.div>
+                        );
+                      })}
+                </div>
               </motion.div>
+
+              {isHandleError && (
+                <AnimatePresence>
+                  <motion.div
+                    key="error-box"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ duration: 0.4, ease: "easeOut" }}
+                    className="text-center py-8 px-4"
+                  >
+                    <p className="text-[#3D1562] font-semibold text-lg sm:text-xl mb-2">
+                      We couldn't find any results.
+                    </p>
+                    <p className="text-[#3D1562] text-sm sm:text-base">
+                      Try again using another prompt.
+                    </p>
+                  </motion.div>
+                </AnimatePresence>
+              )}
             </div>
           </div>
         )}
@@ -655,18 +638,17 @@ export default function SaralPromptScreen() {
               className="m-2 sm:m-4 lg:m-6 sm:flex sm:justify-start sm:items-center"
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, ease: 'easeOut' }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
             >
               <div className="w-full max-w-2xl">
                 <RichTextEditor />
               </div>
             </motion.div>
           </div>
-
         )}
         {isSaved && (
           <div className="flex-1">
-            <SavedProfilesTab />
+            <SavedProfilesTab onSavedNotify={() => onSavedNotify()} />
           </div>
         )}
         {/* Footer */}
@@ -690,4 +672,3 @@ export default function SaralPromptScreen() {
     </div>
   );
 }
-
