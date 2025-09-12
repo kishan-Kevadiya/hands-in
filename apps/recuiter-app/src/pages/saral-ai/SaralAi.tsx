@@ -7,7 +7,7 @@ import { SupportModal } from "@/components/ui/saral-ai-popup/support-modal/Suppo
 import { DASHBOARD, LOGIN, SARAL_AI_LINKEDIN_CAMPAIGN, SARAL_AI_NEW_CHAT, SARAL_AI_RESULT, SARAL_AI_SAVED_CAMPAIGNS } from "@/routes";
 import { motion } from "framer-motion";
 import { use, useEffect, useRef, useState } from "react";
-import { useLocation, useNavigate } from "react-router";
+import { useLocation, useNavigate, useParams } from "react-router";
 import ColoredLogo from "/src/assets/svg/saral-ai/logo/LogoColor.png";
 import LinkdinCampaign from "@/assets/svg/saral-ai/linkdin-campaign/LinkdinCampaign";
 import SavedProfiles from "@/assets/svg/saral-ai/saved-profiles.tsx/SavedProfiles";
@@ -18,7 +18,7 @@ import SendPrompt from "@/assets/svg/saral-ai/send-prompt/SendPrompt";
 import Rephrase from "@/assets/svg/saral-ai/rephrase/Rephrase";
 import Support from "@/assets/svg/saral-ai/support/Support";
 import CandidateCard from "@/components/ui/candidate-card/CandidateCard";
-import { enhancePrompt, searchProfiles, SearchProfilesResponse } from "@/helpers/apis/saral-ai";
+import { enhancePrompt, getSearchHistoryResults, SearchHistoryByIdResponse, searchProfiles, SearchProfilesResponse } from "@/helpers/apis/saral-ai";
 import RecentSearchTab from "@/components/ui/recent-search/RecentSearch";
 import SavedProfilesTab from "@/components/ui/saved-profiles/SavedProfiles";
 import PaginationHelper from "@/components/ui/pagination-helper/PaginationHelper";
@@ -29,7 +29,7 @@ export default function SaralPromptScreen() {
   const [isOpen, setIsOpen] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  const [results, setResults] = useState<SearchProfilesResponse | null>(null);
+
   const [inpValue, setInpValue] = useState<string | null>(null);
   const [moved, setMoved] = useState(false);
   const [isInfoOpen, setIsInfoOpen] = useState(false);
@@ -44,6 +44,34 @@ export default function SaralPromptScreen() {
   const [hasNext, setHasNext] = useState(false);
   const [hasPrev, setHasPrev] = useState(false);
   const [totalResults, setTotalResults] = useState(0);
+
+  const { id: recentSearchId } = useParams();
+
+  type ResultData =
+    | { type: "profiles"; data: SearchProfilesResponse }
+    | { type: "history"; data: SearchHistoryByIdResponse }
+    | null;
+
+  const [results, setResults] = useState<ResultData>(null);
+
+  const fetchHistoryData = async (recentSearchId: string) => {
+    try {
+      const data: SearchHistoryByIdResponse = await getSearchHistoryResults(recentSearchId);
+      console.log('data', data)
+      setResults({ type: "history", data });
+      setInpValue(data.data[0].query_text)
+    } catch (error) {
+      console.error("Error fetching search history results:", error);
+    }
+  };
+
+  useEffect(() => {
+
+
+    if (recentSearchId) {
+      fetchHistoryData(recentSearchId);
+    }
+  }, [recentSearchId]);
 
   type Candidate = {
     id: number;
@@ -70,7 +98,7 @@ export default function SaralPromptScreen() {
   const lastPath = location.pathname.split("/").filter(Boolean).pop();
 
 
-  
+
   useEffect(() => {
 
     setIsLinkedinCampaign(lastPath === "linkdin-campaign");
@@ -79,7 +107,7 @@ export default function SaralPromptScreen() {
     setIsSaved(lastPath === "saved-campaigns");
   }, [location]);
 
-    useEffect(() => {
+  useEffect(() => {
     if (lastPath === "new") {
       setIsNewChat(true);
       setIsLinkedinCampaign(false);
@@ -101,7 +129,7 @@ export default function SaralPromptScreen() {
     if (!results && lastPath === "result") {
       navigate(SARAL_AI_NEW_CHAT);
     }
-  },[])
+  }, [])
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -230,7 +258,7 @@ export default function SaralPromptScreen() {
         navigate(SARAL_AI_RESULT);
         setMoved(true);
         inputRef.current?.blur();
-        setResults(response);
+        setResults({ type: "profiles", data: response });
 
         // Pagination states
         setCurrentPage(response.current_page);
@@ -497,49 +525,102 @@ export default function SaralPromptScreen() {
                 </div>
 
                 {/* Set result */}
-                {isResult && results?.matched_profiles.length !== 0 && results?.matched_profiles && (
+                {isResult && results?.type === "profiles" && results?.data?.matched_profiles.length !== 0 && results?.data?.matched_profiles && (
                   <div className="pt-3">
                     {/* Candidate Grid */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center">
-                      {results.matched_profiles.map((profile, index) => {
-                        const candidate: Candidate = {
-                          id: profile.id, // unique across pages
-                          name: profile.fullName,
-                          initials: profile.fullName.split("")[0],
-                          position: profile.headline,
-                          experience: profile.experiences[0].caption,
-                          location: profile.addressWithCountry,
-                          profileUrl: profile.linkedinUrl,
-                          assessmentScore: profile.score ?? 0,
-                        };
+                      {
+                        !recentSearchId ?
+                          results.data.matched_profiles.map((profile, index) => {
+                            const candidate: Candidate = {
+                              id: profile.id, // unique across pages
+                              name: profile.fullName,
+                              initials: profile.fullName.split("")[0],
+                              position: profile.headline,
+                              experience: profile.experiences[0].caption,
+                              location: profile.addressWithCountry,
+                              profileUrl: profile.linkedinUrl,
+                              assessmentScore: profile.score ?? 0,
+                            };
 
-                        return (
-                          <motion.div
-                            key={candidate.id}
-                            initial={{ opacity: 0, y: 30, scale: 0.9 }}
-                            animate={{ opacity: 1, y: 0, scale: 1 }}
-                            transition={{ delay: index * 0.15, duration: 0.5, ease: "easeOut" }}
-                            className="w-full flex justify-center"
-                          >
-                            <CandidateCard candidate={candidate} />
-                          </motion.div>
-                        );
-                      })}
+                            return (
+                              <motion.div
+                                key={candidate.id}
+                                initial={{ opacity: 0, y: 30, scale: 0.9 }}
+                                animate={{ opacity: 1, y: 0, scale: 1 }}
+                                transition={{ delay: index * 0.15, duration: 0.5, ease: "easeOut" }}
+                                className="w-full flex justify-center"
+                              >
+                                <CandidateCard candidate={candidate} />
+                              </motion.div>
+                            );
+                          }) : 
+
+                          results.data.map((profile, index) => {
+                          const candidate: Candidate = {
+                            id: profile.id, // unique across pages
+                            name: profile.fullName,
+                            initials: profile.fullName.split("")[0],
+                            position: profile.headline,
+                            experience: profile.experiences[0].caption,
+                            location: profile.addressWithCountry,
+                            profileUrl: profile.linkedinUrl,
+                            assessmentScore: profile.score ?? 0,
+                          };
+
+                          return (
+                            <motion.div
+                              key={candidate.id}
+                              initial={{ opacity: 0, y: 30, scale: 0.9 }}
+                              animate={{ opacity: 1, y: 0, scale: 1 }}
+                              transition={{ delay: index * 0.15, duration: 0.5, ease: "easeOut" }}
+                              className="w-full flex justify-center"
+                            >
+                              <CandidateCard candidate={candidate} />
+                            </motion.div>
+                          );
+                        })
+
+                      }
                     </div>
 
                     {/* Pagination Controls */}
-                    <div className="mt-6">
+                    {/* <div className="mt-6">
+                      // @ts-ignore
                       <PaginationHelper
-                        totalItems={totalPages}
-                        itemsPerPage={results?.matched_profiles.length || 10}
-                        currentPage={results.current_page}
-                        onPageChange={(page) => {
-                          fetchProfiles(inpValue ?? "", page);
+                      // @ts-ignore
+                        totalItems={results?.type === "profiles" ? results.data.total_results : results?.data.total}
+                        itemsPerPage={results?.type === "profiles" ? results.data.matched_profiles.length || 10 : 0}
+                        currentPage={results?.type === "profiles" ? results.data.current_page : 0}
+                        onPageChange={(page: number) => {
+                          if (results?.type === "profiles") {
+                            fetchProfiles(inpValue ?? "", page);
+                            // @ts-ignore
+                          } else if (results?.type === "history") {
+                            fetchHistoryData(recentSearchId ?? "");
+                          }
                         }}
-                        hasNextPage={results.has_next}
-                        hasPrevPage={results.has_prev}
+                        hasNextPage={
+                          results?.type === "profiles"
+                            ? results.data.has_next
+                            // @ts-ignore
+                            : results?.type === "history"
+                            // @ts-ignore
+                              ? results.data.page < results.data.total_pages
+                              : false
+                        }
+                        hasPrevPage={
+                          results?.type === "profiles"
+                            ? results.data.has_prev
+                            // @ts-ignore
+                            : results?.type === "history"
+                            // @ts-ignore
+                              ? results.data.page > 1
+                              : false
+                        }
                       />
-                    </div>
+
+                    </div> */}
                   </div>
                 )}
 

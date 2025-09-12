@@ -143,9 +143,36 @@ export const getSearchHistory = async (
   return response.data;
 };
 
+export interface CandidateProfile {
+  id: string;
+  query_text: string;
+  total_results: number;
+  name: string;
+  email: string;
+  location: string;
+  skills: string; // JSON string of array
+  experience: string; // JSON string of array
+  profile_pic: string;
+  linkedin_url: string;
+  is_complete: boolean;
+  headline: string;
+  created_at: string; // ISO date
+  about: string;
+  sort_order: number;
+}
+
+// API response
+export interface SearchHistoryByIdResponse {
+  data: CandidateProfile[];
+  page: number;
+  limit: number;
+  total: number;
+  total_pages: number;
+}
+
 export const getSearchHistoryResults = async (
   searchId: string
-): Promise<any> => {
+): Promise<SearchHistoryByIdResponse> => {
   const response = await axios.get<any>(
     `${BASE_URL}/search-history/results`,
     {
@@ -159,7 +186,7 @@ export const getSearchHistoryResults = async (
     }
   );
 
-  return response.data;
+  return response.data.data;
 };
 
 

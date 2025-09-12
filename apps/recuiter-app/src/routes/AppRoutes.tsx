@@ -260,6 +260,10 @@ const AppRoutes: React.FC = () => {
           element: <SaralPromptScreen />,
         },
          {
+          path: "result/:id/view",
+          element: <SaralPromptScreen />,
+        },
+         {
           path: "new",
           element: <SaralPromptScreen />,
         },
