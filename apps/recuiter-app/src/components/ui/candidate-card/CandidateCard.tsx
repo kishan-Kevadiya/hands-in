@@ -183,6 +183,7 @@ import { motion } from "framer-motion";
 import HeadScore from "../progressbar/HeadScore";
 import Linkdin from "@/assets/svg/saral-ai/linkdin/Linkdin";
 import { createSavedProfile, deleteSavedProfile } from "@/helpers/apis/saral-ai";
+import Delete from "@/assets/svg/saral-ai/logo/delete/Delete";
 
 // Define the props interface
 interface CandidateCardProps {
@@ -197,9 +198,11 @@ interface CandidateCardProps {
     profileUrl?: string;
   };
   initialSavedState?: boolean;
+  isForSavedList?: boolean;
   onSaveToggle?: (candidateId: number, isSaved: boolean) => void;
   animationDelay?: number;
   maxWidth?: number;
+  handleDelete?: () => void;
 }
 
 const CandidateCard: React.FC<CandidateCardProps> = ({
@@ -208,6 +211,8 @@ const CandidateCard: React.FC<CandidateCardProps> = ({
   onSaveToggle,
   animationDelay = 0.2,
   maxWidth = 400,
+  isForSavedList = false,
+  handleDelete
 }) => {
   const [isSaved, setIsSaved] = useState(initialSavedState);
   const [size, setSize] = useState(150);
@@ -274,7 +279,7 @@ const CandidateCard: React.FC<CandidateCardProps> = ({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: animationDelay }}
-      className="w-full mx-auto"
+      className="w-full mx-[20px]"
       style={{ maxWidth: `${maxWidth}px` }}
     >
       <div
@@ -370,6 +375,17 @@ const CandidateCard: React.FC<CandidateCardProps> = ({
 
             {/* Save / Saved Button */}
             <div className="mt-3 flex justify-center">
+              {isForSavedList && (
+                <>
+                <button
+                  className={`w-full max-w-[45px] bg-white border-[2px] mr-2 border-[#eddddd] hover:opacity-80 rounded-xl text-sm font-bold px-3 py-1.5 transition-all duration-300 ease-in-out
+                text-transparent bg-clip-text bg-gradient-to-r from-[#3F1562] to-[#DF6789]`}
+                onClick={handleDelete}
+                >
+                 <Delete />
+                </button>
+                </>
+              )}
                 <button
                 onClick={handleSaveToggle}
                 disabled={loading}

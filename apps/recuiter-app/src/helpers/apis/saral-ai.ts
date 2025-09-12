@@ -260,6 +260,7 @@ export interface SavedProfile {
   id: number;
   user_id: string;
   profile_id: number;
+  score: number;
   saved_at: string;
   name: string;
   email: string;
