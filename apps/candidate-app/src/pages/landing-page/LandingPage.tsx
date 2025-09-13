@@ -16,7 +16,7 @@ const LandingPage = () => {
       <div className="font-manrope flex flex-col ">
         <Navbar />
         <Outlet />
-        {/* <Footer /> */}
+        <Footer />
       </div>
     </ReactLenis>
   );
