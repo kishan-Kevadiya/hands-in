@@ -1,152 +1,4 @@
-// import { useEffect, useState } from "react";
-// import Loader from "../loader/Loader";
-// import CandidateCard from "../candidate-card/CandidateCard";
-// import { deleteSavedProfile, getSavedProfiles, SavedProfile, SavedProfilesResponse } from "@/helpers/apis/saral-ai";
-// import PaginationHelper from "../pagination-helper/PaginationHelper";
-
-// const SavedProfilesTab = () => {
-//   const [loading, setLoading] = useState(true);
-//   const [profiles, setProfiles] = useState<SavedProfile[]>([]);
-//   const [currentPage, setCurrentPage] = useState(1);
-//   const [totalPages, setTotalPages] = useState(1);
-//   const [limit] = useState(10);
-//   const [delLoading, setDelLoading] = useState(false);
-//   const [refreshFlag, setRefreshFlag] = useState(false);
-
-//   const fetchProfiles = async (page: number = 1) => {
-//     try {
-//       setLoading(true);
-//       const res: SavedProfilesResponse = await getSavedProfiles(page, limit);
-//       setProfiles(res.data || []);
-//       setTotalPages(res.total_pages || 1);
-//       setCurrentPage(res.page || 1);
-//     } catch (error) {
-//       console.error("Error fetching saved profiles:", error);
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   const handleDelete = async (id: number) => {
-//     setDelLoading(true);
-
-//     try {
-//       const res = await deleteSavedProfile(id);
-//       setRefreshFlag(!refreshFlag); 
-//       console.log("Delete response:", res.message);
-//     } catch (err: any) {
-//       console.error("Error deleting profile:", err);
-//     } finally {
-//       setDelLoading(false);
-//     }
-//   };
-
-//   useEffect(() => {
-//     fetchProfiles(currentPage);
-//   }, [currentPage, refreshFlag]);
-
-//   return (
-//   <>
-//     <div>
-//       {/* Profiles Grid */}
-//       <div
-//         className="flex h-full flex-wrap content-start overflow-y-auto justify-start gap-3"
-//         style={{ maxHeight: "700px" }}
-//       >
-//         {loading ? (
-//           <div className="w-full flex m-28 justify-center items-center py-10">
-//             <Loader isVisible={loading} />
-//           </div>
-//         ) : profiles.length > 0 ? (
-//           profiles.map((profile, i) => {
-
-//             const experienceData = JSON.parse(profile.experience || "[]");
-
-//             function parseCaption(caption?: string) {
-//               if (!caption || typeof caption !== "string") {
-//                 return { years: 0, months: 0 };
-//               }
-
-//               const yearMatch = caption.match(/(\d+)\s*yrs?/);
-//               const monthMatch = caption.match(/(\d+)\s*mos?/);
-
-//               return {
-//                 years: yearMatch ? parseInt(yearMatch[1], 10) : 0,
-//                 months: monthMatch ? parseInt(monthMatch[1], 10) : 0,
-//               };
-//             }
-
-//             let totalMonths = 0;
-//             experienceData.forEach((item: any) => {
-//               const { years, months } = parseCaption(item?.caption);
-//               totalMonths += years * 12 + months;
-//             });
-
-//             const totalYears = Math.floor(totalMonths / 12);
-//             const remainingMonths = totalMonths % 12;
-
-//             const overallExperience = `${totalYears} yrs ${remainingMonths} mos`;
-
-//             const candidate = {
-//               id: profile.id,
-//               name: profile.name,
-//               initials: profile.name
-//                 .split(" ")
-//                 .map((n) => n[0])
-//                 .join(""),
-//               position: profile.headline ?? "N/A",
-//               experience: overallExperience,
-//               location: profile.location ?? "Unknown",
-//               assessmentScore: profile.score,
-//               profileUrl: profile.linkedin_url ?? "",
-//             };
-
-//             return (
-//               <CandidateCard
-//                 key={profile.id}
-//                 candidate={candidate}
-//                 initialSavedState={true}
-//                 animationDelay={i * 0.1}
-//                 maxWidth={400}
-//                 isForSavedList={true}
-//                 handleDelete= {() => handleDelete(profile.id)}
-//               />
-//             );
-//           })
-//         ) : (
-//           <p className="w-full text-center text-gray-500 py-10">
-//             No profiles found
-//           </p>
-//         )}
-//       </div>
-
-//       {/* Pagination Controls */}
-//     </div>
-//       {true && (
-//         <div className="mt-6">
-//           <PaginationHelper
-//             totalItems={totalPages}
-//             itemsPerPage={limit}
-//             currentPage={currentPage}
-//             onPageChange={(page: any) => setCurrentPage(page)}
-//             hasNextPage={currentPage < totalPages}
-//             hasPrevPage={currentPage > 1}
-//           />
-//         </div>
-//       )}
-//   </>
-//   );
-// };
-
-// export default SavedProfilesTab;
-
-
-
-
-
-
-
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import Loader from "../loader/Loader";
 import CandidateCard from "../candidate-card/CandidateCard";
 import {
@@ -155,43 +7,71 @@ import {
   SavedProfile,
   SavedProfilesResponse,
 } from "@/helpers/apis/saral-ai";
-import PaginationHelper from "../pagination-helper/PaginationHelper";
 import NoCandidatesShortlisted from "../no-candidate-shortlisted/NoCandidateShortListed";
 import { calculateExperience } from "@/helpers/apis/experience-counter";
+import SaralLoader from "../loader/SaralLoader";
+import RegenerateMessageSvg from "@/assets/svg/saral-ai/regenerate-message/RegenerateMessageSvg";
 
 interface SavedProfilesTabProps {
-  onSavedNotify: () => void; // 👈 define the prop here
+  setSavedProfileCount: Dispatch<SetStateAction<number>>;
 }
 
-const SavedProfilesTab:  React.FC<SavedProfilesTabProps>   = ( {onSavedNotify} ) => {
+const SavedProfilesTab: React.FC<SavedProfilesTabProps> = ({
+  setSavedProfileCount,
+}) => {
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [profiles, setProfiles] = useState<SavedProfile[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [hasMore, setHasMore] = useState(false);
   const [limit] = useState(10);
   const [delLoading, setDelLoading] = useState(false);
   const [refreshFlag, setRefreshFlag] = useState(false);
 
-  const fetchProfiles = async (page: number = 1) => {
+  const fetchProfiles = async (page: number = 1, append: boolean = false) => {
     try {
-      setLoading(true);
+      if (append) {
+        setLoadingMore(true);
+      } else {
+        setLoading(true);
+        setProfiles([]); // Clear existing profiles for fresh load
+      }
+
       const res: SavedProfilesResponse = await getSavedProfiles(page, limit);
-      setProfiles(res.data || []);
+
+      if (append) {
+        // ✅ This correctly appends new data to existing data
+        setProfiles((prev) => [...prev, ...(res.data || [])]);
+      } else {
+        // ✅ This replaces data for fresh loads
+        setProfiles(res.data || []);
+      }
+
       setTotalPages(res.total_pages || 1);
       setCurrentPage(res.page || 1);
+      setHasMore((res.page || 1) < (res.total_pages || 1));
     } catch (error) {
       console.error("Error fetching saved profiles:", error);
     } finally {
       setLoading(false);
+      setLoadingMore(false);
     }
+  };
+
+  const handleLoadMore = () => {
+    fetchProfiles(currentPage + 1, true);
   };
 
   const handleDelete = async (id: number) => {
     setDelLoading(true);
     try {
       const res = await deleteSavedProfile(id);
-      setRefreshFlag(!refreshFlag);
-      onSavedNotify
+
+      // Remove the deleted profile from the current profiles
+      setProfiles((prev) => prev.filter((profile) => profile.id !== id));
+      setSavedProfileCount((prev: number) => prev - 1);
+
       console.log("Delete response:", res.message);
     } catch (err: any) {
       console.error("Error deleting profile:", err);
@@ -201,71 +81,101 @@ const SavedProfilesTab:  React.FC<SavedProfilesTabProps>   = ( {onSavedNotify} )
   };
 
   useEffect(() => {
-    fetchProfiles(currentPage);
-  }, [currentPage, refreshFlag]);
+    fetchProfiles(1, false);
+    setCurrentPage(1);
+  }, [refreshFlag]);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center py-20">
+        <Loader isVisible={loading} />
+      </div>
+    );
+  }
+
+  if (profiles.length === 0) {
+    return (
+      <div className="flex justify-center items-center py-20">
+        <NoCandidatesShortlisted />
+      </div>
+    );
+  }
 
   return (
-    <div className="flex flex-col h-full">
-      {/* Profiles Grid */}
-      <div
-        className="flex flex-wrap mt-30 content-start overflow-y-auto justify-center gap-3 w-full flex-grow"
-        style={{ maxHeight: "700px" }}
-      >
-        {loading ? (
-          <div className="w-full flex m-28 justify-center items-center py-10">
-            <Loader isVisible={loading} />
-          </div>
-        ) : profiles.length > 0 ? (
-          profiles.map((profile, i) => {
-
-            const experienceData = JSON.parse(profile.experience || "[]");
-           const overallExperience = calculateExperience(experienceData);
-
-
-            const candidate = {
-              id: profile.id,
-              name: profile.name,
-              initials: profile.name
-                .split(" ")
-                .map((n) => n[0])
-                .join(""),
-              position: profile.headline ?? "N/A",
-              experience: overallExperience.formatted,
-              location: profile.location ?? "Unknown",
-              assessmentScore: profile.score,
-              profileUrl: profile.linkedin_url ?? "",
-            };
-
-            return (
-              <CandidateCard
-                key={profile.id}
-                candidate={candidate}
-                initialSavedState={true}
-                animationDelay={i * 0.1}
-                maxWidth={400}
-                isForSavedList={true}
-                handleDelete={() => handleDelete(profile.id)}
-              />
-            );
-          })
-        ) : (
-          <p className="w-full text-center text-gray-500 py-10">
-            <NoCandidatesShortlisted />
-          </p>
-        )}
+    <div className="w-full mx-auto">
+      <div className="flex items-center justify-between rounded-2xl p-3 sm:p-4 bg-transparent">
+        <span className="text-base sm:text-lg text-[#3D1562] font-medium">
+          {profiles.length} Candidates Selected
+        </span>
+        <div className="w-48 rounded-xl p-[1.5px] bg-gradient-to-r from-[#FFDFA9] to-[#BF9CF9]">
+          <button className="w-full rounded-xl outline-none bg-[#eee7fa] py-2 font-semibold hover:bg-white/90 transition">
+            <span className="inline-flex items-center space-x-2 bg-gradient-to-r from-[#3F1562] to-[#DF6789] bg-clip-text text-transparent">
+              <RegenerateMessageSvg />
+              <span>Generate Message</span>
+            </span>
+          </button>
+        </div>
       </div>
 
-      {/* Pagination Controls */}
-      {totalPages > 1 && (
-        <div className="mt-6">
-          <PaginationHelper
-            totalItems={totalPages}
-            itemsPerPage={limit}
-            currentPage={currentPage}
-            onPageChange={(page: any) => setCurrentPage(page)}
-            hasNextPage={currentPage < totalPages}
-            hasPrevPage={currentPage > 1}
-          />
+      {/* Profiles Grid - Maintains current layout */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 mt-4 lg:grid-cols-3 gap-2 justify-items-center">
+        {profiles.map((profile, i) => {
+          const experienceData = JSON.parse(profile.experience || "[]");
+          const overallExperience = calculateExperience(experienceData);
+
+          const candidate = {
+            id: profile.id,
+            name: profile.name,
+            initials: profile.name
+              .split(" ")
+              .map((n) => n[0])
+              .join(""),
+            position: profile.headline ?? "N/A",
+            experience: overallExperience.formatted,
+            location: profile.location ?? "Unknown",
+            assessmentScore: profile.score,
+            profileUrl: profile.linkedin_url ?? "",
+          };
+
+          return (
+            <CandidateCard
+              key={profile.id}
+              candidate={candidate}
+              initialSavedState={true}
+              animationDelay={i * 0.1}
+              maxWidth={375}
+              isForSavedList={true}
+              handleDelete={() => handleDelete(profile.id)}
+              delLoading={delLoading}
+            />
+          );
+        })}
+      </div>
+
+      {/* Load More Button - Fixed condition */}
+      {true && (
+        <div className="flex justify-center py-8">
+          <button
+            onClick={handleLoadMore}
+            disabled={loadingMore}
+            className="px-8 py-2 bg-transparent rounded-xl border-2 font-semibold rounded-full hover:scale-105 transition-all duration-200 shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
+            style={{
+              borderImage: "linear-gradient(to right, #de7fdf, #a881fa) 1",
+              background: "linear-gradient(to right, #a881fa, #de7fdf)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
+            }}
+          >
+            {loadingMore ? (
+              <div className="flex items-center">
+                <SaralLoader />
+                <span className="mx-2">Loading...</span>
+              </div>
+            ) : (
+              "Load More"
+            )}
+          </button>
         </div>
       )}
     </div>

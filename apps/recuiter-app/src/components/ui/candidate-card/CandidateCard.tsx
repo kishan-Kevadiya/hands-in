@@ -5,6 +5,8 @@ import HeadScore from "../progressbar/HeadScore";
 import Linkdin from "@/assets/svg/saral-ai/linkdin/Linkdin";
 import { createSavedProfile, deleteSavedProfile } from "@/helpers/apis/saral-ai";
 import Delete from "@/assets/svg/saral-ai/logo/delete/Delete";
+import SaralLoader from "../loader/SaralLoader";
+import ButtonLoader from "../loader/ButtonLoader";
 
 // Define the props interface
 interface CandidateCardProps {
@@ -23,8 +25,9 @@ interface CandidateCardProps {
   onSaveToggle?: (candidateId: number, isSaved: boolean) => void;
   animationDelay?: number;
   maxWidth?: number;
+  SavedProfileCount?:()=>void;
   handleDelete?: () => void;
-  onSavedNotify?: () => void;
+  delLoading?: boolean;
 }
 
 const CandidateCard: React.FC<CandidateCardProps> = ({
@@ -35,7 +38,8 @@ const CandidateCard: React.FC<CandidateCardProps> = ({
   maxWidth = 400,
   isForSavedList = false,
   handleDelete,
-  onSavedNotify
+  SavedProfileCount,
+  delLoading
 }) => {
   const [isSaved, setIsSaved] = useState(initialSavedState);
   const [size, setSize] = useState(150);
@@ -69,9 +73,8 @@ const CandidateCard: React.FC<CandidateCardProps> = ({
           setSavedProfileId((res as any).id);
           setIsSaved(true);
           onSaveToggle?.(candidate.id, true);
-          onSavedNotify
+          SavedProfileCount?.()
         }
-        console.log('isSaved', isSaved)
       } else {
         // --- Unsave Profile ---
         if (!savedProfileId) {
@@ -206,7 +209,7 @@ const CandidateCard: React.FC<CandidateCardProps> = ({
                 text-transparent bg-clip-text bg-gradient-to-r from-[#3F1562] to-[#DF6789]`}
                 onClick={handleDelete}
                 >
-                 <Delete />
+                 {delLoading ?  <SaralLoader /> : <Delete />}
                 </button>
                 </>
               )}

@@ -41,6 +41,8 @@ import { set } from "zod";
 import ToggleSVG from "@/assets/svg/saral-ai/toggle/Toggle";
 import { calculateExperience } from "@/helpers/apis/experience-counter";
 import SkeletonCard from "@/components/ui/skeleton/Skeleton";
+import ButtonLoader from "@/components/ui/loader/ButtonLoader";
+import SaralLoader from "@/components/ui/loader/SaralLoader";
 
 export default function SaralPromptScreen() {
   const [isOpen, setIsOpen] = useState(false);
@@ -65,8 +67,11 @@ export default function SaralPromptScreen() {
   const [savedProfileCount, setSavedProfileCount] = useState<number>(0);
   const [savedNotify, setSavedNotify] = useState(false);
   const [SkeletonLoading, setSkeletonLoading] = useState(false);
-
-  const onSavedNotify = () => setSavedNotify(!savedNotify);
+  const [allResults, setAllResults] = useState<any[]>([]);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const [isRephrasing, setIsRephrasing] = useState(false);
+  const [animatingText, setAnimatingText] = useState(false);
+  const [isSending, setIsSending] = useState(false);
 
   console.log("isHandleError", isHandleError);
   const { id: recentSearchId } = useParams();
@@ -114,11 +119,13 @@ export default function SaralPromptScreen() {
   const navigate = useNavigate();
   const query = location.state?.query;
   const data = location.state?.data;
+  console.log("location.state", location.state);
   useEffect(() => {
     if (data) {
-      setResults(data);
+      setResults({ type: "profiles", data });
+      setInpValue(query);
     }
-  }, [data]);
+  }, [data, query]);
 
   const lastPath = location.pathname.split("/").filter(Boolean).pop();
 
@@ -138,8 +145,6 @@ export default function SaralPromptScreen() {
       setIsLinkedinCampaign(false);
       setIsSaved(false);
       setIsResult(false);
-      setResults(null);
-      setInpValue(null);
       setMoved(false);
     }
   }, [lastPath]);
@@ -166,17 +171,19 @@ export default function SaralPromptScreen() {
     }
   };
 
-  useEffect(() => {
-    if (query) {
-      setInpValue(query);
-      fetchProfiles(query, 1);
-    }
-  }, [query]);
+  // useEffect(() => {
+  //   if (query) {
+  //     setInpValue(query);
+  //     fetchProfiles(query, 1);
+  //     setResults(data)
+  //     setAllResults(data)
+  //   }
+  // }, [query]);
 
   // Handle resize
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth >= 1024) {
+      if (window.innerWidth >= 1280) {
         setIsOpen(false);
       }
     };
@@ -188,13 +195,20 @@ export default function SaralPromptScreen() {
   const handleEnhanceSearch = async () => {
     if (inpValue !== "" && inpValue) {
       try {
+        setIsRephrasing(true);
         const response = await enhancePrompt(inpValue);
         if (response.success) {
-          setInpValue(response.enhanced_query);
-        } else {
+          // Animate text change like in PromptScreen
+          setAnimatingText(true);
+          setTimeout(() => {
+            setInpValue(response.enhanced_query);
+            setAnimatingText(false);
+          }, 400);
         }
       } catch (error) {
         console.error("Error enhancing search:", error);
+      } finally {
+        setIsRephrasing(false);
       }
     }
   };
@@ -226,19 +240,71 @@ export default function SaralPromptScreen() {
     }
   };
 
-  const fetchProfiles = async (query: string, page: number = 1) => {
+  // const fetchProfiles = async (query: string, page: number = 1) => {
+  //   try {
+  //     setIsHandleError(false);
+  //     const response: SearchProfilesResponse = await searchProfiles(
+  //       query,
+  //       page
+  //     );
+
+  //     if (response.success) {
+  //       navigate(SARAL_AI_RESULT);
+  //       setMoved(true);
+  //       inputRef.current?.blur();
+  //       setResults({ type: "profiles", data: response });
+
+  //       // Pagination states
+  //       setCurrentPage(response.current_page);
+  //       setTotalPages(response.total_pages);
+  //       setHasNext(response.has_next);
+  //       setHasPrev(response.has_prev);
+  //       setTotalResults(response.total_results);
+  //     }
+  //     if (response.matched_profiles.length === 0) {
+  //       setIsHandleError(true);
+  //     }
+  //   } catch (error) {
+  //     setIsHandleError(true);
+  //     console.error("Error searching profiles:", error);
+  //   }
+  // };
+
+  const fetchProfiles = async (
+    query: string,
+    page: number = 1,
+    isLoadMore: boolean = false
+  ) => {
     try {
       setIsHandleError(false);
+      setIsSending(true);
+      if (isLoadMore) {
+        setIsLoadingMore(true);
+      }
+
       const response: SearchProfilesResponse = await searchProfiles(
         query,
         page
       );
 
       if (response.success) {
-        navigate(SARAL_AI_RESULT);
-        setMoved(true);
-        inputRef.current?.blur();
-        setResults({ type: "profiles", data: response });
+        if (!isLoadMore) {
+          // First search or new search
+          navigate(SARAL_AI_RESULT);
+          setMoved(true);
+          inputRef.current?.blur();
+          setResults({ type: "profiles", data: response });
+          setAllResults(response.matched_profiles);
+        } else {
+          // Load more - append new results
+          const updatedResults = [...allResults, ...response.matched_profiles];
+          setAllResults(updatedResults);
+          const updatedResponse = {
+            ...response,
+            matched_profiles: updatedResults,
+          };
+          setResults({ type: "profiles", data: updatedResponse });
+        }
 
         // Pagination states
         setCurrentPage(response.current_page);
@@ -247,13 +313,26 @@ export default function SaralPromptScreen() {
         setHasPrev(response.has_prev);
         setTotalResults(response.total_results);
       }
-      if (response.matched_profiles.length === 0) {
+
+      if (response.matched_profiles.length === 0 && !isLoadMore) {
         setIsHandleError(true);
       }
     } catch (error) {
       setIsHandleError(true);
       console.error("Error searching profiles:", error);
-    } 
+    } finally {
+      if (isLoadMore) {
+        setIsLoadingMore(false);
+      } else {
+        setIsSending(false); // Stop sending animation for initial search
+      }
+    }
+  };
+
+  const handleLoadMore = async () => {
+    if (inpValue && !isLoadingMore) {
+      await fetchProfiles(inpValue, currentPage + 1, true);
+    }
   };
 
   return (
@@ -272,7 +351,7 @@ export default function SaralPromptScreen() {
       {sidebarCollapsed && (
         <button
           onClick={handleToggleSidebar}
-          className="hidden lg:block fixed top-4 left-4 z-[9999] text-[deepViolet] rounded-xl w-10 h-10 flex items-center justify-center cursor-pointer hover:bg-white/30 transition-all duration-200"
+          className="lg:block fixed top-4 left-4 z-[9999] text-[deepViolet] rounded-xl w-10 h-10 flex items-center justify-center cursor-pointer hover:bg-white/30 transition-all duration-200"
         >
           <ToggleSVG />
         </button>
@@ -361,6 +440,7 @@ export default function SaralPromptScreen() {
                 navigate(SARAL_AI_NEW_CHAT);
                 setIsHandleError(false);
                 setResults(null);
+                setAllResults([]);
                 setInpValue(null);
               }}
             >
@@ -439,7 +519,7 @@ export default function SaralPromptScreen() {
           sidebarCollapsed ? "lg:ml-0" : ""
         }`}
       >
-        <div className="sticky top-0 z-50 flex items-center justify-end p-4 sm:p-6 lg:px-8 pt-6 lg:pt-6">
+        <div className="sticky top-0 z-0 flex items-center justify-end p-4 sm:p-6 lg:px-8 pt-6 lg:pt-6">
           {/* Info Icon */}
           <button
             className="group flex outline-none items-center bg-purple-50 justify-center mx-4 w-[33px] h-[33px] hover:bg-purple-100 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
@@ -481,112 +561,176 @@ export default function SaralPromptScreen() {
 
             <div
               className={`w-full ${
-                results || isResult || SkeletonLoading ? "max-w-7xl" : "max-w-3xl"
+                results || isResult || SkeletonLoading
+                  ? "max-w-7xl"
+                  : "max-w-3xl"
               } flex flex-col items-center gap-3 sm:gap-4`}
             >
+              {/* Input field */}
               <motion.div
                 initial={{ y: 0 }}
-                animate={{ y: moved ? -30 : 0 }}
+                animate={{ y: moved ? -35 : 0 }}
                 transition={{ duration: 0.5, ease: "easeInOut" }}
                 className="w-full"
               >
-                <div className="w-[full] flex flex-col sm:flex-row items-stretch sm:items-center bg-white/80 border border-[#f3cde9] rounded-2xl p-3 sm:p-4 shadow-sm gap-2 sm:gap-0">
-                  <input
-                    className="flex-1 min-w-0 bg-transparent outline-none text-base sm:text-lg placeholder-[#A6A6A6] truncate"
-                    placeholder="when an unknown printer took a galley of type and scrambled."
-                    autoFocus
-                    ref={inputRef}
-                    onKeyDown={handleKeyDown}
-                    onChange={(e) => setInpValue(e.target.value)}
-                    value={inpValue ?? ""}
-                  />
+                <div
+                  className={`sticky top-30 ${
+                    sidebarCollapsed ? "z-50" : "z-0"
+                  } w-[full] flex flex-col sm:flex-row items-stretch sm:items-center bg-white/80 border border-[#f3cde9] rounded-2xl p-3 sm:p-4 shadow-sm gap-2 sm:gap-0`}
+                >
+                  {/* Animated Input with AnimatePresence */}
+                  <AnimatePresence mode="wait">
+                    <motion.input
+                      key={animatingText ? "animating" : "normal"}
+                      initial={{ opacity: 0, y: 5 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -5 }}
+                      transition={{ duration: 0.3 }}
+                      className="flex-1 min-w-0 bg-transparent outline-none text-base sm:text-lg placeholder-[#A6A6A6] truncate"
+                      placeholder="when an unknown printer took a galley of type and scrambled."
+                      autoFocus
+                      ref={inputRef}
+                      onKeyDown={handleKeyDown}
+                      onChange={(e) => setInpValue(e.target.value)}
+                      value={inpValue ?? ""}
+                      disabled={isRephrasing}
+                    />
+                  </AnimatePresence>
 
                   <div className="flex items-center gap-2 justify-end">
-                    <button
+                    {/* Rephrase Button with rotation animation */}
+                    <motion.button
+                      whileTap={{ scale: 0.9 }}
                       className="rounded-xl text-[#3D1562] opacity-70 px-3 sm:px-4 py-2 font-semibold hover:bg-[#ead1f7] transition text-xs sm:text-sm flex items-center gap-2 disabled:opacity-50 disabled:!cursor-not-allowed"
                       onClick={handleEnhanceSearch}
-                      disabled={!inpValue || inpValue.trim() === ""}
+                      disabled={
+                        !inpValue || inpValue.trim() === "" || isRephrasing
+                      }
                     >
-                      {/* Rephrase button icon */}
-                      <Rephrase />
+                      <motion.div
+                        animate={isRephrasing ? { rotate: 360 } : { rotate: 0 }}
+                        transition={
+                          isRephrasing
+                            ? { repeat: Infinity, duration: 3, ease: "linear" }
+                            : {}
+                        }
+                      >
+                        <Rephrase />
+                      </motion.div>
                       Rephrase
-                    </button>
-                    <button
+                    </motion.button>
+
+                    {/* Search Button */}
+                    <motion.button
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.95 }}
                       onClick={handleOnClick}
-                      disabled={!inpValue || inpValue.trim() === ""}
-                      className="rounded-2xl p-2.5 sm:p-3 from-[#de7fdf] to-[#a881fa] hover:scale-105 transition shadow-md
-             disabled:opacity-50 disabled:!cursor-not-allowed"
+                      disabled={
+                        !inpValue || inpValue.trim() === "" || isRephrasing
+                      }
+                      className="rounded-2xl p-2.5 sm:p-3 from-[#de7fdf] to-[#a881fa] hover:scale-105 transition shadow-md disabled:opacity-50 disabled:!cursor-not-allowed"
                     >
-                      {/* Send prompt button icon */}
-                      <SendPrompt />
-                    </button>
+                      {isSending ? <SaralLoader /> : <SendPrompt />}
+                    </motion.button>
                   </div>
                 </div>
 
-                {/* Set result */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 mt-4 lg:grid-cols-3 gap-6 justify-items-center">
-                  {SkeletonLoading
-                    ? Array.from({ length: 6 }).map((_, index) => (
-                        <div
-                          key={`skeleton-${index}`}
-                          className="w-full flex justify-center"
-                          style={{ animationDelay: `${index * 0.1}s` }}
-                        >
-                          <SkeletonCard />
-                        </div>
-                      ))
-                    : results?.data &&
-                      (results.type === "history"
-                        ? results.data.data
-                        : results.data.matched_profiles
-                      )?.map((profile: any, index: number) => {
-                        const experienceData = JSON.parse(
-                          profile.experience || "[]"
-                        );
-                        const overallExperience =
-                          calculateExperience(experienceData);
-                        const candidate: Candidate = {
-                          id: profile.id,
-                          name:
-                            results.type === "history"
-                              ? profile.name
-                              : profile.fullName,
-                          initials:
-                            (results.type === "history"
-                              ? profile.name
-                              : profile.fullName)?.[0] ?? "",
-                          position: profile.headline,
-                          experience: overallExperience.formatted,
-                          location:
-                            results.type === "history"
-                              ? profile.location
-                              : profile.addressWithCountry,
-                          profileUrl:
-                            results.type === "history"
-                              ? profile.linkedin_url
-                              : profile.linkedinUrl,
-                          assessmentScore: profile.score ?? 0,
-                        };
-
-                        return (
-                          <motion.div
-                            key={candidate.id}
-                            initial={{ opacity: 0, y: 30, scale: 0.9 }}
-                            animate={{ opacity: 1, y: 0, scale: 1 }}
-                            transition={{
-                              delay: index * 0.15,
-                              duration: 0.5,
-                              ease: "easeOut",
-                            }}
+                {/* Set result cards */}
+                <div className="max-h-[67vh] mt-2 overflow-y-auto">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 mt-4 lg:grid-cols-3 gap-6 justify-items-center">
+                    {SkeletonLoading
+                      ? Array.from({ length: 6 }).map((_, index) => (
+                          <div
+                            key={`skeleton-${index}`}
                             className="w-full flex justify-center"
+                            style={{ animationDelay: `${index * 0.1}s` }}
                           >
-                            <CandidateCard
-                              candidate={candidate}
-                              onSavedNotify={() => onSavedNotify()}
-                            />
-                          </motion.div>
-                        );
-                      })}
+                            <SkeletonCard />
+                          </div>
+                        ))
+                      : results?.data &&
+                        (results.type === "history"
+                          ? results.data.data
+                          : results.data.matched_profiles
+                        )?.map((profile: any, index: number) => {
+                          const experienceData =
+                            results.type === "history"
+                              ? JSON.parse(profile.experience || "[]")
+                              : profile.experiences || [];
+                          const overallExperience =
+                            calculateExperience(experienceData);
+                          const candidate: Candidate = {
+                            id: profile.id,
+                            name:
+                              results.type === "history"
+                                ? profile.name
+                                : profile.fullName,
+                            initials:
+                              (results.type === "history"
+                                ? profile.name
+                                : profile.fullName)?.[0] ?? "",
+                            position: profile.headline,
+                            experience: overallExperience.formatted,
+                            location:
+                              results.type === "history"
+                                ? profile.location
+                                : profile.addressWithCountry,
+                            profileUrl:
+                              results.type === "history"
+                                ? profile.linkedin_url
+                                : profile.linkedinUrl,
+                            assessmentScore: profile.score ?? 0,
+                          };
+
+                          return (
+                            <motion.div
+                              key={candidate.id}
+                              initial={{ opacity: 0, y: 30, scale: 0.9 }}
+                              animate={{ opacity: 1, y: 0, scale: 1 }}
+                              transition={{
+                                delay: index * 0.15,
+                                duration: 0.5,
+                                ease: "easeOut",
+                              }}
+                              className="flex justify-center flex-wrap"
+                            >
+                              <CandidateCard
+                                candidate={candidate}
+                                SavedProfileCount={() => SavedProfileCount()}
+                              />
+                            </motion.div>
+                          );
+                        })}
+                  </div>
+
+                  {/* Load More Button */}
+                  {results && results.type === "profiles" && (
+                    <div className="flex justify-center mt-8 mb-4">
+                      <button
+                        onClick={handleLoadMore}
+                        disabled={isLoadingMore}
+                        className="px-8 py-2 bg-transparent border-2 font-semibold rounded-full hover:scale-105 transition-all duration-200 shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
+                        style={{
+                          borderImage:
+                            "linear-gradient(to right, #de7fdf, #a881fa) 1",
+                          background:
+                            "linear-gradient(to right, #a881fa, #de7fdf)",
+                          WebkitBackgroundClip: "text",
+                          WebkitTextFillColor: "transparent",
+                          backgroundClip: "text",
+                        }}
+                      >
+                        {isLoadingMore ? (
+                          <div className="flex items-center gap-2">
+                            <div className="w-4 h-4 border-2 border-[#de7fdf] border-t-transparent rounded-full animate-spin"></div>
+                            Loading...
+                          </div>
+                        ) : (
+                          `Load More`
+                        )}
+                      </button>
+                    </div>
+                  )}
                 </div>
               </motion.div>
 
@@ -648,7 +792,7 @@ export default function SaralPromptScreen() {
         )}
         {isSaved && (
           <div className="flex-1">
-            <SavedProfilesTab onSavedNotify={() => onSavedNotify()} />
+            <SavedProfilesTab setSavedProfileCount={setSavedProfileCount} />
           </div>
         )}
         {/* Footer */}
