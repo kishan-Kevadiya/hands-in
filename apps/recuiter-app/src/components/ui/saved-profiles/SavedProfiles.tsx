@@ -41,6 +41,11 @@ const SavedProfilesTab: React.FC<SavedProfilesTabProps> = ({
     setAutorizedUserId(userId ?? "");
   }, []);
 
+   useEffect(() => {
+    fetchProfiles(1, false);
+    setCurrentPage(1);
+  }, []);
+
   const fetchProfiles = async (page: number = 1, append: boolean = false) => {
     try {
       if (append) {
