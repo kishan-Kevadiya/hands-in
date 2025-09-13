@@ -1,6 +1,3 @@
-
-import React from 'react';
-
 const SaralLoader = ({ size = 24, strokeWidth = 3 }) => {
   return (
     <div 

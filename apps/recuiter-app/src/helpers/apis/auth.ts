@@ -22,6 +22,7 @@ export const loginUser = async (email: string, password: string) => {
             "/company/login",
             { email, password }
         );
+
         return result;
     } catch (error) {
         console.error(error);
@@ -114,9 +115,10 @@ export const logoutUser = async () => {
 /* <----- Get company auth -----> */
 export const getCompanyAuth = async () => {
     try {
-        const result = await ApiGet<ApiResponse<string>>(
+        const result = await ApiGet<ApiResponse<{ id: string }>>(
             "/company/auth"
         );
+      if(result.message === 'success')  localStorage.setItem('x-user-id', result.data.id)
         return result;
     } catch (error) {
         console.error(error);

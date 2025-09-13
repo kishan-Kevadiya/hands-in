@@ -2,7 +2,8 @@ import axios from "axios"
 const BASE_URL = '/api/v1'; 
 
 // const BASE_URL = import.meta.env.VITE_API_BASE_URL
-const USER_ID = localStorage.getItem("user_id") ?? ' 5733c87a-3bef-49b7-a248-4b4c54c7b781';
+// const USER_ID = '5733c87a-3bef-49b7-a248-4b4c54c7b781';
+// console.log('USER_ID', USER_ID)
 
 export interface HealthCheckResponse {
   status: string;
@@ -72,7 +73,7 @@ export const healthCheck = async (): Promise<HealthCheckResponse> => {
   return response.data;
 };
 
-export const enhancePrompt = async (query: string): Promise<EnhancePromptResponse> => {
+export const enhancePrompt = async (USER_ID: string,query: string): Promise<EnhancePromptResponse> => {
 
   const response = await axios.post(
     `${BASE_URL}/ai-query/enhance`,
@@ -88,6 +89,7 @@ export const enhancePrompt = async (query: string): Promise<EnhancePromptRespons
 };
 
 export const searchProfiles = async (
+  USER_ID: string,
   query: string,
   page: number = 0
 ): Promise<SearchProfilesResponse> => {
@@ -124,6 +126,7 @@ export interface SearchHistoryResponse {
 
 
 export const getSearchHistory = async (
+  USER_ID: string,
   page: number,
   limit: number,
   profileId: number
@@ -171,6 +174,7 @@ export interface SearchHistoryByIdResponse {
 }
 
 export const getSearchHistoryResults = async (
+  USER_ID: string,
   searchId: string
 ): Promise<SearchHistoryByIdResponse> => {
   const response = await axios.get<any>(
@@ -197,6 +201,7 @@ export interface DeleteSavedProfileResponse {
 
 
 export const deleteSavedProfile = async (
+  USER_ID: string,
   id: number
 ): Promise<DeleteSavedProfileResponse> => {
   try {
@@ -246,6 +251,7 @@ export type CreateSavedProfileResponse =
 
 
 export const createSavedProfile = async (
+  USER_ID: string,
   profileId: number
 ): Promise<CreateSavedProfileResponse> => {
   try {
@@ -317,6 +323,7 @@ export interface DeleteSavedProfileError {
 
 
 export const getSavedProfiles = async (
+  USER_ID: string,
   page = 1,
   limit = 10
 ): Promise<SavedProfilesResponse> => {
@@ -338,6 +345,7 @@ export interface SavedProfileCountResponse {
 
 
 export const getSavedProfilesCount = async (
+  USER_ID: string
 ): Promise<SavedProfileCountResponse> => {
   const response = await axios.get<SavedProfileCountResponse>(
     `${BASE_URL}/saved-profile/count`,

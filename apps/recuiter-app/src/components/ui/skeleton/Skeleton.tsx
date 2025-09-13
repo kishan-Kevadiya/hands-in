@@ -1,6 +1,4 @@
-import React from 'react';
 
-// Skeleton Card Component that matches the CandidateCard structure
 const SkeletonCard = () => (
   <div className="w-full" style={{ maxWidth: '400px' }}>
     <div className="p-[1.5px] rounded-lg bg-gradient-to-r from-[#F3E8FF] to-[#FDECF5] animate-pulse">

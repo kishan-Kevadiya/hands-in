@@ -11,6 +11,9 @@ import NoCandidatesShortlisted from "../no-candidate-shortlisted/NoCandidateShor
 import { calculateExperience } from "@/helpers/apis/experience-counter";
 import SaralLoader from "../loader/SaralLoader";
 import RegenerateMessageSvg from "@/assets/svg/saral-ai/regenerate-message/RegenerateMessageSvg";
+import { getAuthorizedUserId } from "@/helpers/authorization";
+import { LOGIN } from "@/routes";
+import { useNavigate } from "react-router";
 
 interface SavedProfilesTabProps {
   setSavedProfileCount: Dispatch<SetStateAction<number>>;
@@ -23,11 +26,20 @@ const SavedProfilesTab: React.FC<SavedProfilesTabProps> = ({
   const [loadingMore, setLoadingMore] = useState(false);
   const [profiles, setProfiles] = useState<SavedProfile[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-  const [hasMore, setHasMore] = useState(false);
   const [limit] = useState(10);
   const [delLoading, setDelLoading] = useState(false);
-  const [refreshFlag, setRefreshFlag] = useState(false);
+
+  const [authorizedUserId, setAutorizedUserId] = useState<string>("");
+  const X_USER_ID = authorizedUserId;
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const userId = getAuthorizedUserId();
+    if (!userId) {
+      navigate(LOGIN);
+    }
+    setAutorizedUserId(userId ?? "");
+  }, []);
 
   const fetchProfiles = async (page: number = 1, append: boolean = false) => {
     try {
@@ -35,22 +47,22 @@ const SavedProfilesTab: React.FC<SavedProfilesTabProps> = ({
         setLoadingMore(true);
       } else {
         setLoading(true);
-        setProfiles([]); // Clear existing profiles for fresh load
+        setProfiles([]);
       }
 
-      const res: SavedProfilesResponse = await getSavedProfiles(page, limit);
+      const res: SavedProfilesResponse = await getSavedProfiles(
+        X_USER_ID,
+        page,
+        limit
+      );
 
       if (append) {
-        // ✅ This correctly appends new data to existing data
         setProfiles((prev) => [...prev, ...(res.data || [])]);
       } else {
-        // ✅ This replaces data for fresh loads
         setProfiles(res.data || []);
       }
 
-      setTotalPages(res.total_pages || 1);
       setCurrentPage(res.page || 1);
-      setHasMore((res.page || 1) < (res.total_pages || 1));
     } catch (error) {
       console.error("Error fetching saved profiles:", error);
     } finally {
@@ -66,9 +78,8 @@ const SavedProfilesTab: React.FC<SavedProfilesTabProps> = ({
   const handleDelete = async (id: number) => {
     setDelLoading(true);
     try {
-      const res = await deleteSavedProfile(id);
+      const res = await deleteSavedProfile(X_USER_ID, id);
 
-      // Remove the deleted profile from the current profiles
       setProfiles((prev) => prev.filter((profile) => profile.id !== id));
       setSavedProfileCount((prev: number) => prev - 1);
 
@@ -79,11 +90,6 @@ const SavedProfilesTab: React.FC<SavedProfilesTabProps> = ({
       setDelLoading(false);
     }
   };
-
-  useEffect(() => {
-    fetchProfiles(1, false);
-    setCurrentPage(1);
-  }, [refreshFlag]);
 
   if (loading) {
     return (

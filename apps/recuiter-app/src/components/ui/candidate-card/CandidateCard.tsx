@@ -1,12 +1,16 @@
-
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import HeadScore from "../progressbar/HeadScore";
 import Linkdin from "@/assets/svg/saral-ai/linkdin/Linkdin";
-import { createSavedProfile, deleteSavedProfile } from "@/helpers/apis/saral-ai";
+import {
+  createSavedProfile,
+  deleteSavedProfile,
+} from "@/helpers/apis/saral-ai";
 import Delete from "@/assets/svg/saral-ai/logo/delete/Delete";
 import SaralLoader from "../loader/SaralLoader";
-import ButtonLoader from "../loader/ButtonLoader";
+import { getAuthorizedUserId } from "@/helpers/authorization";
+import { useNavigate } from "react-router";
+import { LOGIN } from "@/routes";
 
 // Define the props interface
 interface CandidateCardProps {
@@ -25,7 +29,7 @@ interface CandidateCardProps {
   onSaveToggle?: (candidateId: number, isSaved: boolean) => void;
   animationDelay?: number;
   maxWidth?: number;
-  SavedProfileCount?:()=>void;
+  SavedProfileCount?: () => void;
   handleDelete?: () => void;
   delLoading?: boolean;
 }
@@ -39,25 +43,22 @@ const CandidateCard: React.FC<CandidateCardProps> = ({
   isForSavedList = false,
   handleDelete,
   SavedProfileCount,
-  delLoading
+  delLoading,
 }) => {
   const [isSaved, setIsSaved] = useState(initialSavedState);
-  const [size, setSize] = useState(150);
   const [loading, setLoading] = useState(false);
   const [savedProfileId, setSavedProfileId] = useState<number | null>(null);
 
-  useEffect(() => {
-    const updateSize = () => {
-      if (window.innerWidth < 640) {
-        setSize(130);
-      } else {
-        setSize(150);
-      }
-    };
+  const [authorizedUserId, setAutorizedUserId] = useState<string>("");
+  const X_USER_ID = authorizedUserId;
+  const navigate = useNavigate();
 
-    updateSize();
-    window.addEventListener("resize", updateSize);
-    return () => window.removeEventListener("resize", updateSize);
+  useEffect(() => {
+    const userId = getAuthorizedUserId();
+    if (!userId) {
+      navigate(LOGIN);
+    }
+    setAutorizedUserId(userId ?? "");
   }, []);
 
   const handleSaveToggle = async () => {
@@ -67,13 +68,13 @@ const CandidateCard: React.FC<CandidateCardProps> = ({
     try {
       if (!isSaved) {
         // --- Save Profile ---
-        const res = await createSavedProfile(candidate.id);
+        const res = await createSavedProfile(X_USER_ID,candidate.id);
         // @ts-ignore
         if (res.data) {
           setSavedProfileId((res as any).id);
           setIsSaved(true);
           onSaveToggle?.(candidate.id, true);
-          SavedProfileCount?.()
+          SavedProfileCount?.();
         }
       } else {
         // --- Unsave Profile ---
@@ -81,7 +82,7 @@ const CandidateCard: React.FC<CandidateCardProps> = ({
           console.warn("No savedProfileId found for unsave");
           return;
         }
-        const res = await deleteSavedProfile(candidate.id);
+        const res = await deleteSavedProfile(X_USER_ID, candidate.id);
         if (res && (res as any).success !== false) {
           setIsSaved(false);
           setSavedProfileId(null);
@@ -204,16 +205,16 @@ const CandidateCard: React.FC<CandidateCardProps> = ({
             <div className="mt-3 flex justify-center">
               {isForSavedList && (
                 <>
-                <button
-                  className={`w-full max-w-[45px] bg-white border-[2px] mr-2 border-[#eddddd] hover:opacity-80 rounded-xl text-sm font-bold px-3 py-1.5 transition-all duration-300 ease-in-out
+                  <button
+                    className={`w-full max-w-[45px] bg-white border-[2px] mr-2 border-[#eddddd] hover:opacity-80 rounded-xl text-sm font-bold px-3 py-1.5 transition-all duration-300 ease-in-out
                 text-transparent bg-clip-text bg-gradient-to-r from-[#3F1562] to-[#DF6789]`}
-                onClick={handleDelete}
-                >
-                 {delLoading ?  <SaralLoader /> : <Delete />}
-                </button>
+                    onClick={handleDelete}
+                  >
+                    {delLoading ? <SaralLoader /> : <Delete />}
+                  </button>
                 </>
               )}
-                <button
+              <button
                 onClick={handleSaveToggle}
                 disabled={loading}
                 className={`w-full max-w-[380px] rounded-xl text-sm font-bold px-3 py-1.5 transition-all duration-300 ease-in-out

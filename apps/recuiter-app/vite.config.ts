@@ -13,7 +13,6 @@ export default defineConfig({
         target: "https://saral-ai-api.headsin.co",
         changeOrigin: true,
         secure: true,
-        //  rewrite: (path) => path.replace(/^\/api/, "/api")
       },
     },
   },

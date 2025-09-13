@@ -13,14 +13,13 @@ import {
   SARAL_AI_SAVED_CAMPAIGNS,
 } from "@/routes";
 import { AnimatePresence, motion } from "framer-motion";
-import { use, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router";
 import ColoredLogo from "/src/assets/svg/saral-ai/logo/LogoColor.png";
 import LinkdinCampaign from "@/assets/svg/saral-ai/linkdin-campaign/LinkdinCampaign";
 import SavedProfiles from "@/assets/svg/saral-ai/saved-profiles.tsx/SavedProfiles";
 import NewChat from "@/assets/svg/saral-ai/new-chat.tsx/NewChat";
 import SearchBar from "@/assets/svg/saral-ai/search-bar/SearchBar";
-import RecentSearch from "@/assets/svg/saral-ai/recent-search/RecentSearch";
 import SendPrompt from "@/assets/svg/saral-ai/send-prompt/SendPrompt";
 import Rephrase from "@/assets/svg/saral-ai/rephrase/Rephrase";
 import Support from "@/assets/svg/saral-ai/support/Support";
@@ -36,17 +35,14 @@ import {
 } from "@/helpers/apis/saral-ai";
 import RecentSearchTab from "@/components/ui/recent-search/RecentSearch";
 import SavedProfilesTab from "@/components/ui/saved-profiles/SavedProfiles";
-import PaginationHelper from "@/components/ui/pagination-helper/PaginationHelper";
-import { set } from "zod";
 import ToggleSVG from "@/assets/svg/saral-ai/toggle/Toggle";
 import { calculateExperience } from "@/helpers/apis/experience-counter";
 import SkeletonCard from "@/components/ui/skeleton/Skeleton";
-import ButtonLoader from "@/components/ui/loader/ButtonLoader";
 import SaralLoader from "@/components/ui/loader/SaralLoader";
+import { getAuthorizedUserId } from "@/helpers/authorization";
 
 export default function SaralPromptScreen() {
   const [isOpen, setIsOpen] = useState(false);
-  const [expanded, setExpanded] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   const [inpValue, setInpValue] = useState<string | null>(null);
@@ -59,21 +55,26 @@ export default function SaralPromptScreen() {
   const [isResult, setIsResult] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-  const [hasNext, setHasNext] = useState(false);
-  const [hasPrev, setHasPrev] = useState(false);
-  const [totalResults, setTotalResults] = useState(0);
   const [isHandleError, setIsHandleError] = useState(false);
   const [savedProfileCount, setSavedProfileCount] = useState<number>(0);
-  const [savedNotify, setSavedNotify] = useState(false);
   const [SkeletonLoading, setSkeletonLoading] = useState(false);
   const [allResults, setAllResults] = useState<any[]>([]);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [isRephrasing, setIsRephrasing] = useState(false);
   const [animatingText, setAnimatingText] = useState(false);
   const [isSending, setIsSending] = useState(false);
+  const [authorizedUserId, setAutorizedUserId] = useState<string>("");
 
-  console.log("isHandleError", isHandleError);
+  const X_USER_ID = authorizedUserId;
+
+  useEffect(() => {
+    const userId = getAuthorizedUserId();
+    if (!userId) {
+      navigate(LOGIN);
+    }
+    setAutorizedUserId(userId ?? "");
+  }, []);
+
   const { id: recentSearchId } = useParams();
 
   type ResultData =
@@ -85,13 +86,16 @@ export default function SaralPromptScreen() {
 
   const fetchHistoryData = async (recentSearchId: string) => {
     try {
+      setIsHandleError(false);
       setSkeletonLoading(true);
       const data: SearchHistoryByIdResponse = await getSearchHistoryResults(
+        X_USER_ID,
         recentSearchId
       );
       setResults({ type: "history", data });
       setInpValue(data.data?.[0]?.query_text);
     } catch (error) {
+      setIsHandleError(true);
       console.error("Error fetching search history results:", error);
     } finally {
       setSkeletonLoading(false);
@@ -196,7 +200,7 @@ export default function SaralPromptScreen() {
     if (inpValue !== "" && inpValue) {
       try {
         setIsRephrasing(true);
-        const response = await enhancePrompt(inpValue);
+        const response = await enhancePrompt(X_USER_ID, inpValue);
         if (response.success) {
           // Animate text change like in PromptScreen
           setAnimatingText(true);
@@ -215,16 +219,14 @@ export default function SaralPromptScreen() {
 
   const SavedProfileCount = async () => {
     try {
-      const response: SavedProfileCountResponse = await getSavedProfilesCount();
+      const response: SavedProfileCountResponse = await getSavedProfilesCount(
+        X_USER_ID
+      );
       setSavedProfileCount(response.total);
     } catch (error) {
       console.error("Error enhancing search:", error);
     }
   };
-
-  useEffect(() => {
-    SavedProfileCount();
-  }, [savedNotify]);
 
   const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && inpValue !== "" && inpValue) {
@@ -240,36 +242,6 @@ export default function SaralPromptScreen() {
     }
   };
 
-  // const fetchProfiles = async (query: string, page: number = 1) => {
-  //   try {
-  //     setIsHandleError(false);
-  //     const response: SearchProfilesResponse = await searchProfiles(
-  //       query,
-  //       page
-  //     );
-
-  //     if (response.success) {
-  //       navigate(SARAL_AI_RESULT);
-  //       setMoved(true);
-  //       inputRef.current?.blur();
-  //       setResults({ type: "profiles", data: response });
-
-  //       // Pagination states
-  //       setCurrentPage(response.current_page);
-  //       setTotalPages(response.total_pages);
-  //       setHasNext(response.has_next);
-  //       setHasPrev(response.has_prev);
-  //       setTotalResults(response.total_results);
-  //     }
-  //     if (response.matched_profiles.length === 0) {
-  //       setIsHandleError(true);
-  //     }
-  //   } catch (error) {
-  //     setIsHandleError(true);
-  //     console.error("Error searching profiles:", error);
-  //   }
-  // };
-
   const fetchProfiles = async (
     query: string,
     page: number = 1,
@@ -283,6 +255,7 @@ export default function SaralPromptScreen() {
       }
 
       const response: SearchProfilesResponse = await searchProfiles(
+        X_USER_ID,
         query,
         page
       );
@@ -308,10 +281,6 @@ export default function SaralPromptScreen() {
 
         // Pagination states
         setCurrentPage(response.current_page);
-        setTotalPages(response.total_pages);
-        setHasNext(response.has_next);
-        setHasPrev(response.has_prev);
-        setTotalResults(response.total_results);
       }
 
       if (response.matched_profiles.length === 0 && !isLoadMore) {

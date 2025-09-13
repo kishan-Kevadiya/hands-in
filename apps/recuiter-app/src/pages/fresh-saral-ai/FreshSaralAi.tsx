@@ -1,13 +1,13 @@
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Star from "@/assets/svg/saral-ai/Star";
 import ColoredLogo from "/src/assets/svg/saral-ai/logo/LogoColor.png";
 import { enhancePrompt, searchProfiles, SearchProfilesResponse } from "@/helpers/apis/saral-ai";
 import { useNavigate } from "react-router";
-import { SARAL_AI_RESULT } from "@/routes";
-import ButtonLoader from "@/components/ui/loader/ButtonLoader";
+import { LOGIN, SARAL_AI_RESULT } from "@/routes";
 import SaralLoader from "@/components/ui/loader/SaralLoader";
+import { getAuthorizedUserId } from "@/helpers/authorization";
 
 export function PromptScreen() {
   const [inputValue, setInputValue] = useState("");
@@ -17,12 +17,24 @@ export function PromptScreen() {
   const [isError, setIsError] = useState(false);
   const navigate = useNavigate();
 
+   const [authorizedUserId, setAutorizedUserId] = useState<string>('')
+     const X_USER_ID = authorizedUserId;
+  
+      useEffect(() => {
+      const userId = getAuthorizedUserId();
+      console.log('userId ----------------', userId)
+      if (!userId) {
+        navigate(LOGIN);
+      }
+      setAutorizedUserId(userId ?? '')
+    }, []);
+
 
   const fetchProfiles = async (query: string, page: number = 1) => {
     try {
       setResultLoading(true);
       setIsError(false);
-      const response: SearchProfilesResponse = await searchProfiles(query, page);
+      const response: SearchProfilesResponse = await searchProfiles(X_USER_ID,query, page);
 
       if (response.success) {
         navigate(SARAL_AI_RESULT, {
@@ -47,7 +59,7 @@ export function PromptScreen() {
     if (inputValue.trim() !== "") {
       try {
         setLoading(true);
-        const response = await enhancePrompt(inputValue);
+        const response = await enhancePrompt(X_USER_ID,inputValue);
 
         if (response.success) {
           // Animate text change
