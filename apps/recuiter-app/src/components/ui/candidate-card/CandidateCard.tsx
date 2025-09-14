@@ -210,7 +210,7 @@ const CandidateCard: React.FC<CandidateCardProps> = ({
                 text-transparent bg-clip-text bg-gradient-to-r from-[#3F1562] to-[#DF6789]`}
                     onClick={handleDelete}
                   >
-                    {delLoading ? <SaralLoader /> : <Delete />}
+                    <Delete />
                   </button>
                 </>
               )}

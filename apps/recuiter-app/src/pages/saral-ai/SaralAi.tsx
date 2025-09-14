@@ -65,8 +65,6 @@ export default function SaralPromptScreen() {
   const [isSending, setIsSending] = useState(false);
   const [authorizedUserId, setAutorizedUserId] = useState<string>("");
 
-  const X_USER_ID = authorizedUserId;
-
   useEffect(() => {
     const userId = getAuthorizedUserId();
     if (!userId) {
@@ -89,7 +87,7 @@ export default function SaralPromptScreen() {
       setIsHandleError(false);
       setSkeletonLoading(true);
       const data: SearchHistoryByIdResponse = await getSearchHistoryResults(
-        X_USER_ID,
+        authorizedUserId,
         recentSearchId
       );
       setResults({ type: "history", data });
@@ -200,7 +198,7 @@ export default function SaralPromptScreen() {
     if (inpValue !== "" && inpValue) {
       try {
         setIsRephrasing(true);
-        const response = await enhancePrompt(X_USER_ID, inpValue);
+        const response = await enhancePrompt(authorizedUserId, inpValue);
         if (response.success) {
           // Animate text change like in PromptScreen
           setAnimatingText(true);
@@ -220,13 +218,17 @@ export default function SaralPromptScreen() {
   const SavedProfileCount = async () => {
     try {
       const response: SavedProfileCountResponse = await getSavedProfilesCount(
-        X_USER_ID
+        authorizedUserId
       );
       setSavedProfileCount(response.total);
     } catch (error) {
       console.error("Error enhancing search:", error);
     }
   };
+
+  useEffect(() => {
+    SavedProfileCount();
+  }, []);
 
   const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && inpValue !== "" && inpValue) {
@@ -255,7 +257,7 @@ export default function SaralPromptScreen() {
       }
 
       const response: SearchProfilesResponse = await searchProfiles(
-        X_USER_ID,
+        authorizedUserId,
         query,
         page
       );

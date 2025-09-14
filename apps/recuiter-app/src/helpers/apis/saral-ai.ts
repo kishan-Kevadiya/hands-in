@@ -128,8 +128,7 @@ export interface SearchHistoryResponse {
 export const getSearchHistory = async (
   USER_ID: string,
   page: number,
-  limit: number,
-  profileId: number
+  limit: number
 ): Promise<SearchHistoryResponse> => {
   const response = await axios.get(`${BASE_URL}/search-history`, {
     headers: {
@@ -138,8 +137,7 @@ export const getSearchHistory = async (
     },
     params: {
       page,
-      limit,
-      profile_id: profileId,
+      limit
     },
   });
 
@@ -327,6 +325,7 @@ export const getSavedProfiles = async (
   page = 1,
   limit = 10
 ): Promise<SavedProfilesResponse> => {
+  console.log('USER_ID ------------------', USER_ID)
   const response = await axios.get<SavedProfilesResponse>(
     `${BASE_URL}/saved-profile?page=${page}&limit=${limit}`,
     {

@@ -30,21 +30,23 @@ const SavedProfilesTab: React.FC<SavedProfilesTabProps> = ({
   const [delLoading, setDelLoading] = useState(false);
 
   const [authorizedUserId, setAutorizedUserId] = useState<string>("");
-  const X_USER_ID = authorizedUserId;
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const userId = getAuthorizedUserId();
-    if (!userId) {
-      navigate(LOGIN);
-    }
-    setAutorizedUserId(userId ?? "");
-  }, []);
+useEffect(() => {
+  const userId = getAuthorizedUserId();
+  if (!userId) {
+    navigate(LOGIN);
+    return;
+  }
+  setAutorizedUserId(userId);
+}, []);
 
-   useEffect(() => {
+useEffect(() => {
+  if (authorizedUserId) {
     fetchProfiles(1, false);
     setCurrentPage(1);
-  }, []);
+  }
+}, [authorizedUserId]); // depends on authorizedUserId
 
   const fetchProfiles = async (page: number = 1, append: boolean = false) => {
     try {
@@ -54,9 +56,8 @@ const SavedProfilesTab: React.FC<SavedProfilesTabProps> = ({
         setLoading(true);
         setProfiles([]);
       }
-
       const res: SavedProfilesResponse = await getSavedProfiles(
-        X_USER_ID,
+        authorizedUserId,
         page,
         limit
       );
@@ -83,10 +84,10 @@ const SavedProfilesTab: React.FC<SavedProfilesTabProps> = ({
   const handleDelete = async (id: number) => {
     setDelLoading(true);
     try {
-      const res = await deleteSavedProfile(X_USER_ID, id);
+      const res = await deleteSavedProfile(authorizedUserId, id);
 
       setProfiles((prev) => prev.filter((profile) => profile.id !== id));
-      setSavedProfileCount((prev: number) => prev - 1);
+      setSavedProfileCount((prev: number) => Math.max(prev - 1, 0));
 
       console.log("Delete response:", res.message);
     } catch (err: any) {

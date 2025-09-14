@@ -18,11 +18,9 @@ export function PromptScreen() {
   const navigate = useNavigate();
 
    const [authorizedUserId, setAutorizedUserId] = useState<string>('')
-     const X_USER_ID = authorizedUserId;
   
       useEffect(() => {
       const userId = getAuthorizedUserId();
-      console.log('userId ----------------', userId)
       if (!userId) {
         navigate(LOGIN);
       }
@@ -34,7 +32,7 @@ export function PromptScreen() {
     try {
       setResultLoading(true);
       setIsError(false);
-      const response: SearchProfilesResponse = await searchProfiles(X_USER_ID,query, page);
+      const response: SearchProfilesResponse = await searchProfiles(authorizedUserId,query, page);
 
       if (response.success) {
         navigate(SARAL_AI_RESULT, {
@@ -59,7 +57,7 @@ export function PromptScreen() {
     if (inputValue.trim() !== "") {
       try {
         setLoading(true);
-        const response = await enhancePrompt(X_USER_ID,inputValue);
+        const response = await enhancePrompt(authorizedUserId,inputValue);
 
         if (response.success) {
           // Animate text change

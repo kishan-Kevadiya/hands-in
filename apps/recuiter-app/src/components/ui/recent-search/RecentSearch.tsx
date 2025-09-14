@@ -1,4 +1,3 @@
-
 import RecentSearch from "@/assets/svg/saral-ai/recent-search/RecentSearch";
 import { getSearchHistory, SearchHistoryItem } from "@/helpers/apis/saral-ai";
 import { useEffect, useState, useRef, useCallback, useMemo } from "react";
@@ -15,21 +14,18 @@ const RecentSearchTab = () => {
   const [loading, setLoading] = useState(false);
   const [initialLoad, setInitialLoad] = useState(true);
 
-    const [authorizedUserId, setAutorizedUserId] = useState<string>('')
-       const X_USER_ID = authorizedUserId;
-    
-        useEffect(() => {
-        const userId = getAuthorizedUserId();
-        if (!userId) {
-          navigate(LOGIN);
-        }
-        setAutorizedUserId(userId ?? '')
-      }, []);
-  
+  const [authorizedUserId, setAutorizedUserId] = useState<string>("");
+
+  useEffect(() => {
+    const userId = getAuthorizedUserId();
+    if (!userId) {
+      navigate(LOGIN);
+    }
+    setAutorizedUserId(userId ?? "");
+  }, []);
 
   const navigate = useNavigate();
   const limit = 6;
-  const profileId = 123;
 
   const containerRef = useRef<HTMLDivElement>(null);
   const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -37,28 +33,29 @@ const RecentSearchTab = () => {
 
   const fetchHistory = useCallback(
     async (pageNum: number, isInitial = false) => {
-      
       if (isLoadingRef.current || (!hasMore && !isInitial)) return;
-      
+
       isLoadingRef.current = true;
       setLoading(true);
-      
+
       try {
-        const res = await getSearchHistory(X_USER_ID, pageNum, limit, profileId);
-        
+        const res = await getSearchHistory(authorizedUserId, pageNum, limit);
+
         if (pageNum === 1) {
           setHistory(res.data);
         } else {
           setHistory((prev) => {
             // Prevent duplicate entries
-            const existingIds = new Set(prev.map(item => item.id));
-            const newItems = res.data.filter(item => !existingIds.has(item.id));
+            const existingIds = new Set(prev.map((item) => item.id));
+            const newItems = res.data.filter(
+              (item) => !existingIds.has(item.id)
+            );
             return [...prev, ...newItems];
           });
         }
-        
+
         setHasMore(pageNum < res.total_pages);
-        
+
         if (isInitial) {
           setInitialLoad(false);
         }
@@ -71,7 +68,7 @@ const RecentSearchTab = () => {
         isLoadingRef.current = false;
       }
     },
-    [hasMore, limit, profileId]
+    [hasMore, limit]
   );
 
   useEffect(() => {
@@ -88,18 +85,18 @@ const RecentSearchTab = () => {
       if (!container || isLoadingRef.current || !hasMore) return;
 
       const { scrollTop, clientHeight, scrollHeight } = container;
-      
+
       if (scrollTop + clientHeight >= scrollHeight - 50) {
-        setPage(prevPage => prevPage + 1);
+        setPage((prevPage) => prevPage + 1);
       }
-    }, 100); 
+    }, 100);
   }, [hasMore]);
 
   useEffect(() => {
     if (page > 1) {
       fetchHistory(page);
     }
-  }, [page]); 
+  }, [page]);
 
   useEffect(() => {
     return () => {
@@ -121,10 +118,13 @@ const RecentSearchTab = () => {
   }, []);
 
   // Handle navigation to results page
-  const handleHistoryClick = useCallback((itemId: string) => {
-    console.log('itemId', itemId)
-    navigate(`/saral-ai/result/${itemId}/view`);
-  }, [navigate]);
+  const handleHistoryClick = useCallback(
+    (itemId: string) => {
+      console.log("itemId", itemId);
+      navigate(`/saral-ai/result/${itemId}/view`);
+    },
+    [navigate]
+  );
 
   const renderedItems = useMemo(() => {
     return history.map((item) => {
@@ -154,7 +154,7 @@ const RecentSearchTab = () => {
 
   // Memoized expand/collapse handler
   const handleToggleExpanded = useCallback(() => {
-    setExpanded(prev => !prev);
+    setExpanded((prev) => !prev);
   }, []);
 
   // Show initial loader only on first load
@@ -199,7 +199,7 @@ const RecentSearchTab = () => {
 
         {loading && !initialLoad && (
           <div className="text-center text-xs text-[#7965a8] py-2">
-            <ButtonLoader isVisible={loading}/>
+            <ButtonLoader isVisible={loading} />
           </div>
         )}
       </div>
