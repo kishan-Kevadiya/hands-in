@@ -227,8 +227,10 @@ export default function SaralPromptScreen() {
   };
 
   useEffect(() => {
-    SavedProfileCount();
-  }, []);
+    if(authorizedUserId) {
+      SavedProfileCount();
+    }
+  }, [authorizedUserId]);
 
   const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && inpValue !== "" && inpValue) {

@@ -4,7 +4,9 @@ import CandidateCard from "../candidate-card/CandidateCard";
 import {
   deleteSavedProfile,
   getSavedProfiles,
+  getSavedProfilesCount,
   SavedProfile,
+  SavedProfileCountResponse,
   SavedProfilesResponse,
 } from "@/helpers/apis/saral-ai";
 import NoCandidatesShortlisted from "../no-candidate-shortlisted/NoCandidateShortListed";
@@ -32,21 +34,21 @@ const SavedProfilesTab: React.FC<SavedProfilesTabProps> = ({
   const [authorizedUserId, setAutorizedUserId] = useState<string>("");
   const navigate = useNavigate();
 
-useEffect(() => {
-  const userId = getAuthorizedUserId();
-  if (!userId) {
-    navigate(LOGIN);
-    return;
-  }
-  setAutorizedUserId(userId);
-}, []);
+  useEffect(() => {
+    const userId = getAuthorizedUserId();
+    if (!userId) {
+      navigate(LOGIN);
+      return;
+    }
+    setAutorizedUserId(userId);
+  }, []);
 
-useEffect(() => {
-  if (authorizedUserId) {
-    fetchProfiles(1, false);
-    setCurrentPage(1);
-  }
-}, [authorizedUserId]); // depends on authorizedUserId
+  useEffect(() => {
+    if (authorizedUserId) {
+      fetchProfiles(1, false);
+      setCurrentPage(1);
+    }
+  }, [authorizedUserId]); // depends on authorizedUserId
 
   const fetchProfiles = async (page: number = 1, append: boolean = false) => {
     try {
@@ -87,7 +89,10 @@ useEffect(() => {
       const res = await deleteSavedProfile(authorizedUserId, id);
 
       setProfiles((prev) => prev.filter((profile) => profile.id !== id));
-      setSavedProfileCount((prev: number) => Math.max(prev - 1, 0));
+      const response: SavedProfileCountResponse = await getSavedProfilesCount(
+        authorizedUserId
+      );
+      setSavedProfileCount(response.total);
 
       console.log("Delete response:", res.message);
     } catch (err: any) {

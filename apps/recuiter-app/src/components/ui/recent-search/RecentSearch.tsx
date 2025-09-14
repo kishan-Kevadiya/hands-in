@@ -68,12 +68,14 @@ const RecentSearchTab = () => {
         isLoadingRef.current = false;
       }
     },
-    [hasMore, limit]
+    [hasMore, limit, authorizedUserId]
   );
 
-  useEffect(() => {
-    fetchHistory(1, true);
-  }, []);
+useEffect(() => {
+    if(authorizedUserId){
+      fetchHistory(1, true);
+    }
+  }, [authorizedUserId]);
 
   const handleScroll = useCallback(() => {
     if (scrollTimeoutRef.current) {
