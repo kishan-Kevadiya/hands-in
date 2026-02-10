@@ -116,3 +116,14 @@
 .scrollbar-hidden::-webkit-scrollbar {
     display: none;
 }
+
+@media (max-width: 1440px) {
+  .card-custom-text {
+    font-size: 13px;
+  }
+  .custom-plan-name{
+    font-size: 23px;
+  }.custom-credit-text{
+    font-size: 13px;
+  }
+}

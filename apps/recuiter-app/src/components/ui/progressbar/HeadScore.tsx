@@ -5,7 +5,7 @@ interface HeadScoreProps {
     size?: number;
 }
 
-const HeadScore: React.FC<HeadScoreProps> = ({ value = 0, size = 130 }) => {
+const HeadScore: React.FC<HeadScoreProps> = ({ value = 0, size = 120 }) => {
     const [progress, setProgress] = useState<number>(0);
 
     useEffect(() => {

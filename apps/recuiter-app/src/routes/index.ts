@@ -25,3 +25,10 @@ export const SUPPORT = "/support";
 export const CODE_OF_CONDUCT = "/code-of-conduct";
 export const TERMS_AND_CONDITIONS = "/terms-and-conditions";
 export const PRIVACY_POLICY = "/privacy-policy";
+
+// ==> Saral AI routes
+export const SARAL_AI = "/saral-ai";
+export const SARAL_AI_RESULT = "/saral-ai/result";
+export const SARAL_AI_NEW_CHAT = "/saral-ai/new";
+export const SARAL_AI_LINKEDIN_CAMPAIGN = "/saral-ai/linkdin-campaign";
+export const SARAL_AI_SAVED_CAMPAIGNS = "/saral-ai/saved-campaigns";
